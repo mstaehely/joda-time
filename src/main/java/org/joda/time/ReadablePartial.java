@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Defines a partial time that does not support every datetime field, and is
  * thus a local time.
@@ -42,7 +44,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      *
      * @return the number of fields supported
      */
-    int size();
+    @NonNegative int size();
 
     /**
      * Gets the field type at the specified index.
