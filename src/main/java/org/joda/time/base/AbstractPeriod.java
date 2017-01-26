@@ -23,6 +23,8 @@ import org.joda.time.ReadablePeriod;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * AbstractPeriod provides the common behaviour for period classes.
  * <p>
@@ -52,7 +54,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * @return the number of fields supported
      * @since 2.0 (previously on BasePeriod)
      */
-    public int size() {
+    public @NonNegative int size() {
         return getPeriodType().size();
     }
 

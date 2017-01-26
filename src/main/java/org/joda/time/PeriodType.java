@@ -24,6 +24,8 @@ import java.util.Map;
 
 import org.joda.time.field.FieldUtils;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Controls a period implementation by specifying which duration fields are to be used.
  * <p>
@@ -613,7 +615,7 @@ public class PeriodType implements Serializable {
      * 
      * @return the number of fields
      */
-    public int size() {
+    public @NonNegative int size() {
         return iTypes.length;
     }
 

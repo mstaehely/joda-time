@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Defines a time period specified in terms of individual duration fields
  * such as years and days.
@@ -55,7 +57,7 @@ public interface ReadablePeriod {
      *
      * @return the number of fields supported
      */
-    int size();
+    @NonNegative int size();
 
     /**
      * Gets the field type at the specified index.
