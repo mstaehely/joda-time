@@ -43,7 +43,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      *
      * @return the number of fields supported
      */
-     @IndexFor("MonthDay.FIELD_TYPES") int size();
+     @NonNegative int size();
 
     /**
      * Gets the field type at the specified index.
@@ -52,7 +52,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DateTimeFieldType getFieldType(@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int index);
+    DateTimeFieldType getFieldType(@NonNegative int index);
 
     /**
      * Gets the field at the specified index.

@@ -75,7 +75,7 @@ public interface ReadablePeriod {
      * @return the value of the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    int getValue(int index);
+    int getValue(@NonNegative int index);
 
     /**
      * Gets the value of one of the fields.

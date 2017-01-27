@@ -429,7 +429,8 @@ public final class MonthDay
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DateTimeFieldType getFieldType(@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int index) {
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check FIELD_TYPES[index]
+    public DateTimeFieldType getFieldType(@NonNegative int index) {
         return FIELD_TYPES[index];
     }
 

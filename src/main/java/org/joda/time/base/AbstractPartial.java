@@ -78,7 +78,7 @@ public abstract class AbstractPartial
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DateTimeFieldType getFieldType(@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int index) {
+    public DateTimeFieldType getFieldType(@NonNegative int index) {
         return getField(index, getChronology()).getType();
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractPartial
      */
     public DateTimeFieldType[] getFieldTypes() {
         DateTimeFieldType[] result = new DateTimeFieldType[size()];
-        for (@IndexFor({"result", "MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < result.length; i++) {
+        for (int i = 0; i < result.length; i++) {
             result[i] = getFieldType(i);
         }
         return result;
@@ -171,7 +171,7 @@ public abstract class AbstractPartial
      */
     public @GTENegativeOne int indexOf(DateTimeFieldType type) {
         int isize = size();
-        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
+        for (int i = 0; i < isize; i++) {
             if (getFieldType(i) == type) {
                 return i;
             }

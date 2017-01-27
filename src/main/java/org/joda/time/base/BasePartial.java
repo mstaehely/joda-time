@@ -27,6 +27,8 @@ import org.joda.time.convert.PartialConverter;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * BasePartial is an abstract implementation of ReadablePartial that stores
  * data in array and <code>Chronology</code> fields.
@@ -221,7 +223,8 @@ public abstract class BasePartial
      * @return the value
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public int getValue(int index) {
+    @SuppressWarnings("index:array.access.unsafe.high") // cant check iValues[index]
+    public int getValue(@NonNegative int index) {
         return iValues[index];
     }
 
@@ -261,7 +264,7 @@ public abstract class BasePartial
      * @param value  the value to set
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    protected void setValue(int index, int value) {
+    protected void setValue(@NonNegative int index, int value) {
         DateTimeField field = getField(index);
         int[] values = field.set(this, index, iValues, value);
         System.arraycopy(values, 0, iValues, 0, iValues.length);

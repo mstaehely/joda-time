@@ -33,6 +33,8 @@ import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PeriodConverter;
 import org.joda.time.field.FieldUtils;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * BasePeriod is an abstract implementation of ReadablePeriod that stores
  * data in a <code>PeriodType</code> and an <code>int[]</code>.
@@ -325,7 +327,8 @@ public abstract class BasePeriod
      * @return the value of the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public int getValue(int index) {
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check iValues[index]
+    public int getValue(@NonNegative int index) {
         return iValues[index];
     }
 
@@ -386,6 +389,7 @@ public abstract class BasePeriod
      * @param values  the array to update
      * @param newValue  the new value to store if successful
      */
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check values[index]
     private void checkAndUpdate(DurationFieldType type, int[] values, int newValue) {
         int index = indexOf(type);
         if (index == -1) {
@@ -482,6 +486,7 @@ public abstract class BasePeriod
      * @param value  the value to set
      * @throws IllegalArgumentException if field is null or not supported.
      */
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check values[index]
     protected void setFieldInto(int[] values, DurationFieldType field, int value) {
         int index = indexOf(field);
         if (index == -1) {
@@ -513,6 +518,7 @@ public abstract class BasePeriod
      * @param value  the value to set
      * @throws IllegalArgumentException if field is is null or not supported.
      */
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check values[index]
     protected void addFieldInto(int[] values, DurationFieldType field, int value) {
         int index = indexOf(field);
         if (index == -1) {
@@ -574,6 +580,7 @@ public abstract class BasePeriod
      * @return the updated values
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check values[index]
     protected int[] addPeriodInto(int[] values, ReadablePeriod period) {
         for (int i = 0, isize = period.size(); i < isize; i++) {
             DurationFieldType type = period.getFieldType(i);
@@ -599,7 +606,8 @@ public abstract class BasePeriod
      * @param value  the value to set
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    protected void setValue(int index, int value) {
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check iValues[index]
+    protected void setValue(@NonNegative int index, int value) {
         iValues[index] = value;
     }
 

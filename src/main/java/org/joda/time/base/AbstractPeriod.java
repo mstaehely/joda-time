@@ -66,7 +66,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * @throws IndexOutOfBoundsException if the index is invalid
      * @since 2.0 (previously on BasePeriod)
      */
-    public DurationFieldType getFieldType(int index) {
+    public DurationFieldType getFieldType(@NonNegative int index) {
         return getPeriodType().getFieldType(index);
     }
 
@@ -135,7 +135,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * @param type  the type to check, may be null which returns -1
      * @return the index of -1 if not supported
      */
-    public int indexOf(DurationFieldType type) {
+    public @GTENegativeOne int indexOf(DurationFieldType type) {
         return getPeriodType().indexOf(type);
     }
 

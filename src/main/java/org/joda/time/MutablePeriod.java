@@ -23,6 +23,8 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Standard mutable time period implementation.
  * <p>
@@ -441,7 +443,7 @@ public class MutablePeriod
      * @param value  the new value for the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public void setValue(int index, int value) {
+    public void setValue(@NonNegative int index, int value) {
         super.setValue(index, value);
     }
 

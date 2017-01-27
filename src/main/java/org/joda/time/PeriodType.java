@@ -626,7 +626,8 @@ public class PeriodType implements Serializable {
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DurationFieldType getFieldType(@IndexFor("iTypes") int index) {
+    @SuppressWarnings("index:array.access.unsafe.high") // cant check iTypes[index]
+    public DurationFieldType getFieldType(@NonNegative int index) {
         return iTypes[index];
     }
 
@@ -646,7 +647,7 @@ public class PeriodType implements Serializable {
      * @param type  the type to check, may be null which returns -1
      * @return the index of -1 if not supported
      */
-    public int indexOf(DurationFieldType type) {
+    public @GTENegativeOne int indexOf(DurationFieldType type) {
         int isize = size();
         for (@IndexFor("iTypes") int i = 0; i < isize; i++) {
             if (iTypes[i] == type) {
