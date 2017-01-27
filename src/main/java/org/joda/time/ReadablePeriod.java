@@ -66,7 +66,7 @@ public interface ReadablePeriod {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DurationFieldType getFieldType(int index);
+    DurationFieldType getFieldType(@NonNegative int index);
 
     /**
      * Gets the value at the specified index.

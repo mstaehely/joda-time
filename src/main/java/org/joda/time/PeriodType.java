@@ -57,14 +57,14 @@ public class PeriodType implements Serializable {
     /** Cache of all the known types. */
     private static final Map<PeriodType, Object> cTypes = new HashMap<PeriodType, Object>(32);
 
-    static int YEAR_INDEX = 0;
-    static int MONTH_INDEX = 1;
-    static int WEEK_INDEX = 2;
-    static int DAY_INDEX = 3;
-    static int HOUR_INDEX = 4;
-    static int MINUTE_INDEX = 5;
-    static int SECOND_INDEX = 6;
-    static int MILLI_INDEX = 7;
+    static @NonNegative int YEAR_INDEX = 0;
+    static @NonNegative int MONTH_INDEX = 1;
+    static @NonNegative int WEEK_INDEX = 2;
+    static @NonNegative int DAY_INDEX = 3;
+    static @NonNegative int HOUR_INDEX = 4;
+    static @NonNegative int MINUTE_INDEX = 5;
+    static @NonNegative int SECOND_INDEX = 6;
+    static @NonNegative int MILLI_INDEX = 7;
     
     private static PeriodType cStandard;
     private static PeriodType cYMDTime;
@@ -584,7 +584,7 @@ public class PeriodType implements Serializable {
     /** The array of types */
     private final DurationFieldType[] iTypes;
     /** The array of indices */
-    private final int[] iIndices;
+    private final @GTENegativeOne int[] iIndices;
 
     /**
      * Constructor.
@@ -593,7 +593,7 @@ public class PeriodType implements Serializable {
      * @param types  the types
      * @param indices  the indices
      */
-    protected PeriodType(String name, DurationFieldType[] types, int[] indices) {
+    protected PeriodType(String name, DurationFieldType[] types, @GTENegativeOne int[] indices) {
         super();
         iName = name;
         iTypes = types;
@@ -626,7 +626,7 @@ public class PeriodType implements Serializable {
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DurationFieldType getFieldType(int index) {
+    public DurationFieldType getFieldType(@IndexFor("iTypes") int index) {
         return iTypes[index];
     }
 
@@ -647,7 +647,8 @@ public class PeriodType implements Serializable {
      * @return the index of -1 if not supported
      */
     public int indexOf(DurationFieldType type) {
-        for (int i = 0, isize = size(); i < isize; i++) {
+        int isize = size();
+        for (@IndexFor("iTypes") int i = 0; i < isize; i++) {
             if (iTypes[i] == type) {
                 return i;
             }
@@ -672,7 +673,7 @@ public class PeriodType implements Serializable {
      * @param index  the index to use
      * @return the value of the field, zero if unsupported
      */
-    int getIndexedField(ReadablePeriod period, int index) {
+    int getIndexedField(ReadablePeriod period, @IndexFor("iIndices") int index) {
         int realIndex = iIndices[index];
         return (realIndex == -1 ? 0 : period.getValue(realIndex));
     }
@@ -686,7 +687,12 @@ public class PeriodType implements Serializable {
      * @param newValue  the value to set
      * @throws UnsupportedOperationException if not supported
      */
-    boolean setIndexedField(ReadablePeriod period, int index, int[] values, int newValue) {
+     
+    // Warning suppressed because of the realIndex = iIndices[index]
+     // assignment. As -1 is a valid stored value in iIndices, there is
+     // no guarantee that a -1 will not be passed to realIndex.
+     @SuppressWarnings("index")   
+     boolean setIndexedField(ReadablePeriod period, int index, int[] values, int newValue) {
         int realIndex = iIndices[index];
         if (realIndex == -1) {
             throw new UnsupportedOperationException("Field is not supported");
@@ -705,6 +711,11 @@ public class PeriodType implements Serializable {
      * @return true if the array is updated
      * @throws UnsupportedOperationException if not supported
      */
+
+    // Warning suppressed because of the realIndex = iIndices[index]
+    // assignment. As -1 is a valid stored value in iIndices, there is
+    // no guarantee that a -1 will not be passed to realIndex.
+    @SuppressWarnings("index")
     boolean addIndexedField(ReadablePeriod period, int index, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return false;
@@ -797,6 +808,13 @@ public class PeriodType implements Serializable {
      * @param name  the name addition
      * @return the new type
      */
+
+    // Suppressing for the first for loop. For loop shifts all elements
+    // after the removed one to the left by one. If the value of the
+    // field to be removed is -1, then this PeriodType does not
+    // support that field. Because this method is private and directly
+    // accessed it cannt be out of bounds.
+    @SuppressWarnings("index") 
     private PeriodType withFieldRemoved(int indicesIndex, String name) {
         int fieldIndex = iIndices[indicesIndex];
         if (fieldIndex == -1) {
@@ -813,7 +831,7 @@ public class PeriodType implements Serializable {
         }
         
         int[] indices = new int[8];
-        for (int i = 0; i < indices.length; i++) {
+        for (@LTLengthOf({"indices", "iIndices"}) int i = 0; i < indices.length; i++) {
             if (i < indicesIndex) {
                 indices[i] = iIndices[i];
             } else if (i > indicesIndex) {

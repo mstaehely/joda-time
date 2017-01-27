@@ -39,6 +39,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
+
 /**
  * LocalDate is an immutable datetime class representing a date
  * without a time zone.
@@ -203,6 +206,10 @@ public final class LocalDate
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
+
+    // Calendar class does not offer a strong enough guarantee for their
+    // .get() method.
+    @SuppressWarnings("index")
     public static LocalDate fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
@@ -381,6 +388,13 @@ public final class LocalDate
      * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
+
+    // getPartialValues is an array factory which returns an array of
+    // length equal to the return value of the size() method provided 
+    // by this class. In this case, size is 3 and the array has 3
+    // indices, directly accessed.
+
+    @SuppressWarnings("index")
     public LocalDate(Object instant, DateTimeZone zone) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
@@ -411,6 +425,12 @@ public final class LocalDate
      * @param chronology  the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
+
+    // getPartialValues is an array factory which returns an array of
+    // length equal to the return value of the size() method provided 
+    // by this class. In this case, size is 3 and the array has 3
+    // indices, directly accessed.
+    @SuppressWarnings("index")
     public LocalDate(Object instant, Chronology chronology) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         chronology = converter.getChronology(instant, chronology);
@@ -482,6 +502,7 @@ public final class LocalDate
      *
      * @return the field count, three
      */
+    @SuppressWarnings("index") // Size is immutable, and guaranteed 3.
     public int size() {
         return 3;
     }

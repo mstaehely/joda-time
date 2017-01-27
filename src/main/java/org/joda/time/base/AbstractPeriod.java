@@ -79,7 +79,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      */
     public DurationFieldType[] getFieldTypes() {
         DurationFieldType[] result = new DurationFieldType[size()];
-        for (int i = 0; i < result.length; i++) {
+        for (@LTLengthOf("result") int i = 0; i < result.length; i++) {
             result[i] = getFieldType(i);
         }
         return result;
