@@ -17,8 +17,6 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.checkerframework.dataflow.qual.*;
-
 /**
  * Identifies a field, such as year or minuteOfHour, in a chronology-neutral way.
  * <p>
@@ -376,7 +374,7 @@ public abstract class DateTimeFieldType implements Serializable {
      * 
      * @return field name
      */
-    @Pure public String getName() {
+    public String getName() {
         return iName;
     }
 

@@ -31,7 +31,6 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 
 import org.checkerframework.checker.index.qual.*;
-import org.checkerframework.dataflow.qual.*;
 
 /**
  * BaseSingleFieldPeriod is an abstract implementation of ReadablePeriod that
@@ -171,7 +170,7 @@ public abstract class BaseSingleFieldPeriod
      *
      * @return the period value
      */
-    @Pure protected int getValue() {
+    protected int getValue() {
         return iPeriod;
     }
 
@@ -191,14 +190,14 @@ public abstract class BaseSingleFieldPeriod
      *
      * @return the duration field type, not null
      */
-    @Pure public abstract DurationFieldType getFieldType();
+    public abstract DurationFieldType getFieldType();
 
     /**
      * Gets the period type which matches the duration field type.
      *
      * @return the period type, not null
      */
-    @Pure public abstract PeriodType getPeriodType();
+    public abstract PeriodType getPeriodType();
 
     //-----------------------------------------------------------------------
     /**
@@ -206,7 +205,7 @@ public abstract class BaseSingleFieldPeriod
      *
      * @return the number of fields supported, which is one
      */
-    @Pure public @Positive int size() {
+    public @Positive int size() {
         return 1;
     }
 
@@ -252,7 +251,7 @@ public abstract class BaseSingleFieldPeriod
      * @param type  the field type to query, null returns zero
      * @return the value of that field, zero if field not supported
      */
-    @Pure public int get(DurationFieldType type) {
+    public int get(DurationFieldType type) {
         if (type == getFieldType()) {
             return getValue();
         }

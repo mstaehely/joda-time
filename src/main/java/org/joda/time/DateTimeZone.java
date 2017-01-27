@@ -43,8 +43,6 @@ import org.joda.time.tz.Provider;
 import org.joda.time.tz.UTCProvider;
 import org.joda.time.tz.ZoneInfoProvider;
 
-import org.checkerframework.dataflow.qual.*;
-
 /**
  * DateTimeZone represents a time zone.
  * <p>
@@ -701,7 +699,7 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @return the ID of this datetime zone
      */
-    @Pure @ToString
+    @ToString
     public final String getID() {
         return iID;
     }

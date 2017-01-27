@@ -15,8 +15,6 @@
  */
 package org.joda.time;
 
-import org.checkerframework.checker.index.qual.*;
-
 
 /**
  * Chronology provides access to the individual date time fields for a
@@ -164,7 +162,7 @@ public abstract class Chronology {
      * @param values  the values to validate, not null, match fields in partial
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public abstract void validate(ReadablePartial partial, int @SameLen("#1.typeCheckSizeArray()") [] values);
+    public abstract void validate(ReadablePartial partial, int[] values);
 
     /**
      * Gets the values of a partial from an instant.

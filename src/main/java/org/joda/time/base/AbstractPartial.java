@@ -133,7 +133,7 @@ public abstract class AbstractPartial
      */
     public int[] getValues() {
         int[] result = new int[size()];
-        for (@LTLengthOf("typeCheckSizeArray()") int i = 0; i < result.length; i++) {
+        for (int i = 0; i < result.length; i++) {
             result[i] = getValue(i);
         }
         return result;
@@ -169,7 +169,7 @@ public abstract class AbstractPartial
      * @param type  the type to check, may be null which returns -1
      * @return the index of the field, -1 if unsupported
      */
-    public @IndexOrLow("typeCheckSizeArray()") int indexOf(DateTimeFieldType type) {
+    public @GTENegativeOne int indexOf(DateTimeFieldType type) {
         int isize = size();
         for (int i = 0; i < isize; i++) {
             if (getFieldType(i) == type) {
@@ -187,8 +187,7 @@ public abstract class AbstractPartial
      * @return the index of the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    protected @IndexFor("typeCheckSizeArray()") int
-    indexOfSupported(DateTimeFieldType type) {
+    protected @NonNegative int indexOfSupported(DateTimeFieldType type) {
         int index = indexOf(type);
         if (index == -1) {
             throw new IllegalArgumentException("Field '" + type + "' is not supported");
@@ -269,8 +268,7 @@ public abstract class AbstractPartial
             return false;
         }
         int isize = size();
-        for (@IndexFor({"this.typeCheckSizeArray()", "other.typeCheckSizeArray()"})
-             int i = 0; i < isize; i++) {
+        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
             if (getValue(i) != other.getValue(i) || getFieldType(i) != other.getFieldType(i)) {
                 return false;
             }
@@ -287,7 +285,7 @@ public abstract class AbstractPartial
     public int hashCode() {
         int total = 157;
         int isize = size();
-        for (int i = 0; i < isize; i++) {
+        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
             total = 23 * total + getValue(i);
             total = 23 * total + getFieldType(i).hashCode();
         }
@@ -331,8 +329,7 @@ public abstract class AbstractPartial
         }
         // fields are ordered largest first
         isize = size();
-        for (@LTLengthOf({"this.typeCheckSizeArray()", "other.typeCheckSizeArray()"})
-             int i = 0; i < isize; i++) {
+        for (int i = 0; i < isize; i++) {
             if (getValue(i) > other.getValue(i)) {
                 return 1;
             }
