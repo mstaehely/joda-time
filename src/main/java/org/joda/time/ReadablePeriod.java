@@ -16,6 +16,7 @@
 package org.joda.time;
 
 import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.dataflow.qual.*;
 
 /**
  * Defines a time period specified in terms of individual duration fields
@@ -50,14 +51,14 @@ public interface ReadablePeriod {
      *
      * @return the period type
      */
-    PeriodType getPeriodType();
+    @Pure PeriodType getPeriodType();
 
     /**
      * Gets the number of fields that this period supports.
      *
      * @return the number of fields supported
      */
-    @NonNegative int size();
+    @Pure @NonNegative int size();
 
     /**
      * Gets the field type at the specified index.
@@ -66,7 +67,7 @@ public interface ReadablePeriod {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DurationFieldType getFieldType(@NonNegative int index);
+    @Pure DurationFieldType getFieldType(@NonNegative int index);
 
     /**
      * Gets the value at the specified index.
@@ -75,7 +76,7 @@ public interface ReadablePeriod {
      * @return the value of the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    int getValue(@NonNegative int index);
+    @Pure int getValue(@NonNegative int index);
 
     /**
      * Gets the value of one of the fields.
@@ -86,7 +87,7 @@ public interface ReadablePeriod {
      * @param field  the field type to query, null returns zero
      * @return the value of that field, zero if field not supported
      */
-    int get(DurationFieldType field);
+    @Pure int get(DurationFieldType field);
 
     /**
      * Checks whether the field type specified is supported by this period.
@@ -94,7 +95,7 @@ public interface ReadablePeriod {
      * @param field  the field to check, may be null which returns false
      * @return true if the field is supported
      */
-    boolean isSupported(DurationFieldType field);
+    @Pure boolean isSupported(DurationFieldType field);
 
     //-----------------------------------------------------------------------
     /**

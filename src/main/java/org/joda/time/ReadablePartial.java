@@ -16,6 +16,8 @@
 package org.joda.time;
 
 import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.dataflow.qual.*;
+
 /**
  * Defines a partial time that does not support every datetime field, and is
  * thus a local time.
@@ -43,7 +45,16 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      *
      * @return the number of fields supported
      */
-     @NonNegative int size();
+    @Pure @IndexOrHigh("typeCheckSizeArray()") int size();
+
+    /**
+     * A terrible hack for Index type checking DO NOT USE.
+     *
+     * @deprecated Used only for type checking.
+     *
+     * @return an array of length size()
+     */
+    @Deprecated @Pure int [] typeCheckSizeArray();
 
     /**
      * Gets the field type at the specified index.
@@ -52,7 +63,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DateTimeFieldType getFieldType(@NonNegative int index);
+    @Pure DateTimeFieldType getFieldType(@NonNegative int index);
 
     /**
      * Gets the field at the specified index.
@@ -61,7 +72,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DateTimeField getField(@NonNegative int index);
+    @Pure DateTimeField getField(@NonNegative int index);
 
     /**
      * Gets the value at the specified index.
@@ -70,7 +81,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the value of the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-     int getValue(@NonNegative int index);
+    @Pure int getValue(@IndexFor("typeCheckSizeArray()") int index);
 
     /**
      * Gets the chronology of the partial which is never null.
@@ -80,7 +91,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * 
      * @return the chronology, never null
      */
-    Chronology getChronology();
+    @Pure Chronology getChronology();
 
     /**
      * Gets the value of one of the fields.
@@ -91,7 +102,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the value of that field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-     int get(DateTimeFieldType field);
+    @Pure int get(DateTimeFieldType field);
 
     /**
      * Checks whether the field type specified is supported by this partial.
@@ -99,7 +110,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @param field  the field to check, may be null which returns false
      * @return true if the field is supported
      */
-    boolean isSupported(DateTimeFieldType field);
+    @Pure boolean isSupported(DateTimeFieldType field);
 
     /**
      * Converts this partial to a full datetime by resolving it against another

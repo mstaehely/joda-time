@@ -17,6 +17,8 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.checkerframework.dataflow.qual.*;
+
 /**
  * Identifies a duration field, such as years or minutes, in a chronology-neutral way.
  * <p>
@@ -212,7 +214,7 @@ public abstract class DurationFieldType implements Serializable {
      * 
      * @return field name
      */
-    public String getName() {
+    @Pure public String getName() {
         return iName;
     }
 

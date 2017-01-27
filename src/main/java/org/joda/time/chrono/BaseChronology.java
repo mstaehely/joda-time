@@ -30,6 +30,9 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.dataflow.qual.*;
+
 /**
  * BaseChronology provides a skeleton implementation for chronology
  * classes. Many utility methods are defined, but all fields are unsupported.
@@ -177,11 +180,12 @@ public abstract class BaseChronology
      * @param values  the values to validate, not null unless the partial is empty
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public void validate(ReadablePartial partial, int[] values) {
+    public void validate(ReadablePartial partial,
+                         int @SameLen("#1.typeCheckSizeArray()") [] values) {
         // check values in standard range, catching really stupid cases like -1
         // this means that the second check will not hit trouble
         int size = partial.size();
-        for (int i = 0; i < size; i++) {
+        for (@IndexFor("values") int i = 0; i < size; i++) {
             int value = values[i];
             DateTimeField field = partial.getField(i);
             if (value < field.getMinimumValue()) {
@@ -219,9 +223,12 @@ public abstract class BaseChronology
      * @param instant  the instant to query
      * @return the values of the partial extracted from the instant
      */
-    public int[] get(ReadablePartial partial, long instant) {
+    public int @SameLen("#1.typeCheckSizeArray()") []
+    get(ReadablePartial partial, long instant) {
         int size = partial.size();
-        int[] values = new int[size];
+        // We know size == length, but can only express that size <= length
+        @SuppressWarnings("index:assignment.type.incompatible")
+        int @SameLen("partial.typeCheckSizeArray()") [] values = new int[size];
         for (int i = 0; i < size; i++) {
             values[i] = partial.getFieldType(i).getField(this).get(instant);
         }

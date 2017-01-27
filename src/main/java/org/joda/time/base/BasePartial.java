@@ -52,7 +52,7 @@ public abstract class BasePartial
     /** The chronology in use */
     private final Chronology iChronology;
     /** The values of each field in this partial */
-    private final int[] iValues;
+    private final int @SameLen("typeCheckSizeArray()") [] iValues;
 
     //-----------------------------------------------------------------------
     /**
@@ -178,7 +178,8 @@ public abstract class BasePartial
      * @param chronology  the chronology, null means ISOChronology in the default zone
      * @throws IllegalArgumentException if the values are invalid
      */
-    protected BasePartial(int[] values, Chronology chronology) {
+    protected BasePartial(int @SameLen("typeCheckSizeArray()") [] values,
+                          Chronology chronology) {
         super();
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
@@ -194,7 +195,7 @@ public abstract class BasePartial
      * @param base  the base partial
      * @param values  the new set of values, not cloned, null means use base
      */
-    protected BasePartial(BasePartial base, int[] values) {
+    protected BasePartial(BasePartial base, int @SameLen("typeCheckSizeArray()") [] values) {
         super();
         iChronology = base.iChronology;
         iValues = values;
