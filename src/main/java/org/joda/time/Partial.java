@@ -331,8 +331,6 @@ public final class Partial
      * 
      * @return the field count
      */
-    @SuppressWarnings("index") // The only guarantee that can be made is
-                              // that size >= 0.
     public @NonNegative int size() {
         return iTypes.length;
     }
@@ -357,7 +355,7 @@ public final class Partial
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index") // Cannot guarantee size of iTypes
+    @SuppressWarnings("index:array.access.unsafe.high") // Cannot guarantee size of iTypes
     protected DateTimeField getField(@NonNegative int index, Chronology chrono) {
         return iTypes[index].getField(chrono);
     }
@@ -369,7 +367,7 @@ public final class Partial
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index") // Cannot guarantee size of iTypes
+    @SuppressWarnings("index:array.access.unsafe.high") // Cannot guarantee size of iTypes
     public DateTimeFieldType getFieldType(@NonNegative int index) {
         return iTypes[index];
     }
@@ -394,7 +392,7 @@ public final class Partial
      * @return the value
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index") // Cannot guarantee size of iValues
+    @SuppressWarnings("index:array.access.unsafe.high") // Cannot guarantee size of iValues
     public int getValue(@NonNegative int index) {
         return iValues[index];
     }

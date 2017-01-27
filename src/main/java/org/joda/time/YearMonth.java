@@ -389,8 +389,7 @@ public final class YearMonth
      *
      * @return the field count, two
      */
-    @SuppressWarnings("index") // Size is immutable, and guaranteed 2.
-    public int size() {
+    public @Positive int size() {
         return 2;
     }
 

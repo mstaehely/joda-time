@@ -397,8 +397,7 @@ public final class MonthDay
      *
      * @return the field count, two
      */
-    @SuppressWarnings("index") // Constant integer value
-    public int size() {
+    public @Positive int size() {
         return 2;
     }
 

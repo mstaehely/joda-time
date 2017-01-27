@@ -674,7 +674,8 @@ public class PeriodType implements Serializable {
      * @param index  the index to use
      * @return the value of the field, zero if unsupported
      */
-    int getIndexedField(ReadablePeriod period, @IndexFor("iIndices") int index) {
+    @SuppressWarnings("index:array.access.unsafe.high") // cant check iIndices
+    int getIndexedField(ReadablePeriod period, @NonNegative int index) {
         int realIndex = iIndices[index];
         return (realIndex == -1 ? 0 : period.getValue(realIndex));
     }
@@ -688,12 +689,9 @@ public class PeriodType implements Serializable {
      * @param newValue  the value to set
      * @throws UnsupportedOperationException if not supported
      */
-     
-    // Warning suppressed because of the realIndex = iIndices[index]
-     // assignment. As -1 is a valid stored value in iIndices, there is
-     // no guarantee that a -1 will not be passed to realIndex.
-     @SuppressWarnings("index")   
-     boolean setIndexedField(ReadablePeriod period, int index, int[] values, int newValue) {
+    // Can't check iIndices[index] or values[realIndex]
+    @SuppressWarnings("index:array.access.unsafe.high")
+    boolean setIndexedField(ReadablePeriod period, @NonNegative int index, int[] values, int newValue) {
         int realIndex = iIndices[index];
         if (realIndex == -1) {
             throw new UnsupportedOperationException("Field is not supported");
@@ -713,11 +711,9 @@ public class PeriodType implements Serializable {
      * @throws UnsupportedOperationException if not supported
      */
 
-    // Warning suppressed because of the realIndex = iIndices[index]
-    // assignment. As -1 is a valid stored value in iIndices, there is
-    // no guarantee that a -1 will not be passed to realIndex.
-    @SuppressWarnings("index")
-    boolean addIndexedField(ReadablePeriod period, int index, int[] values, int valueToAdd) {
+    // Can't check iIndices[index] or values[realIndex]
+    @SuppressWarnings("index:array.access.unsafe.high")
+    boolean addIndexedField(ReadablePeriod period, @NonNegative int index, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return false;
         }

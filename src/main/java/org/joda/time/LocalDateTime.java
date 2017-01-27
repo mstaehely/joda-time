@@ -552,8 +552,7 @@ public final class LocalDateTime
      *
      * @return the field count, four
      */
-    @SuppressWarnings("index") // Constant value, guaranteed to be 4
-    public int size() {
+    public @Positive int size() {
         return 4;
     }
 

@@ -757,9 +757,6 @@ public final class Period
      * @return the number of years in the period, zero if unsupported
      */
 
-    // YEAR_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-    @SuppressWarnings("index")
     public int getYears() {
         return getPeriodType().getIndexedField(this, PeriodType.YEAR_INDEX);
     }
@@ -770,9 +767,6 @@ public final class Period
      * @return the number of months in the period, zero if unsupported
      */
   
-    // MONTH_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-    @SuppressWarnings("index")
     public int getMonths() {
         return getPeriodType().getIndexedField(this, PeriodType.MONTH_INDEX);
     }
@@ -783,9 +777,6 @@ public final class Period
      * @return the number of weeks in the period, zero if unsupported
      */
 
-    // WEEK_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-    @SuppressWarnings("index")
     public int getWeeks() {
         return getPeriodType().getIndexedField(this, PeriodType.WEEK_INDEX);
     }
@@ -796,9 +787,6 @@ public final class Period
      * @return the number of days in the period, zero if unsupported
      */
 
-    // DAY_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-    @SuppressWarnings("index")
     public int getDays() {
         return getPeriodType().getIndexedField(this, PeriodType.DAY_INDEX);
     }
@@ -810,9 +798,6 @@ public final class Period
      * @return the number of hours in the period, zero if unsupported
      */
     
-    // HOUR_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-    @SuppressWarnings("index")
     public int getHours() {
         return getPeriodType().getIndexedField(this, PeriodType.HOUR_INDEX);
     }
@@ -823,10 +808,7 @@ public final class Period
      * @return the number of minutes in the period, zero if unsupported
      */
     
-    // MINUTE_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-     @SuppressWarnings("index")
-     public int getMinutes() {
+    public int getMinutes() {
         return getPeriodType().getIndexedField(this, PeriodType.MINUTE_INDEX);
     }
 
@@ -836,10 +818,7 @@ public final class Period
      * @return the number of seconds in the period, zero if unsupported
      */
 
-    // SECOND_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-     @SuppressWarnings("index")
-     public int getSeconds() {
+    public int getSeconds() {
         return getPeriodType().getIndexedField(this, PeriodType.SECOND_INDEX);
     }
 
@@ -849,9 +828,6 @@ public final class Period
      * @return the number of millis in the period, zero if unsupported
      */
 
-    // MILLI_INDEX is a constant value in PeriodType and guaranteed to not
-    // be out of bounds.
-    @SuppressWarnings("index")
     public int getMillis() {
         return getPeriodType().getIndexedField(this, PeriodType.MILLI_INDEX);
     }
