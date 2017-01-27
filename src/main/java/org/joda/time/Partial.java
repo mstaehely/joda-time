@@ -28,6 +28,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
 /**
  * Partial is an immutable partial datetime supporting any set of datetime fields.
  * <p>
@@ -75,11 +76,11 @@ public final class Partial
     /** The chronology in use. */
     private final Chronology iChronology;
     /** The set of field types. */
-    private final DateTimeFieldType[] iTypes;
+    private final DateTimeFieldType @MinLen(0) [] iTypes;
     /** The values of each field in this partial. */
-    private final int[] iValues;
+    private final int @MinLen(0) [] iValues;
     /** The formatter to use, [0] may miss some fields, [1] doesn't miss any fields. */
-    private transient DateTimeFormatter[] iFormatter;
+    private transient DateTimeFormatter @MinLen(2) [] iFormatter;
 
     // Constructors
     //-----------------------------------------------------------------------
@@ -287,7 +288,7 @@ public final class Partial
         iChronology = DateTimeUtils.getChronology(partial.getChronology()).withUTC();
         iTypes = new DateTimeFieldType[partial.size()];
         iValues = new int[partial.size()];
-        for (int i = 0; i < partial.size(); i++) {
+        for (@LTLengthOf({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES", "this.iTypes", "this.iValues"}) int i = 0; i < partial.size(); i++) {
             iTypes[i] = partial.getFieldType(i);
             iValues[i] = partial.getValue(i);
         }
@@ -330,7 +331,9 @@ public final class Partial
      * 
      * @return the field count
      */
-    public int size() {
+    @SuppressWarnings("index") // The only guarantee that can be made is
+                              // that size >= 0.
+    public @NonNegative int size() {
         return iTypes.length;
     }
 
@@ -354,7 +357,8 @@ public final class Partial
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    protected DateTimeField getField(int index, Chronology chrono) {
+    @SuppressWarnings("index") // Cannot guarantee size of iTypes
+    protected DateTimeField getField(@NonNegative int index, Chronology chrono) {
         return iTypes[index].getField(chrono);
     }
 
@@ -365,7 +369,8 @@ public final class Partial
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DateTimeFieldType getFieldType(int index) {
+    @SuppressWarnings("index") // Cannot guarantee size of iTypes
+    public DateTimeFieldType getFieldType(@NonNegative int index) {
         return iTypes[index];
     }
 
@@ -389,7 +394,8 @@ public final class Partial
      * @return the value
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public int getValue(int index) {
+    @SuppressWarnings("index") // Cannot guarantee size of iValues
+    public int getValue(@NonNegative int index) {
         return iValues[index];
     }
 
@@ -448,6 +454,11 @@ public final class Partial
      * @return a copy of this instance with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
+    @SuppressWarnings("index")
+    // Because the existence of a field cannot be guaranteed, this is
+    // suppressed. If the indicated field does exist, then an array of
+    // the same length as this one's will be created. The loop will not
+    // exceed the arrays' lengths.
     public Partial with(DateTimeFieldType fieldType, int value) {
         if (fieldType == null) {
             throw new IllegalArgumentException("The field type must not be null");
@@ -512,6 +523,10 @@ public final class Partial
      * @param fieldType  the field type to remove, may be null
      * @return a copy of this instance with the field removed
      */
+    @SuppressWarnings("index")
+    // If the size of this Partial is 0, then the method will not work.
+    // Otherwise, size varies but cannot be guaranteed to be non-zero,
+    // and so cannot be annotated.
     public Partial without(DateTimeFieldType fieldType) {
         int index = indexOf(fieldType);
         if (index != -1) {
@@ -686,7 +701,7 @@ public final class Partial
     public boolean isMatch(ReadableInstant instant) {
         long millis = DateTimeUtils.getInstantMillis(instant);
         Chronology chrono = DateTimeUtils.getInstantChronology(instant);
-        for (int i = 0; i < iTypes.length; i++) {
+        for (@LTLengthOf({"this.iTypes", "this.iValues"}) int i = 0; i < iTypes.length; i++) {
             int value = iTypes[i].getField(chrono).get(millis);
             if (value != iValues[i]) {
                 return false;
@@ -711,7 +726,7 @@ public final class Partial
         if (partial == null) {
             throw new IllegalArgumentException("The partial must not be null");
         }
-        for (int i = 0; i < iTypes.length; i++) {
+        for (@LTLengthOf({"this.iTypes", "this.iValues"}) int i = 0; i < iTypes.length; i++) {
             int value = partial.get(iTypes[i]);
             if (value != iValues[i]) {
                 return false;
@@ -794,7 +809,7 @@ public final class Partial
         int size = size();
         StringBuilder buf = new StringBuilder(20 * size);
         buf.append('[');
-        for (int i = 0; i < size; i++) {
+        for (@LTLengthOf({"this.iValues", "this.iTypes"}) int i = 0; i < size; i++) {
             if (i > 0) {
                 buf.append(',').append(' ');
             }
@@ -852,7 +867,7 @@ public final class Partial
         /** The partial */
         private final Partial iPartial;
         /** The field index */
-        private final int iFieldIndex;
+        private final @NonNegative int iFieldIndex;
 
         /**
          * Constructs a property.
@@ -860,7 +875,7 @@ public final class Partial
          * @param partial  the partial instance
          * @param fieldIndex  the index in the partial
          */
-        Property(Partial partial, int fieldIndex) {
+        Property(Partial partial, @NonNegative int fieldIndex) {
             super();
             iPartial = partial;
             iFieldIndex = fieldIndex;

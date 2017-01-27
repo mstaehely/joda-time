@@ -33,6 +33,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * MonthDay is an immutable partial supporting the monthOfYear and dayOfMonth fields.
  * <p>
@@ -178,6 +180,10 @@ public final class MonthDay
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
      */
+    
+    // Calendar class does not offer a strong enough guarantee for their
+    // .get() method.
+    @SuppressWarnings("index")
     public static MonthDay fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
@@ -391,6 +397,7 @@ public final class MonthDay
      *
      * @return the field count, two
      */
+    @SuppressWarnings("index") // Constant integer value
     public int size() {
         return 2;
     }
@@ -404,7 +411,7 @@ public final class MonthDay
      * @param chrono  the chronology to use
      * @return the field, never null
      */
-    protected DateTimeField getField(int index, Chronology chrono) {
+    protected DateTimeField getField(@NonNegative int index, Chronology chrono) {
         switch (index) {
         case MONTH_OF_YEAR:
             return chrono.monthOfYear();
@@ -422,7 +429,7 @@ public final class MonthDay
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DateTimeFieldType getFieldType(int index) {
+    public DateTimeFieldType getFieldType(@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int index) {
         return FIELD_TYPES[index];
     }
 
@@ -830,7 +837,7 @@ public final class MonthDay
         /** The partial */
         private final MonthDay iBase;
         /** The field index */
-        private final int iFieldIndex;
+        private final @NonNegative int iFieldIndex;
 
         /**
          * Constructs a property.
@@ -838,7 +845,7 @@ public final class MonthDay
          * @param partial  the partial instance
          * @param fieldIndex  the index in the partial
          */
-        Property(MonthDay partial, int fieldIndex) {
+        Property(MonthDay partial, @NonNegative int fieldIndex) {
             super();
             iBase = partial;
             iFieldIndex = fieldIndex;

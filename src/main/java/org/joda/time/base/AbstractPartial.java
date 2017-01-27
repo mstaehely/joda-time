@@ -26,6 +26,9 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 
+import org.joda.time.MonthDay;
+import org.joda.time.YearMonth;
+import org.checkerframework.checker.index.qual.*;
 /**
  * AbstractPartial provides a standard base implementation of most methods
  * in the ReadablePartial interface.
@@ -65,7 +68,7 @@ public abstract class AbstractPartial
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    protected abstract DateTimeField getField(int index, Chronology chrono);
+    protected abstract DateTimeField getField(@NonNegative int index, Chronology chrono);
 
     //-----------------------------------------------------------------------
     /**
@@ -75,7 +78,7 @@ public abstract class AbstractPartial
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DateTimeFieldType getFieldType(int index) {
+    public DateTimeFieldType getFieldType(@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int index) {
         return getField(index, getChronology()).getType();
     }
 
@@ -88,7 +91,7 @@ public abstract class AbstractPartial
      */
     public DateTimeFieldType[] getFieldTypes() {
         DateTimeFieldType[] result = new DateTimeFieldType[size()];
-        for (int i = 0; i < result.length; i++) {
+        for (@IndexFor({"result", "MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < result.length; i++) {
             result[i] = getFieldType(i);
         }
         return result;
@@ -101,7 +104,7 @@ public abstract class AbstractPartial
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DateTimeField getField(int index) {
+    public DateTimeField getField(@NonNegative int index) {
         return getField(index, getChronology());
     }
 
@@ -166,8 +169,9 @@ public abstract class AbstractPartial
      * @param type  the type to check, may be null which returns -1
      * @return the index of the field, -1 if unsupported
      */
-    public int indexOf(DateTimeFieldType type) {
-        for (int i = 0, isize = size(); i < isize; i++) {
+    public @GTENegativeOne int indexOf(DateTimeFieldType type) {
+        int isize = size();
+        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
             if (getFieldType(i) == type) {
                 return i;
             }
@@ -183,7 +187,7 @@ public abstract class AbstractPartial
      * @return the index of the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    protected int indexOfSupported(DateTimeFieldType type) {
+    protected @NonNegative int indexOfSupported(DateTimeFieldType type) {
         int index = indexOf(type);
         if (index == -1) {
             throw new IllegalArgumentException("Field '" + type + "' is not supported");
@@ -198,8 +202,9 @@ public abstract class AbstractPartial
      * @param type  the type to check, may be null which returns -1
      * @return the index of the field, -1 if unsupported
      */
-    protected int indexOf(DurationFieldType type) {
-        for (int i = 0, isize = size(); i < isize; i++) {
+    protected @GTENegativeOne int indexOf(DurationFieldType type) {
+        int isize = size();
+        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
             if (getFieldType(i).getDurationType() == type) {
                 return i;
             }
@@ -215,8 +220,8 @@ public abstract class AbstractPartial
      * @return the index of the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    protected int indexOfSupported(DurationFieldType type) {
-        int index = indexOf(type);
+    protected @NonNegative int indexOfSupported(DurationFieldType type) {
+         int index = indexOf(type);
         if (index == -1) {
             throw new IllegalArgumentException("Field '" + type + "' is not supported");
         }
@@ -262,7 +267,8 @@ public abstract class AbstractPartial
         if (size() != other.size()) {
             return false;
         }
-        for (int i = 0, isize = size(); i < isize; i++) {
+        int isize = size();
+        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
             if (getValue(i) != other.getValue(i) || getFieldType(i) != other.getFieldType(i)) {
                 return false;
             }
@@ -278,7 +284,8 @@ public abstract class AbstractPartial
      */
     public int hashCode() {
         int total = 157;
-        for (int i = 0, isize = size(); i < isize; i++) {
+        int isize = size();
+        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
             total = 23 * total + getValue(i);
             total = 23 * total + getFieldType(i).hashCode();
         }
@@ -314,13 +321,15 @@ public abstract class AbstractPartial
         if (size() != other.size()) {
             throw new ClassCastException("ReadablePartial objects must have matching field types");
         }
-        for (int i = 0, isize = size(); i < isize; i++) {
+        int isize = size();
+        for (@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int i = 0; i < isize; i++) {
             if (getFieldType(i) != other.getFieldType(i)) {
                 throw new ClassCastException("ReadablePartial objects must have matching field types");
             }
         }
         // fields are ordered largest first
-        for (int i = 0, isize = size(); i < isize; i++) {
+        isize = size();
+        for (int i = 0; i < isize; i++) {
             if (getValue(i) > other.getValue(i)) {
                 return 1;
             }

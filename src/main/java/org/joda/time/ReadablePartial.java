@@ -16,7 +16,6 @@
 package org.joda.time;
 
 import org.checkerframework.checker.index.qual.*;
-
 /**
  * Defines a partial time that does not support every datetime field, and is
  * thus a local time.
@@ -44,7 +43,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      *
      * @return the number of fields supported
      */
-    @NonNegative int size();
+     @IndexFor("MonthDay.FIELD_TYPES") int size();
 
     /**
      * Gets the field type at the specified index.
@@ -53,7 +52,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DateTimeFieldType getFieldType(int index);
+    DateTimeFieldType getFieldType(@IndexFor({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES"}) int index);
 
     /**
      * Gets the field at the specified index.
@@ -62,7 +61,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DateTimeField getField(int index);
+    DateTimeField getField(@NonNegative int index);
 
     /**
      * Gets the value at the specified index.
@@ -71,7 +70,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the value of the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    int getValue(int index);
+     int getValue(@NonNegative int index);
 
     /**
      * Gets the chronology of the partial which is never null.
@@ -92,7 +91,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the value of that field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    int get(DateTimeFieldType field);
+     int get(DateTimeFieldType field);
 
     /**
      * Checks whether the field type specified is supported by this partial.
