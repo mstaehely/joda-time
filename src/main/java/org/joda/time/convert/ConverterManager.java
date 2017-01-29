@@ -17,6 +17,8 @@ package org.joda.time.convert;
 
 import org.joda.time.JodaTimePermission;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * ConverterManager controls the date and time converters.
  * <p>
@@ -104,7 +106,7 @@ public final class ConverterManager {
     protected ConverterManager() {
         super();
 
-        iInstantConverters = new ConverterSet(new Converter[] {
+        iInstantConverters = new ConverterSet(new Converter @Positive [] {
             ReadableInstantConverter.INSTANCE,
             StringConverter.INSTANCE,
             CalendarConverter.INSTANCE,
@@ -113,7 +115,7 @@ public final class ConverterManager {
             NullConverter.INSTANCE,
         });
 
-        iPartialConverters = new ConverterSet(new Converter[] {
+        iPartialConverters = new ConverterSet(new Converter @Positive [] {
             ReadablePartialConverter.INSTANCE,
             ReadableInstantConverter.INSTANCE,
             StringConverter.INSTANCE,
@@ -123,7 +125,7 @@ public final class ConverterManager {
             NullConverter.INSTANCE,
         });
 
-        iDurationConverters = new ConverterSet(new Converter[] {
+        iDurationConverters = new ConverterSet(new Converter @Positive [] {
             ReadableDurationConverter.INSTANCE,
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
@@ -131,7 +133,7 @@ public final class ConverterManager {
             NullConverter.INSTANCE,
         });
 
-        iPeriodConverters = new ConverterSet(new Converter[] {
+        iPeriodConverters = new ConverterSet(new Converter @Positive [] {
             ReadableDurationConverter.INSTANCE,
             ReadablePeriodConverter.INSTANCE,
             ReadableIntervalConverter.INSTANCE,
@@ -139,7 +141,7 @@ public final class ConverterManager {
             NullConverter.INSTANCE,
         });
 
-        iIntervalConverters = new ConverterSet(new Converter[] {
+        iIntervalConverters = new ConverterSet(new Converter @Positive [] {
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
             NullConverter.INSTANCE,
@@ -172,9 +174,9 @@ public final class ConverterManager {
      * 
      * @return the converters, a copy of the real data, never null
      */
-    public InstantConverter[] getInstantConverters() {
+    public InstantConverter @Positive [] getInstantConverters() {
         ConverterSet set = iInstantConverters;
-        InstantConverter[] converters = new InstantConverter[set.size()];
+        InstantConverter @Positive [] converters = new InstantConverter @Positive [set.size()];
         set.copyInto(converters);
         return converters;
     }
@@ -197,7 +199,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        InstantConverter[] removed = new InstantConverter[1];
+        InstantConverter @Positive [] removed = new InstantConverter @Positive [1];
         iInstantConverters = iInstantConverters.add(converter, removed);
         return removed[0];
     }
@@ -216,7 +218,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        InstantConverter[] removed = new InstantConverter[1];
+        InstantConverter @Positive [] removed = new InstantConverter @Positive [1];
         iInstantConverters = iInstantConverters.remove(converter, removed);
         return removed[0];
     }
@@ -259,9 +261,9 @@ public final class ConverterManager {
      * 
      * @return the converters, a copy of the real data, never null
      */
-    public PartialConverter[] getPartialConverters() {
+    public PartialConverter @Positive [] getPartialConverters() {
         ConverterSet set = iPartialConverters;
-        PartialConverter[] converters = new PartialConverter[set.size()];
+        PartialConverter @Positive [] converters = new PartialConverter @Positive [set.size()];
         set.copyInto(converters);
         return converters;
     }
@@ -284,7 +286,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        PartialConverter[] removed = new PartialConverter[1];
+        PartialConverter @Positive [] removed = new PartialConverter @Positive [1];
         iPartialConverters = iPartialConverters.add(converter, removed);
         return removed[0];
     }
@@ -303,7 +305,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        PartialConverter[] removed = new PartialConverter[1];
+        PartialConverter @Positive [] removed = new PartialConverter @Positive [1];
         iPartialConverters = iPartialConverters.remove(converter, removed);
         return removed[0];
     }
@@ -346,9 +348,9 @@ public final class ConverterManager {
      * 
      * @return the converters, a copy of the real data, never null
      */
-    public DurationConverter[] getDurationConverters() {
+    public DurationConverter @Positive [] getDurationConverters() {
         ConverterSet set = iDurationConverters;
-        DurationConverter[] converters = new DurationConverter[set.size()];
+        DurationConverter @Positive [] converters = new DurationConverter @Positive [set.size()];
         set.copyInto(converters);
         return converters;
     }
@@ -371,7 +373,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        DurationConverter[] removed = new DurationConverter[1];
+        DurationConverter @Positive [] removed = new DurationConverter @Positive [1];
         iDurationConverters = iDurationConverters.add(converter, removed);
         return removed[0];
     }
@@ -390,7 +392,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        DurationConverter[] removed = new DurationConverter[1];
+        DurationConverter @Positive [] removed = new DurationConverter @Positive [1];
         iDurationConverters = iDurationConverters.remove(converter, removed);
         return removed[0];
     }
@@ -433,9 +435,9 @@ public final class ConverterManager {
      * 
      * @return the converters, a copy of the real data, never null
      */
-    public PeriodConverter[] getPeriodConverters() {
+    public PeriodConverter @Positive [] getPeriodConverters() {
         ConverterSet set = iPeriodConverters;
-        PeriodConverter[] converters = new PeriodConverter[set.size()];
+        PeriodConverter @Positive [] converters = new PeriodConverter @Positive [set.size()];
         set.copyInto(converters);
         return converters;
     }
@@ -458,7 +460,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        PeriodConverter[] removed = new PeriodConverter[1];
+        PeriodConverter @Positive [] removed = new PeriodConverter @Positive [1];
         iPeriodConverters = iPeriodConverters.add(converter, removed);
         return removed[0];
     }
@@ -477,7 +479,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        PeriodConverter[] removed = new PeriodConverter[1];
+        PeriodConverter @Positive [] removed = new PeriodConverter @Positive [1];
         iPeriodConverters = iPeriodConverters.remove(converter, removed);
         return removed[0];
     }
@@ -520,9 +522,9 @@ public final class ConverterManager {
      * 
      * @return the converters, a copy of the real data, never null
      */
-    public IntervalConverter[] getIntervalConverters() {
+    public IntervalConverter @Positive [] getIntervalConverters() {
         ConverterSet set = iIntervalConverters;
-        IntervalConverter[] converters = new IntervalConverter[set.size()];
+        IntervalConverter @Positive [] converters = new IntervalConverter @Positive [set.size()];
         set.copyInto(converters);
         return converters;
     }
@@ -545,7 +547,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        IntervalConverter[] removed = new IntervalConverter[1];
+        IntervalConverter @Positive [] removed = new IntervalConverter @Positive [1];
         iIntervalConverters = iIntervalConverters.add(converter, removed);
         return removed[0];
     }
@@ -564,7 +566,7 @@ public final class ConverterManager {
         if (converter == null) {
             return null;
         }
-        IntervalConverter[] removed = new IntervalConverter[1];
+        IntervalConverter @Positive [] removed = new IntervalConverter @Positive [1];
         iIntervalConverters = iIntervalConverters.remove(converter, removed);
         return removed[0];
     }
