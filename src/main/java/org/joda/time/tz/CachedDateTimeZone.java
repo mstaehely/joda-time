@@ -17,6 +17,8 @@ package org.joda.time.tz;
 
 import org.joda.time.DateTimeZone;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Improves the performance of requesting time zone offsets and name keys by
  * caching the results. Time zones that have simple rules or are fixed should
@@ -27,11 +29,13 @@ import org.joda.time.DateTimeZone;
  * @author Brian S O'Neill
  * @since 1.0
  */
+
+@SuppressWarnings("index:assignment.type.incompatible") // cacheSize will always be positive by the end of the if/else block; cacheSize -1 will always be NonNegative, not GTENegativeOne as any positive -1 will be >= 0
 public class CachedDateTimeZone extends DateTimeZone {
 
     private static final long serialVersionUID = 5472298452022250685L;
 
-    private static final int cInfoCacheMask;
+    private static final @NonNegative int cInfoCacheMask;
 
     static {
         Integer i;
@@ -136,6 +140,7 @@ public class CachedDateTimeZone extends DateTimeZone {
     // Although accessed by multiple threads, this method doesn't need to be
     // synchronized.
 
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check cache[index]
     private Info getInfo(long millis) {
         int period = (int)(millis >> 32);
         Info[] cache = iInfoCache;

@@ -44,6 +44,8 @@ import org.joda.time.chrono.LenientChronology;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Compiles IANA ZoneInfo database files into binary files for each time zone
  * in the database. {@link DateTimeZoneBuilder} is used to construct and encode
@@ -77,6 +79,8 @@ public class ZoneInfoCompiler {
      *   -verbose            Output verbosely (default false)
      * </pre>
      */
+
+    @SuppressWarnings("index") // can't check args[++i], sources[j] for upper bound. If control reaches File[]sources = new File[args.length -1], args must be >= 1.
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             printUsage();
@@ -306,7 +310,7 @@ public class ZoneInfoCompiler {
         millis = ISOChronology.getInstanceUTC().year().set(0, 2050);
         end = ISOChronology.getInstanceUTC().year().set(0, 1850);
 
-        for (int i=transitions.size(); --i>= 0; ) {
+        for (@NonNegative int i=transitions.size(); --i>= 0; ) {
             long prev = tz.previousTransition(millis);
             if (prev == millis || prev < end) {
                 break;
@@ -578,6 +582,7 @@ public class ZoneInfoCompiler {
             iZoneChar = 'w';
         }
 
+        @SuppressWarnings("index:argument.type.incompatible") // Line 629- str is a token so must have a length such that size() -1 is >= 0
         DateTimeOfYear(StringTokenizer st) {
             int month = 1;
             int day = 1;

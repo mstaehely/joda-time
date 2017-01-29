@@ -19,6 +19,8 @@ import java.util.Locale;
 
 import org.joda.time.ReadWritablePeriod;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Internal interface for parsing textual representations of time periods.
  * <p>
@@ -57,6 +59,6 @@ public interface PeriodParser {
      * operator (~) to get position of failure
      * @throws IllegalArgumentException if any field is out of range
      */
-    int parseInto(ReadWritablePeriod period, String periodStr, int position, Locale locale);
+    int parseInto(ReadWritablePeriod period, String periodStr, @NonNegative int position, Locale locale);
 
 }

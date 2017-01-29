@@ -31,6 +31,8 @@ import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Controls the printing and parsing of a datetime to and from a string.
  * <p>
@@ -777,7 +779,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException if the instant is null
      * @throws IllegalArgumentException if any field is out of range
      */
-    public int parseInto(ReadWritableInstant instant, String text, int position) {
+    public int parseInto(ReadWritableInstant instant, String text, @NonNegative int position) {
         InternalParser parser = requireParser();
         if (instant == null) {
             throw new IllegalArgumentException("Instant must not be null");

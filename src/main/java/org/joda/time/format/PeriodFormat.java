@@ -26,6 +26,8 @@ import java.util.concurrent.ConcurrentMap;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Factory that creates instances of PeriodFormatter.
  * <p>
@@ -392,7 +394,7 @@ public class PeriodFormat {
 
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
-                int position, Locale locale) {
+                @NonNegative int position, Locale locale) {
             return getParser(locale).parseInto(period, periodStr, position, locale);
         }
 

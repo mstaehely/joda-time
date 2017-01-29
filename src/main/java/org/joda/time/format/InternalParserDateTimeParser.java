@@ -15,6 +15,7 @@
  */
 package org.joda.time.format;
 
+import org.checkerframework.checker.index.qual.*;
 
 /**
  * Adapter between old and new printer interface.
@@ -44,15 +45,15 @@ class InternalParserDateTimeParser implements DateTimeParser, InternalParser {
     }
 
     //-------------------------------------------------------------------------
-    public int estimateParsedLength() {
+    public @NonNegative int estimateParsedLength() {
         return underlying.estimateParsedLength();
     }
 
-    public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+    public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
         return underlying.parseInto(bucket, text, position);
     }
 
-    public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+    public int parseInto(DateTimeParserBucket bucket, String text, @NonNegative int position) {
         return underlying.parseInto(bucket, text, position);
     }
 

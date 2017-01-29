@@ -25,6 +25,8 @@ import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Controls the printing and parsing of a time period to and from a string.
  * <p>
@@ -288,7 +290,7 @@ public class PeriodFormatter {
      * operator (~) to get position of failure
      * @throws IllegalArgumentException if any field is out of range
      */
-    public int parseInto(ReadWritablePeriod period, String text, int position) {
+    public int parseInto(ReadWritablePeriod period, String text, @NonNegative int position) {
         checkParser();
         checkPeriod(period);
         

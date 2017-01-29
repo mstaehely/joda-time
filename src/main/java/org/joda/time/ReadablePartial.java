@@ -16,6 +16,7 @@
 package org.joda.time;
 
 import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.dataflow.qual.*;
 /**
  * Defines a partial time that does not support every datetime field, and is
  * thus a local time.

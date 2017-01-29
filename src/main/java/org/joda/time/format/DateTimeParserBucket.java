@@ -28,6 +28,8 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.IllegalInstantException;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * DateTimeParserBucket is an advanced class, intended mainly for parser
  * implementations. It can also be used during normal parsing operations to
@@ -75,8 +77,8 @@ public class DateTimeParserBucket {
     /** Used for parsing two-digit years. */
     private Integer iPivotYear;
 
-    private SavedField[] iSavedFields;
-    private int iSavedFieldsCount;
+    private SavedField @NonNegative [] iSavedFields;
+    private @NonNegative int iSavedFieldsCount;
     private boolean iSavedFieldsShared;
     
     private Object iSavedState;
@@ -134,7 +136,7 @@ public class DateTimeParserBucket {
         // reset
         iZone = iDefaultZone;
         iPivotYear = iDefaultPivotYear;
-        iSavedFields = new SavedField[8];
+        iSavedFields = new SavedField @NonNegative [8];
     }
 
     //-----------------------------------------------------------------------
@@ -319,15 +321,16 @@ public class DateTimeParserBucket {
     public void saveField(DateTimeFieldType fieldType, String text, Locale locale) {
         obtainSaveField().init(fieldType.getField(iChrono), text, locale);
     }
-    
+   
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check savedFields[savedFieldsCoount]
     private SavedField obtainSaveField() {
-        SavedField[] savedFields = iSavedFields;
-        int savedFieldsCount = iSavedFieldsCount;
+        SavedField @NonNegative [] savedFields = iSavedFields;
+        @NonNegative int savedFieldsCount = iSavedFieldsCount;
         
         if (savedFieldsCount == savedFields.length || iSavedFieldsShared) {
             // Expand capacity or merely copy if saved fields are shared.
-            SavedField[] newArray = new SavedField
-                [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];
+            SavedField @NonNegative [] newArray = new SavedField
+                @NonNegative [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];
             System.arraycopy(savedFields, 0, newArray, 0, savedFieldsCount);
             iSavedFields = savedFields = newArray;
             iSavedFieldsShared = false;
@@ -421,12 +424,14 @@ public class DateTimeParserBucket {
      * @throws IllegalArgumentException if any field is out of range
      * @since 2.4
      */
+
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check savedFields[0], [i]
     public long computeMillis(boolean resetFields, CharSequence text) {
-        SavedField[] savedFields = iSavedFields;
+        SavedField @NonNegative [] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
         if (iSavedFieldsShared) {
             // clone so that sort does not affect saved state
-            iSavedFields = savedFields = (SavedField[])iSavedFields.clone();
+            iSavedFields = savedFields = (SavedField @NonNegative [])iSavedFields.clone();
             iSavedFieldsShared = false;
         }
         sort(savedFields, count);
@@ -493,7 +498,9 @@ public class DateTimeParserBucket {
      * perform any casting operations. The version in java.util.Arrays performs
      * casts within the insertion sort loop.
      */
-    private static void sort(SavedField[] array, int high) {
+
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check array[j-1], [j]
+    private static void sort(SavedField @NonNegative [] array, int high) {
         if (high > 10) {
             Arrays.sort(array, 0, high);
         } else {
@@ -510,8 +517,8 @@ public class DateTimeParserBucket {
     class SavedState {
         final DateTimeZone iZone;
         final Integer iOffset;
-        final SavedField[] iSavedFields;
-        final int iSavedFieldsCount;
+        final SavedField @NonNegative [] iSavedFields;
+        final @NonNegative int iSavedFieldsCount;
         
         SavedState() {
             this.iZone = DateTimeParserBucket.this.iZone;

@@ -15,6 +15,8 @@
  */
 package org.joda.time.format;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Internal interface for parsing textual representations of datetimes.
  * <p>
@@ -40,7 +42,7 @@ public interface DateTimeParser {
      * 
      * @return the estimated length
      */
-    int estimateParsedLength();
+     @NonNegative int estimateParsedLength();
 
     /**
      * Parse an element from the given text, saving any fields into the given
@@ -59,6 +61,6 @@ public interface DateTimeParser {
      *  apply complement operator (~) to get position of failure
      * @throws IllegalArgumentException if any field is out of range
      */
-    int parseInto(DateTimeParserBucket bucket, String text, int position);
+    int parseInto(DateTimeParserBucket bucket, String text, @NonNegative int position);
 
 }
