@@ -23,6 +23,8 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.ImpreciseDateTimeField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Provides time calculations for the month of the year component of time.
  *
@@ -102,7 +104,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         // Get this year and month.
         //
         int thisYear = iChronology.getYear(instant);
-        int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+        @SuppressWarnings("index") // current year
+        @Positive int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
         // ----------------------------------------------------------
         //
         // Do not refactor without careful consideration.
@@ -140,6 +143,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         // Quietly force DOM to nearest sane value.
         //
         int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+        // monthToUse is positive
+        @SuppressWarnings("index:argument.type.incompatible")
         int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
         if (dayToUse > maxDay) {
             dayToUse = maxDay;
@@ -147,6 +152,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         //
         // get proper date part, and return result
         //
+        // monthToUse is positive
+        @SuppressWarnings("index:argument.type.incompatible")
         long datePart =
             iChronology.getYearMonthDayMillis(yearToUse, monthToUse, dayToUse);
         return datePart + timePart;
@@ -164,7 +171,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         long timePart = iChronology.getMillisOfDay(instant);
 
         int thisYear = iChronology.getYear(instant);
-        int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+        @SuppressWarnings("index") // current year
+        @Positive int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
 
         long yearToUse;
         long monthToUse = thisMonth - 1 + months;
@@ -192,7 +200,9 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         }
 
         int i_yearToUse = (int)yearToUse;
-        int i_monthToUse = (int)monthToUse;
+        // monthToUse is positive
+        @SuppressWarnings("index:assignment.type.incompatible")
+        @Positive int i_monthToUse = (int)monthToUse;
 
         int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
         int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
@@ -206,6 +216,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     }
 
     //-----------------------------------------------------------------------
+    // Can't express that values.length == partial.size()
+    @SuppressWarnings("index:array.access.unsafe.high")
     public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
         // overridden as superclass algorithm can't handle
         // 2004-02-29 + 48 months -> 2008-02-29 type dates
@@ -240,6 +252,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @param months  the months to add (can be negative).
      * @return the updated time instant.
      */
+    // getWrappedValue returns months >= MIN which is 1, so positive
+    @SuppressWarnings("index:argument.type.incompatible")
     public long addWrapField(long instant, int months) {
         return set(instant, FieldUtils.getWrappedValue(get(instant), months, MIN, iMax));
     }
@@ -251,9 +265,11 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         }
 
         int minuendYear = iChronology.getYear(minuendInstant);
-        int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+        @SuppressWarnings("index") // current year
+        @Positive int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
         int subtrahendYear = iChronology.getYear(subtrahendInstant);
-        int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
+        @SuppressWarnings("index") // current year
+        @Positive int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
 
         long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
 
@@ -300,7 +316,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException  if month is invalid
      */
-    public long set(long instant, int month) {
+    @SuppressWarnings("index:override.param.invalid")
+    public long set(long instant, @Positive int month) {
         FieldUtils.verifyValueBounds(this, month, MIN, iMax);
         //
         int thisYear = iChronology.getYear(instant);
@@ -353,7 +370,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     //-----------------------------------------------------------------------
     public long roundFloor(long instant) {
         int year = iChronology.getYear(instant);
-        int month = iChronology.getMonthOfYear(instant, year);
+        @SuppressWarnings("index") // current year
+        @Positive int month = iChronology.getMonthOfYear(instant, year);
         return iChronology.getYearMonthMillis(year, month);
     }
 

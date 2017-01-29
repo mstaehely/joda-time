@@ -24,6 +24,8 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.field.SkipDateTimeField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Implements the Coptic calendar system, which defines every fourth year as
  * leap, much like the Julian calendar. The year is broken down into 12 months,
@@ -114,7 +116,9 @@ public final class CopticChronology extends BasicFixedMonthChronology {
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
      * @return a chronology in the specified time zone
      */
-    public static CopticChronology getInstance(DateTimeZone zone, int minDaysInFirstWeek) {
+    // Can't express minDaysInFirstWeek < 7
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public static CopticChronology getInstance(DateTimeZone zone, @Positive int minDaysInFirstWeek) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
@@ -162,7 +166,7 @@ public final class CopticChronology extends BasicFixedMonthChronology {
     /**
      * Restricted constructor.
      */
-    CopticChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    CopticChronology(Chronology base, Object param, @Positive int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 

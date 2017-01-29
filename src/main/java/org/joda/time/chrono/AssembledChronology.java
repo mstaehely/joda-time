@@ -23,6 +23,8 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Abstract Chronology that enables chronologies to be assembled from
  * a container of fields.
@@ -110,7 +112,7 @@ public abstract class AssembledChronology extends BaseChronology {
         return null;
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
     {
@@ -122,7 +124,7 @@ public abstract class AssembledChronology extends BaseChronology {
         return super.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException

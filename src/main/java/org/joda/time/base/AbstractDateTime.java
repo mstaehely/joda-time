@@ -25,6 +25,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * AbstractDateTime provides the common behaviour for datetime classes.
  * <p>
@@ -136,7 +138,8 @@ public abstract class AbstractDateTime
      * 
      * @return the month of year
      */
-    public int getMonthOfYear() {
+    @SuppressWarnings("index:return.type.incompatible") // months positive
+    public @Positive int getMonthOfYear() {
         return getChronology().monthOfYear().get(getMillis());
     }
 

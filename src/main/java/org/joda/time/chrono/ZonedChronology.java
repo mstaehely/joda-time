@@ -29,6 +29,8 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.BaseDurationField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Wraps another Chronology to add support for time zones.
  * <p>
@@ -106,7 +108,7 @@ public final class ZonedChronology extends AssembledChronology {
         return new ZonedChronology(getBase(), zone);
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
     {
@@ -114,7 +116,7 @@ public final class ZonedChronology extends AssembledChronology {
                           (year, monthOfYear, dayOfMonth, millisOfDay));
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException

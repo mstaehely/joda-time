@@ -24,6 +24,8 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Implements the Islamic, or Hijri, calendar system using arithmetic rules.
  * <p>
@@ -109,12 +111,14 @@ public final class IslamicChronology extends BasicChronology {
     private static final long MILLIS_PER_MONTH_PAIR = 59L * DateTimeConstants.MILLIS_PER_DAY;
 
     /** The length of the long month in millis. */
+    @SuppressWarnings("cast") // cast double to long
     private static final long MILLIS_PER_MONTH = (long) (29.53056 * DateTimeConstants.MILLIS_PER_DAY);
 
     /** The length of the long month in millis. */
     private static final long MILLIS_PER_LONG_MONTH = 30L * DateTimeConstants.MILLIS_PER_DAY;
 
     /** The typical millis per year. */
+    @SuppressWarnings("cast") // cast double to long
     private static final long MILLIS_PER_YEAR = (long) (354.36667 * DateTimeConstants.MILLIS_PER_DAY);
 
     /** The typical millis per year. */
@@ -187,6 +191,8 @@ public final class IslamicChronology extends BasicChronology {
      * @param leapYears  the type defining the leap year pattern
      * @return a chronology in the specified time zone
      */
+    // Can't express leapYears.index < 4
+    @SuppressWarnings("index:array.access.unsafe.high")
     public static IslamicChronology getInstance(DateTimeZone zone, LeapYearPatternType leapYears) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
@@ -515,7 +521,7 @@ public final class IslamicChronology extends BasicChronology {
 //        };
         
         /** The index. */
-        final byte index;
+        final @NonNegative byte index;
         /** The leap year pattern, a bit-based 1=true pattern. */
         final int pattern;
         
@@ -528,7 +534,7 @@ public final class IslamicChronology extends BasicChronology {
          * @param index  the index
          * @param pattern  the bit pattern
          */
-        LeapYearPatternType(int index, int pattern) {
+        LeapYearPatternType(@NonNegative int index, int pattern) {
             super();
             this.index = (byte) index;
             this.pattern = pattern;

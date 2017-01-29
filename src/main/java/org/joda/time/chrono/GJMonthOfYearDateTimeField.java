@@ -39,11 +39,15 @@ final class GJMonthOfYearDateTimeField extends BasicMonthOfYearDateTimeField {
     }
 
     //-----------------------------------------------------------------------
+    // General fieldValue can be negative
+    @SuppressWarnings("index:argument.type.incompatible")
     public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(fieldValue);
     }
 
     //-----------------------------------------------------------------------
+    // General fieldValue can be negative
+    @SuppressWarnings("index:argument.type.incompatible")
     public String getAsShortText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(fieldValue);
     }

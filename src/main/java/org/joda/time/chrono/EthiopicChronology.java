@@ -24,6 +24,8 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.field.SkipDateTimeField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Implements the Ethiopic calendar system, which defines every fourth year as
  * leap, much like the Julian calendar. The year is broken down into 12 months,
@@ -114,7 +116,9 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
      * @return a chronology in the specified time zone
      */
-    public static EthiopicChronology getInstance(DateTimeZone zone, int minDaysInFirstWeek) {
+    // Can't express minDaysInFirstWeek <= 7
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public static EthiopicChronology getInstance(DateTimeZone zone, @Positive int minDaysInFirstWeek) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
@@ -163,7 +167,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     /**
      * Restricted constructor.
      */
-    EthiopicChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    EthiopicChronology(Chronology base, Object param, @Positive int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 
