@@ -22,6 +22,8 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * This field is not publicy exposed by ISOChronology, but rather it is used to
  * build the yearOfCentury and centuryOfEra fields. It merely drops the sign of
@@ -70,7 +72,7 @@ class ISOYearOfEraDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().addWrapField(instant, years);
     }
 
-    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int years) {
+    public int[] addWrapField(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int years) {
         return getWrappedField().addWrapField(instant, fieldIndex, values, years);
     }
 

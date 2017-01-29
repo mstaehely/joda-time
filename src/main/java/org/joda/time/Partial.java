@@ -556,6 +556,7 @@ public final class Partial
      * @return a copy of this instance with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public Partial withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
@@ -580,6 +581,7 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public Partial withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
@@ -604,6 +606,7 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public Partial withFieldAddWrapped(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
@@ -629,6 +632,7 @@ public final class Partial
      * @return a copy of this instance with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public Partial withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
             return this;
@@ -933,6 +937,7 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public Partial addToCopy(int valueToAdd) {
             int[] newValues = iPartial.getValues();
             newValues = getField().add(iPartial, iFieldIndex, newValues, valueToAdd);
@@ -957,6 +962,7 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public Partial addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iPartial.getValues();
             newValues = getField().addWrapField(iPartial, iFieldIndex, newValues, valueToAdd);
@@ -974,6 +980,7 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public Partial setCopy(int value) {
             int[] newValues = iPartial.getValues();
             newValues = getField().set(iPartial, iFieldIndex, newValues, value);
@@ -991,6 +998,7 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public Partial setCopy(String text, Locale locale) {
             int[] newValues = iPartial.getValues();
             newValues = getField().set(iPartial, iFieldIndex, newValues, text, locale);

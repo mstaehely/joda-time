@@ -22,6 +22,8 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Provides time calculations for the year of era component of time.
  * 
@@ -68,7 +70,7 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().addWrapField(instant, years);
     }
 
-    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int years) {
+    public int[] addWrapField(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int years) {
         return getWrappedField().addWrapField(instant, fieldIndex, values, years);
     }
 

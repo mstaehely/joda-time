@@ -23,6 +23,8 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * A placeholder implementation to use when a datetime field is not supported.
  * <p>
@@ -302,7 +304,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
+    public int @SameLen("#3") [] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
         throw unsupported();
     }
 

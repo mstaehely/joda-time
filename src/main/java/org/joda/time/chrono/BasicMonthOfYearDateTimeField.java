@@ -218,7 +218,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     //-----------------------------------------------------------------------
     // Can't express that values.length == partial.size()
     @SuppressWarnings("index:array.access.unsafe.high")
-    public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] add(ReadablePartial partial, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         // overridden as superclass algorithm can't handle
         // 2004-02-29 + 48 months -> 2008-02-29 type dates
         if (valueToAdd == 0) {
