@@ -389,8 +389,13 @@ public final class YearMonth
      *
      * @return the field count, two
      */
-    public @Positive int size() {
+    // Can't infer 2 <= @MinLen(2).length
+    @SuppressWarnings("index:return.type.incompatible")
+    public @Positive @LTEqLengthOf("typeCheckSizeArray()") int size() {
         return 2;
+    }
+    @Deprecated public int @MinLen(2) [] typeCheckSizeArray() {
+        return new int[2];
     }
 
     /**

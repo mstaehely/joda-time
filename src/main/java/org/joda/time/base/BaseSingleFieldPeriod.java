@@ -31,6 +31,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 
 import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.*;
 import org.checkerframework.dataflow.qual.*;
 
 /**
@@ -206,8 +207,12 @@ public abstract class BaseSingleFieldPeriod
      *
      * @return the number of fields supported, which is one
      */
-    @Pure public @Positive int size() {
+    @Pure public @Positive @IntVal(1) int size() {
         return 1;
+    }
+
+    @Deprecated public int @MinLen(1) [] typeCheckSizeArray() {
+        return new int[1];
     }
 
     /**
@@ -220,7 +225,8 @@ public abstract class BaseSingleFieldPeriod
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DurationFieldType getFieldType(int index) {
+    // Can't express 0 <= index < size() implies index = 0;
+    public DurationFieldType getFieldType(@IndexFor("typeCheckSizeArray()") int index) {
         if (index != 0) {
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }

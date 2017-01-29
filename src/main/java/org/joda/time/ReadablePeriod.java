@@ -58,7 +58,16 @@ public interface ReadablePeriod {
      *
      * @return the number of fields supported
      */
-    @Pure @NonNegative int size();
+    @Pure @IndexOrHigh("typeCheckSizeArray()") int size();
+
+    /**
+     * A terrible hack for Index type checking DO NOT USE.
+     *
+     * @deprecated Used only for type checking
+     *
+     * @return an array of length size()
+     */
+    @Deprecated @Pure int [] typeCheckSizeArray();
 
     /**
      * Gets the field type at the specified index.
@@ -67,7 +76,7 @@ public interface ReadablePeriod {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @Pure DurationFieldType getFieldType(@NonNegative int index);
+    @Pure DurationFieldType getFieldType(@IndexFor("typeCheckSizeArray()") int index);
 
     /**
      * Gets the value at the specified index.
