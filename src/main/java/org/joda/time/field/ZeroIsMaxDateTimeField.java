@@ -20,6 +20,8 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Wraps another field such that zero values are replaced with one more than
  * it's maximum. This is particularly useful for implementing an clockhourOfDay
@@ -69,7 +71,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().addWrapField(instant, value);
     }
 
-    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addWrapField(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         return getWrappedField().addWrapField(instant, fieldIndex, values, valueToAdd);
     }
 

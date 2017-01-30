@@ -29,6 +29,8 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * MutableDateTime is the standard implementation of a modifiable datetime class.
  * It holds the datetime as milliseconds from the Java epoch of 1970-01-01T00:00:00Z.
@@ -314,7 +316,7 @@ public class MutableDateTime
      */
     public MutableDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -340,7 +342,7 @@ public class MutableDateTime
      */
     public MutableDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -369,7 +371,7 @@ public class MutableDateTime
      */
     public MutableDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -951,7 +953,7 @@ public class MutableDateTime
      */
     public void setDate(
             final int year,
-            final int monthOfYear,
+            final @Positive int monthOfYear,
             final int dayOfMonth) {
         Chronology c = getChronology();
         long instantMidnight = c.getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
@@ -1022,7 +1024,7 @@ public class MutableDateTime
      */
     public void setDateTime(
             final int year,
-            final int monthOfYear,
+            final @Positive int monthOfYear,
             final int dayOfMonth,
             final int hourOfDay,
             final int minuteOfHour,

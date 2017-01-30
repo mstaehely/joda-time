@@ -234,7 +234,8 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
-    @SuppressWarnings("deprecation")
+    // date.getMonth() is NonNegative
+    @SuppressWarnings({"deprecation", "index:argument.type.incompatible"})
     public static LocalDateTime fromDateFields(Date date) {
         if (date == null) {
             throw new IllegalArgumentException("The date must not be null");
@@ -445,7 +446,7 @@ public final class LocalDateTime
      */
     public LocalDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour) {
@@ -466,7 +467,7 @@ public final class LocalDateTime
      */
     public LocalDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -489,7 +490,7 @@ public final class LocalDateTime
      */
     public LocalDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -516,7 +517,7 @@ public final class LocalDateTime
      */
     public LocalDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -1599,7 +1600,8 @@ public final class LocalDateTime
      *
      * @return the month of year
      */
-    public int getMonthOfYear() {
+    @SuppressWarnings("index:return.type.incompatible") // months are positive
+    public @Positive int getMonthOfYear() {
         return getChronology().monthOfYear().get(getLocalMillis());
     }
 

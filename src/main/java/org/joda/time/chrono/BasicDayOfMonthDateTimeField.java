@@ -20,6 +20,8 @@ import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.PreciseDurationDateTimeField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Provides time calculations for the day of the month component of time.
  *
@@ -66,7 +68,8 @@ final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
 
     public int getMaximumValue(ReadablePartial partial) {
         if (partial.isSupported(DateTimeFieldType.monthOfYear())) {
-            int month = partial.get(DateTimeFieldType.monthOfYear());
+            @SuppressWarnings("index") // month is positive
+            @Positive int month = partial.get(DateTimeFieldType.monthOfYear());
             if (partial.isSupported(DateTimeFieldType.year())) {
                 int year = partial.get(DateTimeFieldType.year());
                 return iChronology.getDaysInYearMonth(year, month);
@@ -76,11 +79,14 @@ final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         return getMaximumValue();
     }
 
+    // Can't check values[i]
+    @SuppressWarnings("index:array.access.unsafe.high")
     public int getMaximumValue(ReadablePartial partial, int[] values) {
         int size = partial.size();
         for (int i = 0; i < size; i++) {
             if (partial.getFieldType(i) == DateTimeFieldType.monthOfYear()) {
-                int month = values[i];
+                @SuppressWarnings("index") // months are positive
+                @Positive int month = values[i];
                 for (int j = 0; j < size; j++) {
                     if (partial.getFieldType(j) == DateTimeFieldType.year()) {
                         int year = values[j];

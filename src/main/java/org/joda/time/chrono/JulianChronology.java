@@ -24,6 +24,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.field.SkipDateTimeField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Implements a pure proleptic Julian calendar system, which defines every
  * fourth year as leap. This implementation follows the leap year rule
@@ -51,9 +53,11 @@ public final class JulianChronology extends BasicGJChronology {
     /** Serialization lock */
     private static final long serialVersionUID = -8731039522547897247L;
 
+    @SuppressWarnings("cast") // cast double to long
     private static final long MILLIS_PER_YEAR =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
 
+    @SuppressWarnings("cast") // cast double to long
     private static final long MILLIS_PER_MONTH =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY / 12);
 
@@ -120,7 +124,9 @@ public final class JulianChronology extends BasicGJChronology {
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
      * @return a chronology in the specified time zone
      */
-    public static JulianChronology getInstance(DateTimeZone zone, int minDaysInFirstWeek) {
+    // Can't express minDaysInFirstWeek <= 7
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public static JulianChronology getInstance(DateTimeZone zone, @Positive int minDaysInFirstWeek) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
@@ -163,7 +169,7 @@ public final class JulianChronology extends BasicGJChronology {
     /**
      * Restricted constructor
      */
-    JulianChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    JulianChronology(Chronology base, Object param, @Positive int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 
@@ -206,7 +212,7 @@ public final class JulianChronology extends BasicGJChronology {
         return getInstance(zone);
     }
 
-    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
+    long getDateMidnightMillis(int year, @Positive int monthOfYear, int dayOfMonth)
         throws IllegalArgumentException
     {
         return super.getDateMidnightMillis(adjustYearForSet(year), monthOfYear, dayOfMonth);

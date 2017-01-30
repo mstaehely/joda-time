@@ -28,6 +28,8 @@ import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * DateTime is the standard implementation of an unmodifiable datetime class.
  * <p>
@@ -316,7 +318,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour) {
@@ -339,7 +341,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -365,7 +367,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -389,7 +391,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -414,7 +416,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -442,7 +444,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -467,7 +469,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -493,7 +495,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -522,7 +524,7 @@ public final class DateTime
      */
     public DateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -723,7 +725,7 @@ public final class DateTime
      * @return a copy of this datetime with a different date
      * @throws IllegalArgumentException if any value if invalid
      */
-    public DateTime withDate(int year, int monthOfYear, int dayOfMonth) {
+    public DateTime withDate(int year, @Positive int monthOfYear, int dayOfMonth) {
         Chronology chrono = getChronology();
         long localInstant = chrono.withUTC().getDateTimeMillis(year, monthOfYear, dayOfMonth, getMillisOfDay());
         return withMillis(chrono.getZone().convertLocalToUTC(localInstant, false, getMillis()));

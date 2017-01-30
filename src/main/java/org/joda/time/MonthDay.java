@@ -489,6 +489,7 @@ public final class MonthDay
      * @return a copy of this instance with the field set, never null
      * @throws IllegalArgumentException if the value is null or invalid
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public MonthDay withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
@@ -517,6 +518,7 @@ public final class MonthDay
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public MonthDay withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
@@ -543,6 +545,7 @@ public final class MonthDay
      * @return a copy of this instance with the period added, never null
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public MonthDay withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
             return this;
@@ -699,7 +702,8 @@ public final class MonthDay
      *
      * @return the month of year
      */
-    public int getMonthOfYear() {
+    @SuppressWarnings("index:return.type.incompatible") // months are positive
+    public @Positive int getMonthOfYear() {
         return getValue(MONTH_OF_YEAR);
     }
 
@@ -741,6 +745,8 @@ public final class MonthDay
      * @return a copy of this object with the field set, never null
      * @throws IllegalArgumentException if the value is invalid
      */
+    // Can't express that iValues is MinLen(2) in this subclass
+    @SuppressWarnings("index:argument.type.incompatible")
     public MonthDay withDayOfMonth(int dayOfMonth) {
         int[] newValues = getValues();
         newValues = getChronology().dayOfMonth().set(this, DAY_OF_MONTH, newValues, dayOfMonth);
@@ -775,6 +781,8 @@ public final class MonthDay
      * 
      * @return the day of month property
      */
+    // Can't express that iValues is MinLen(2) in this subclass
+    @SuppressWarnings("index:argument.type.incompatible")
     public Property dayOfMonth() {
         return new Property(this, DAY_OF_MONTH);
     }
@@ -837,7 +845,7 @@ public final class MonthDay
         /** The partial */
         private final MonthDay iBase;
         /** The field index */
-        private final @NonNegative int iFieldIndex;
+        private final @IndexFor("iBase.iValues") int iFieldIndex;
 
         /**
          * Constructs a property.
@@ -845,7 +853,9 @@ public final class MonthDay
          * @param partial  the partial instance
          * @param fieldIndex  the index in the partial
          */
-        Property(MonthDay partial, @NonNegative int fieldIndex) {
+        // Can't deduce that iBase.iValues.length == parital.iValues.length
+        @SuppressWarnings("index:assignment.type.incompatible")
+        Property(MonthDay partial, @IndexFor("#1.iValues") int fieldIndex) {
             super();
             iBase = partial;
             iFieldIndex = fieldIndex;
@@ -902,6 +912,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay addToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
             newValues = getField().add(iBase, iFieldIndex, newValues, valueToAdd);
@@ -926,6 +937,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
             newValues = getField().addWrapField(iBase, iFieldIndex, newValues, valueToAdd);
@@ -943,6 +955,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay setCopy(int value) {
             int[] newValues = iBase.getValues();
             newValues = getField().set(iBase, iFieldIndex, newValues, value);
@@ -960,6 +973,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay setCopy(String text, Locale locale) {
             int[] newValues = iBase.getValues();
             newValues = getField().set(iBase, iFieldIndex, newValues, text, locale);

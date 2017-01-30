@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.ReadablePartial;
 import org.joda.time.convert.ConverterManager;
@@ -28,6 +29,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.dataflow.qual.*;
 
 /**
  * BasePartial is an abstract implementation of ReadablePartial that stores
@@ -216,6 +218,19 @@ public abstract class BasePartial
     }
 
     //-----------------------------------------------------------------------
+    // indexOf() is <= size(), but we couldn't express that.
+    // However, iValues.length == size(), so we can use that.
+    @Pure @Override @SuppressWarnings("index:return.type.incompatible")
+    public @IndexOrLow("iValues") int indexOf(DateTimeFieldType type) {
+        return super.indexOf(type);
+    }
+
+    @Pure @Override @SuppressWarnings("index:return.type.incompatible")
+    public @IndexFor("iValues") int indexOfSupported(DateTimeFieldType type) {
+        return super.indexOfSupported(type);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets the value of the field at the specifed index.
      * 
@@ -236,8 +251,10 @@ public abstract class BasePartial
      *
      * @return the current values of each field (cloned), largest to smallest
      */
-    public int[] getValues() {
-        return (int[]) iValues.clone();
+    @Pure
+    @SuppressWarnings("cast") // clone an array, same length
+    public int @SameLen("iValues") [] getValues() {
+        return (int @SameLen("iValues") []) iValues.clone();
     }
 
     /**
@@ -264,7 +281,7 @@ public abstract class BasePartial
      * @param value  the value to set
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    protected void setValue(@NonNegative int index, int value) {
+    protected void setValue(@IndexFor("iValues") int index, int value) {
         DateTimeField field = getField(index);
         int[] values = field.set(this, index, iValues, value);
         System.arraycopy(values, 0, iValues, 0, iValues.length);

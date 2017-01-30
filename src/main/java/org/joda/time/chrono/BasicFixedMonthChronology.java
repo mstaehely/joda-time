@@ -18,6 +18,8 @@ package org.joda.time.chrono;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Abstract implementation of a calendar system based around fixed length months.
  * <p>
@@ -41,6 +43,7 @@ abstract class BasicFixedMonthChronology extends BasicChronology {
     static final int MONTH_LENGTH = 30;
 
     /** The typical millis per year. */
+    @SuppressWarnings("cast") // cast double to long
     static final long MILLIS_PER_YEAR =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
 
@@ -55,7 +58,7 @@ abstract class BasicFixedMonthChronology extends BasicChronology {
      * @param param  the init parameter
      * @param minDaysInFirstWeek  the minimum days in the first week
      */
-    BasicFixedMonthChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    BasicFixedMonthChronology(Chronology base, Object param, @Positive int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 
@@ -128,7 +131,7 @@ abstract class BasicFixedMonthChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
-    int getMonthOfYear(long millis) {
+    @Positive int getMonthOfYear(long millis) {
         return (getDayOfYear(millis) - 1) / MONTH_LENGTH + 1;
     }
 

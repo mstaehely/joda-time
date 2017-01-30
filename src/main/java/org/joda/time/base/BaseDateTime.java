@@ -25,6 +25,8 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * BaseDateTime is an abstract implementation of ReadableDateTime that stores
  * data in <code>long</code> and <code>Chronology</code> fields.
@@ -189,7 +191,7 @@ public abstract class BaseDateTime
      */
     public BaseDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -216,7 +218,7 @@ public abstract class BaseDateTime
      */
     public BaseDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
@@ -245,7 +247,7 @@ public abstract class BaseDateTime
      */
     public BaseDateTime(
             int year,
-            int monthOfYear,
+            @Positive int monthOfYear,
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,

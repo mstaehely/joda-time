@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.checkerframework.checker.index.qual.*;
 
 /**
  * Chronology provides access to the individual date time fields for a
@@ -106,7 +107,7 @@ public abstract class Chronology {
      * @return millisecond instant from 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if the values are invalid
      */
-    public abstract long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay);
+    public abstract long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth, int millisOfDay);
 
     /**
      * Returns a datetime millisecond instant, formed from the given year,
@@ -128,7 +129,7 @@ public abstract class Chronology {
      * @return millisecond instant from 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if the values are invalid
      */
-    public abstract long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public abstract long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                            int hourOfDay, int minuteOfHour,
                            int secondOfMinute, int millisOfSecond);
 

@@ -25,6 +25,8 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.IllegalFieldValueException;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Utility class used by a few of the GJDateTimeFields.
  *
@@ -56,24 +58,29 @@ class GJLocaleSymbols {
         return symbols;
     }
 
-    private static String[] realignMonths(String[] months) {
+    @SuppressWarnings("index:array.access.unsafe.high")
+    private static String @MinLen(13) [] realignMonths(String[] months) {
         String[] a = new String[13];
-        for (int i=1; i<13; i++) {
+        for (@IndexFor("a") int i=1; i<13; i++) {
             a[i] = months[i - 1];
         }
         return a;
     }
 
-    private static String[] realignDaysOfWeek(String[] daysOfWeek) {
+    // Can't do math with upper bounds and MinLen
+    @SuppressWarnings("index:array.access.unsafe.high")
+    private static String @MinLen(8) [] realignDaysOfWeek(String[] daysOfWeek) {
         String[] a = new String[8];
-        for (int i=1; i<8; i++) {
+        for (@IndexFor("a") int i=1; i<8; i++) {
             a[i] = daysOfWeek[(i < 7) ? i + 1 : 1];
         }
         return a;
     }
 
+    // Can't express symbols.length <= integers.length
+    @SuppressWarnings("index:array.access.unsafe.high")
     private static void addSymbols(TreeMap<String, Integer> map, String[] symbols, Integer[] integers) {
-        for (int i=symbols.length; --i>=0; ) {
+        for (@NonNegative int i=symbols.length; --i>=0; ) {
             String symbol = symbols[i];
             if (symbol != null) {
                 map.put(symbol, integers[i]);
@@ -81,7 +88,7 @@ class GJLocaleSymbols {
         }
     }
 
-    private static void addNumerals(TreeMap<String, Integer> map, int start, int end, Integer[] integers) {
+    private static void addNumerals(TreeMap<String, Integer> map, @NonNegative int start, @LTLengthOf("#4") int end, Integer[] integers) {
         for (int i=start; i<=end; i++) {
             map.put(String.valueOf(i).intern(), integers[i]);
         }
@@ -89,7 +96,7 @@ class GJLocaleSymbols {
 
     private static int maxLength(String[] a) {
         int max = 0;
-        for (int i=a.length; --i>=0; ) {
+        for (@NonNegative int i=a.length; --i>=0; ) {
             String s = a[i];
             if (s != null) {
                 int len = s.length();
@@ -133,7 +140,7 @@ class GJLocaleSymbols {
         iHalfday = dfs.getAmPmStrings();
 
         Integer[] integers = new Integer[13];
-        for (int i=0; i<13; i++) {
+        for (@IndexFor("integers") int i=0; i<13; i++) {
             integers[i] = Integer.valueOf(i);
         }
 
@@ -165,7 +172,9 @@ class GJLocaleSymbols {
         iMaxHalfdayLength = maxLength(iHalfday);
     }
 
-    public String eraValueToText(int value) {
+    // Unclear upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public String eraValueToText(@NonNegative int value) {
         return iEras[value];
     }
 
@@ -181,11 +190,15 @@ class GJLocaleSymbols {
         return iMaxEraLength;
     }
 
-    public String monthOfYearValueToText(int value) {
+    // Unclear upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public String monthOfYearValueToText(@NonNegative int value) {
         return iMonths[value];
     }
 
-    public String monthOfYearValueToShortText(int value) {
+    // Unclear upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public String monthOfYearValueToShortText(@NonNegative int value) {
         return iShortMonths[value];
     }
 
@@ -205,11 +218,15 @@ class GJLocaleSymbols {
         return iMaxShortMonthLength;
     }
 
-    public String dayOfWeekValueToText(int value) {
+    // Unclear upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public String dayOfWeekValueToText(@NonNegative int value) {
         return iDaysOfWeek[value];
     }
 
-    public String dayOfWeekValueToShortText(int value) {
+    // Unclear upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public String dayOfWeekValueToShortText(@NonNegative int value) {
         return iShortDaysOfWeek[value];
     }
 
@@ -229,13 +246,15 @@ class GJLocaleSymbols {
         return iMaxShortDayOfWeekLength;
     }
 
-    public String halfdayValueToText(int value) {
+    // Unclear upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public String halfdayValueToText(@NonNegative int value) {
         return iHalfday[value];
     }
 
     public int halfdayTextToValue(String text) {
         String[] halfday = iHalfday;
-        for (int i = halfday.length; --i>=0; ) {
+        for (@NonNegative int i = halfday.length; --i>=0; ) {
             if (halfday[i].equalsIgnoreCase(text)) {
                 return i;
             }
