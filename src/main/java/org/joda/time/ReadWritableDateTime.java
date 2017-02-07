@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Defines an instant in time that can be queried and modified using datetime fields.
  * <p>
@@ -234,7 +236,7 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * @param dayOfMonth  the day of the month
      * @throws IllegalArgumentException if any value is invalid
      */
-    void setDate(int year, int monthOfYear, int dayOfMonth);
+    void setDate(int year, @Positive int monthOfYear, int dayOfMonth);
 
     /**
      * Set the time from fields.
@@ -261,7 +263,7 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * @throws IllegalArgumentException if any value is invalid
      */
     void setDateTime(
-        int year, int monthOfYear, int dayOfMonth,
+        int year, @Positive int monthOfYear, int dayOfMonth,
         int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond);
 
 }

@@ -78,6 +78,7 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getDaysInYearMax();
     }
 
+    @SuppressWarnings("index:array.access.unsafe.high") // for values[i]
     public int getMaximumValue(ReadablePartial partial, int[] values) {
         int size = partial.size();
         for (int i = 0; i < size; i++) {

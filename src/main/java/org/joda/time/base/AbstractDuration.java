@@ -22,6 +22,8 @@ import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
 import org.joda.time.format.FormatUtils;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * AbstractDuration provides the common behaviour for duration classes.
  * <p>
@@ -197,7 +199,9 @@ public abstract class AbstractDuration implements ReadableDuration {
         if ((millis / 1000) * 1000 == millis) {
             buf.setLength(buf.length() - 3);
         } else {
-            buf.insert(buf.length() - 3, ".");
+            @SuppressWarnings("index:assignment.type.incompatible")
+            @NonNegative int decimal_position = buf.length() - 3;
+            buf.insert(decimal_position, ".");
         }
         buf.append('S');
         return buf.toString();

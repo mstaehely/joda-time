@@ -30,6 +30,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * YearMonth is an immutable partial supporting the year and monthOfYear fields.
  * <p>
@@ -170,6 +172,10 @@ public final class YearMonth
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
      */
+
+    // Calendar class does not offer a strong enough guarantee for their
+    // .get() method.
+    @SuppressWarnings("index")
     public static YearMonth fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
@@ -383,7 +389,7 @@ public final class YearMonth
      *
      * @return the field count, two
      */
-    public int size() {
+    public @Positive int size() {
         return 2;
     }
 
@@ -414,7 +420,8 @@ public final class YearMonth
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DateTimeFieldType getFieldType(int index) {
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check FIELD_TYPES[index]
+    public DateTimeFieldType getFieldType(@NonNegative int index) {
         return FIELD_TYPES[index];
     }
 
@@ -474,6 +481,7 @@ public final class YearMonth
      * @return a copy of this instance with the field set, never null
      * @throws IllegalArgumentException if the value is null or invalid
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public YearMonth withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
@@ -502,6 +510,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public YearMonth withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
@@ -528,6 +537,7 @@ public final class YearMonth
      * @return a copy of this instance with the period added, never null
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public YearMonth withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
             return this;
@@ -715,7 +725,8 @@ public final class YearMonth
      *
      * @return the month of year
      */
-    public int getMonthOfYear() {
+    @SuppressWarnings("index:return.type.incompatible") // months are positive
+    public @Positive int getMonthOfYear() {
         return getValue(MONTH_OF_YEAR);
     }
 
@@ -748,6 +759,7 @@ public final class YearMonth
      * @return a copy of this object with the field set, never null
      * @throws IllegalArgumentException if the value is invalid
      */
+    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public YearMonth withMonthOfYear(int monthOfYear) {
         int[] newValues = getValues();
         newValues = getChronology().monthOfYear().set(this, MONTH_OF_YEAR, newValues, monthOfYear);
@@ -841,7 +853,7 @@ public final class YearMonth
         /** The partial */
         private final YearMonth iBase;
         /** The field index */
-        private final int iFieldIndex;
+        private final @NonNegative int iFieldIndex;
 
         /**
          * Constructs a property.
@@ -849,7 +861,7 @@ public final class YearMonth
          * @param partial  the partial instance
          * @param fieldIndex  the index in the partial
          */
-        Property(YearMonth partial, int fieldIndex) {
+        Property(YearMonth partial, @NonNegative int fieldIndex) {
             super();
             iBase = partial;
             iFieldIndex = fieldIndex;
@@ -909,6 +921,7 @@ public final class YearMonth
          * @return a copy of the YearMonth with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public YearMonth addToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
             newValues = getField().add(iBase, iFieldIndex, newValues, valueToAdd);
@@ -933,6 +946,7 @@ public final class YearMonth
          * @return a copy of the YearMonth with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public YearMonth addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
             newValues = getField().addWrapField(iBase, iFieldIndex, newValues, valueToAdd);
@@ -950,6 +964,7 @@ public final class YearMonth
          * @return a copy of the YearMonth with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public YearMonth setCopy(int value) {
             int[] newValues = iBase.getValues();
             newValues = getField().set(iBase, iFieldIndex, newValues, value);
@@ -967,6 +982,7 @@ public final class YearMonth
          * @return a copy of the YearMonth with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
+        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public YearMonth setCopy(String text, Locale locale) {
             int[] newValues = iBase.getValues();
             newValues = getField().set(iBase, iFieldIndex, newValues, text, locale);

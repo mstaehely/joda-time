@@ -18,6 +18,8 @@ package org.joda.time.format;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Utility methods used by formatters.
  * <p>
@@ -176,6 +178,9 @@ public class FormatUtils {
      * @param value value to convert to a string
      * @param size minimum amount of digits to append
      */
+
+    @SuppressWarnings("index:argument.type.incompatible") // Handles negative values gracefully by the assignment value = -value, then passing the now positive value to the Writer, which expects a non-negative value. Cannot cast without warning, so suppressing
+
     public static void writePaddedInteger(Writer out, int value, int size)
         throws IOException
     {
@@ -353,6 +358,8 @@ public class FormatUtils {
      * @param out receives integer converted to a string
      * @param value value to convert to a string
      */
+
+    @SuppressWarnings("index:argument.type.incompatible") // Handles negative values gracefully by the assignment value = -value, then passing the now positive value to the Writer, which expects a non-negative value. Cannot cast without warning, so suppressing
     public static void writeUnpaddedInteger(Writer out, int value)
         throws IOException
     {
@@ -419,14 +426,15 @@ public class FormatUtils {
                 ((int)(Math.log(value) / LOG_10) + 1)))));
     }
 
-    static int parseTwoDigits(CharSequence text, int position) {
+    static int parseTwoDigits(CharSequence text, @NonNegative int position) {
         int value = text.charAt(position) - '0';
         return ((value << 3) + (value << 1)) + text.charAt(position + 1) - '0';
     }
 
-    static String createErrorMessage(final String text, final int errorPos) {
-        int sampleLen = errorPos + 32;
-        String sampleText;
+    @SuppressWarnings({"index:return.type.incompatible", "index:assignment.type.incompatible"}) // No guarantees are made about substring return value in the annotated String class. No guarantees are made about return value from concat so assignment is not valid.
+    static @NonNegative String createErrorMessage(final String text, final int errorPos) {
+        @NonNegative int sampleLen = errorPos + 32;
+        @NonNegative String sampleText;
         if (text.length() <= sampleLen + 3) {
             sampleText = text;
         } else {

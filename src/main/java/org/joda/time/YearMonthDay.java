@@ -62,6 +62,7 @@ import org.joda.time.format.ISODateTimeFormat;
  *  has been available since 1.3
  */
 @Deprecated
+@SuppressWarnings("index") // Deprecated class
 public final class YearMonthDay
         extends BasePartial
         implements ReadablePartial, Serializable {

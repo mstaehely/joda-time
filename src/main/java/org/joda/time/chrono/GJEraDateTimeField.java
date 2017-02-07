@@ -65,6 +65,8 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
+    // General fieldValue can be negative
+    @SuppressWarnings("index:argument.type.incompatible")
     public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).eraValueToText(fieldValue);
     }

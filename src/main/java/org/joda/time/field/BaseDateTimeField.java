@@ -23,6 +23,8 @@ import org.joda.time.DurationField;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * BaseDateTimeField provides the common behaviour for DateTimeField
  * implementations. 
@@ -294,7 +296,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
-    public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    @SuppressWarnings("index:argument.type.incompatible") // depends on nextField
+    public int[] add(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return values;
         }
@@ -375,7 +378,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
-    public int[] addWrapPartial(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    @SuppressWarnings("index:argument.type.incompatible") // depends on nextField
+    public int[] addWrapPartial(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return values;
         }
@@ -491,7 +495,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addWrapField(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         int current = values[fieldIndex];
         int wrapped = FieldUtils.getWrappedValue
             (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));
@@ -581,12 +585,14 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the updated values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public int[] set(ReadablePartial partial, int fieldIndex, int[] values, int newValue) {
+    // Can't express values.length == partial.size()
+    @SuppressWarnings("index:array.access.unsafe.high")
+    public int @SameLen("#3") [] set(ReadablePartial partial, @IndexFor("#3") int fieldIndex, int[] values, int newValue) {
         FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(partial, values), getMaximumValue(partial, values));
         values[fieldIndex] = newValue;
         
         // may need to adjust smaller fields
-        for (int i = fieldIndex + 1; i < partial.size(); i++) {
+        for (@NonNegative int i = fieldIndex + 1; i < partial.size(); i++) {
             DateTimeField field = partial.getField(i);
             if (values[i] > field.getMaximumValue(partial, values)) {
                 values[i] = field.getMaximumValue(partial, values);
@@ -650,7 +656,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the text value is invalid
      */
-    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale) {
+    public int[] set(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, String text, Locale locale) {
         int value = convertText(text, locale);
         return set(instant, fieldIndex, values, value);
     }

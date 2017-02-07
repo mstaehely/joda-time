@@ -23,6 +23,8 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Internal interface for creating textual representations of datetimes.
  * <p>
@@ -49,7 +51,7 @@ public interface DateTimePrinter {
      * 
      * @return the estimated length
      */
-    int estimatePrintedLength();
+    @NonNegative int estimatePrintedLength();
 
     //-----------------------------------------------------------------------
     /**

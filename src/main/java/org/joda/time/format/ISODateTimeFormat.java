@@ -21,6 +21,8 @@ import java.util.Set;
 
 import org.joda.time.DateTimeFieldType;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Factory that creates instances of DateTimeFormatter based on the ISO8601 standard.
  * <p>
@@ -1345,7 +1347,7 @@ public class ISODateTimeFormat {
         private static DateTimeFormatter dateElementParser() {
             if (dpe == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(null, new DateTimeParser[] {
+                    .append(null, new DateTimeParser @NonNegative [] {
                         new DateTimeFormatterBuilder()
                         .append(yearElement())
                         .appendOptional
@@ -1394,7 +1396,7 @@ public class ISODateTimeFormat {
             if (tpe == null) {
                 // Decimal point can be either '.' or ','
                 DateTimeParser decimalPoint = new DateTimeFormatterBuilder()
-                    .append(null, new DateTimeParser[] {
+                    .append(null, new DateTimeParser @NonNegative [] {
                         new DateTimeFormatterBuilder()
                         .appendLiteral('.')
                         .toParser(),
@@ -1408,12 +1410,12 @@ public class ISODateTimeFormat {
                     // time-element
                     .append(hourElement())
                     .append
-                    (null, new DateTimeParser[] {
+                    (null, new DateTimeParser @NonNegative [] {
                         new DateTimeFormatterBuilder()
                         // minute-element
                         .append(minuteElement())
                         .append
-                        (null, new DateTimeParser[] {
+                        (null, new DateTimeParser @NonNegative [] {
                             new DateTimeFormatterBuilder()
                             // second-element
                             .append(secondElement())
@@ -1453,7 +1455,7 @@ public class ISODateTimeFormat {
                     .appendOptional(offsetElement().getParser())
                     .toParser();
                 return new DateTimeFormatterBuilder()
-                    .append(null, new DateTimeParser[] {time, dateOptionalTimeParser().getParser()})
+                    .append(null, new DateTimeParser @NonNegative [] {time, dateOptionalTimeParser().getParser()})
                     .toFormatter();
             }
             return dtp;

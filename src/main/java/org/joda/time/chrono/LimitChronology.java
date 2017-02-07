@@ -31,6 +31,8 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Wraps another Chronology to impose limits on the range of instants that
  * the fields within a Chronology may support. The limits are applied to both
@@ -168,7 +170,7 @@ public final class LimitChronology extends AssembledChronology {
         return chrono;
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
     {
@@ -177,7 +179,7 @@ public final class LimitChronology extends AssembledChronology {
         return instant;
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException

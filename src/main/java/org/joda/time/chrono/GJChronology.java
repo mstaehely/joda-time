@@ -33,6 +33,8 @@ import org.joda.time.field.DecoratedDurationField;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Implements the Gregorian/Julian calendar system which is the calendar system
  * used in most of the world. Wherever possible, it is recommended to use the
@@ -78,6 +80,8 @@ public final class GJChronology extends AssembledChronology {
     /**
      * Convert a datetime from one chronology to another.
      */
+    // Can't show that from.monthOfYear().get(instant) is positive
+    @SuppressWarnings("index:argument.type.incompatible")
     private static long convertByYear(long instant, Chronology from, Chronology to) {
         return to.getDateTimeMillis
             (from.year().get(instant),
@@ -183,7 +187,7 @@ public final class GJChronology extends AssembledChronology {
     public static GJChronology getInstance(
             DateTimeZone zone,
             ReadableInstant gregorianCutover,
-            int minDaysInFirstWeek) {
+            @Positive int minDaysInFirstWeek) {
         
         zone = DateTimeUtils.getZone(zone);
         Instant cutoverInstant;
@@ -232,7 +236,7 @@ public final class GJChronology extends AssembledChronology {
     public static GJChronology getInstance(
             DateTimeZone zone,
             long gregorianCutover,
-            int minDaysInFirstWeek) {
+            @Positive int minDaysInFirstWeek) {
         
         Instant cutoverInstant;
         if (gregorianCutover == DEFAULT_CUTOVER.getMillis()) {
@@ -314,7 +318,7 @@ public final class GJChronology extends AssembledChronology {
         return getInstance(zone, iCutoverInstant, getMinimumDaysInFirstWeek());
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
     {
@@ -338,7 +342,7 @@ public final class GJChronology extends AssembledChronology {
         return instant;
     }
 
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException
@@ -393,7 +397,7 @@ public final class GJChronology extends AssembledChronology {
      * 
      * @return the minimum days
      */
-    public int getMinimumDaysInFirstWeek() {
+    public @Positive int getMinimumDaysInFirstWeek() {
         return iGregorianChronology.getMinimumDaysInFirstWeek();
     }
 
@@ -463,7 +467,8 @@ public final class GJChronology extends AssembledChronology {
     }
 
     protected void assemble(Fields fields) {
-        Object[] params = (Object[])getParam();
+        @SuppressWarnings("cast.unsafe") // type erasure
+        Object @MinLen(3) [] params = (Object @MinLen(3) [])getParam();
 
         JulianChronology julian = (JulianChronology)params[0];
         GregorianChronology gregorian = (GregorianChronology)params[1];
@@ -696,7 +701,9 @@ public final class GJChronology extends AssembledChronology {
             return iGregorianField.add(instant, value);
         }
 
-        public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+        // can't express values.length = parital.size()
+        @SuppressWarnings("index:array.access.unsafe.high")
+        public int[] add(ReadablePartial partial, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
             // overridden as superclass algorithm can't handle
             // 2004-02-29 + 48 months -> 2008-02-29 type dates
             if (valueToAdd == 0) {
@@ -864,6 +871,8 @@ public final class GJChronology extends AssembledChronology {
             return getMaximumValue(instant);
         }
 
+        // Can't express values.length == partial.size()
+        @SuppressWarnings("index:array.access.unsafe.high")
         public int getMaximumValue(ReadablePartial partial, int[] values) {
             Chronology chrono = GJChronology.getInstanceUTC();
             long instant = 0L;

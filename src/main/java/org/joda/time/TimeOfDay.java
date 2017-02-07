@@ -63,6 +63,7 @@ import org.joda.time.format.ISODateTimeFormat;
  *  has been available since 1.3
  */
 @Deprecated
+@SuppressWarnings("index") // Deprecated class
 public final class TimeOfDay
         extends BasePartial
         implements ReadablePartial, Serializable {
@@ -111,6 +112,7 @@ public final class TimeOfDay
      * @throws IllegalArgumentException if the time is invalid for the ISO chronology
      * @since 1.2
      */
+
     public static TimeOfDay fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");

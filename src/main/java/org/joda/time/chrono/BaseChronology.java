@@ -30,6 +30,8 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * BaseChronology provides a skeleton implementation for chronology
  * classes. Many utility methods are defined, but all fields are unsupported.
@@ -95,7 +97,7 @@ public abstract class BaseChronology
      * @param millisOfDay millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
     {
@@ -124,7 +126,7 @@ public abstract class BaseChronology
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public long getDateTimeMillis(int year, @Positive int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException
@@ -177,6 +179,7 @@ public abstract class BaseChronology
      * @param values  the values to validate, not null unless the partial is empty
      * @throws IllegalArgumentException if the instant is invalid
      */
+    @SuppressWarnings("index:array.access.unsafe.high") // cant check values[i]
     public void validate(ReadablePartial partial, int[] values) {
         // check values in standard range, catching really stupid cases like -1
         // this means that the second check will not hit trouble

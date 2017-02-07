@@ -574,6 +574,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <compilerArgs>
+              <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+            </compilerArgs>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -584,6 +589,13 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <version>${maven-dependency-plugin.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>properties</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -713,6 +725,23 @@
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- Checker framework -->
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
+      <version>2.1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker</artifactId>
+      <version>2.1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>jdk8</artifactId>
+      <version>2.1.8</version>
     </dependency>
   </dependencies>
 
@@ -915,9 +944,9 @@
     <maven-surefire-report-plugin.version>2.18.1</maven-surefire-report-plugin.version>
     <maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
     <!-- Properties for maven-compiler-plugin -->
-    <maven.compiler.compilerVersion>1.5</maven.compiler.compilerVersion>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <maven.compiler.target>1.5</maven.compiler.target>
+    <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.fork>true</maven.compiler.fork>
     <maven.compiler.verbose>true</maven.compiler.verbose>
     <maven.compiler.optimize>true</maven.compiler.optimize>
@@ -928,6 +957,8 @@
     <notimestamp>true</notimestamp>
     <!-- Properties for maven-checkstyle-plugin -->
     <checkstyle.config.location>${project.basedir}/src/main/checkstyle/checkstyle.xml</checkstyle.config.location>
+    <!-- Properties for Checker Framework -->
+    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

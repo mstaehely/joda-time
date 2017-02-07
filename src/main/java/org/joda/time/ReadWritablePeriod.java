@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Defines a duration of time that can be queried and modified using datetime fields.
  * <p>
@@ -39,7 +41,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * @param value  the new value for the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    void setValue(int index, int value);
+    void setValue(@NonNegative int index, int value);
 
     /**
      * Sets the value of one of the fields.

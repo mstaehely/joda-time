@@ -15,6 +15,8 @@
  */
 package org.joda.time.convert;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * A set of converters, which allows exact converters to be quickly
  * selected. This class is threadsafe because it is (essentially) immutable.
@@ -23,17 +25,17 @@ package org.joda.time.convert;
  * @since 1.0
  */
 class ConverterSet {
-    private final Converter[] iConverters;
+    private final Converter @Positive [] iConverters;
 
     // A simple immutable hashtable: closed hashing, linear probing, sized
     // power of 2, at least one null slot.
-    private Entry[] iSelectEntries;
+    private Entry @Positive [] iSelectEntries;
 
-    ConverterSet(Converter[] converters) {
+    ConverterSet(Converter @Positive [] converters) {
         // Since this is a package private constructor, we trust ourselves not
         // to alter the array outside this class.
         iConverters = converters;
-        iSelectEntries = new Entry[1 << 4]; // 16
+        iSelectEntries = new Entry @Positive [1 << 4]; // 16
     }
 
     /**
@@ -44,10 +46,12 @@ class ConverterSet {
      * @throws IllegalStateException if multiple converters match the type
      * equally well
      */
+
+    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) // If entries is positive, entries.length is positive. Can not verify length of index within system. Can't check entries[i], newEntries[index]
     Converter select(Class<?> type) throws IllegalStateException {
         // Check the hashtable first.
-        Entry[] entries = iSelectEntries;
-        int length = entries.length;
+        Entry @Positive [] entries = iSelectEntries;
+        @Positive int length = entries.length;
         int index = type == null ? 0 : type.hashCode() & (length - 1);
 
         Entry e;
@@ -93,7 +97,7 @@ class ConverterSet {
         // Double capacity and re-hash.
 
         int newLength = length << 1;
-        Entry[] newEntries = new Entry[newLength];
+        Entry @Positive [] newEntries = new Entry @Positive [newLength];
         for (int i=0; i<length; i++) {
             e = entries[i];
             type = e.iType;
@@ -114,14 +118,14 @@ class ConverterSet {
     /**
      * Returns the amount of converters in the set.
      */
-    int size() {
+    @NonNegative int size() {
         return iConverters.length;
     }
 
     /**
      * Copies all the converters in the set to the given array.
      */
-    void copyInto(Converter[] converters) {
+    void copyInto(Converter @Positive [] converters) {
         System.arraycopy(iConverters, 0, converters, 0, iConverters.length);
     }
 
@@ -135,8 +139,10 @@ class ConverterSet {
      * @param removed  if not null, element 0 is set to the removed converter
      * @throws NullPointerException if converter is null
      */
-    ConverterSet add(Converter converter, Converter[] removed) {
-        Converter[] converters = iConverters;
+
+    @SuppressWarnings("index:array.access.unsafe.high") // Can't check removed[0], which should be unreachable unless removed exists. Can't check copy[length]
+    ConverterSet add(Converter converter, Converter @Positive [] removed) {
+        Converter @Positive [] converters = iConverters;
         int length = converters.length;
 
         for (int i=0; i<length; i++) {
@@ -151,7 +157,7 @@ class ConverterSet {
             
             if (converter.getSupportedType() == existing.getSupportedType()) {
                 // Replace the converter.
-                Converter[] copy = new Converter[length];
+                Converter @Positive [] copy = new Converter @Positive [length];
                     
                 for (int j=0; j<length; j++) {
                     if (j != i) {
@@ -169,7 +175,7 @@ class ConverterSet {
         }
 
         // Not found, so add it.
-        Converter[] copy = new Converter[length + 1];
+        Converter @Positive [] copy = new Converter @Positive [length + 1];
         System.arraycopy(converters, 0, copy, 0, length);
         copy[length] = converter;
         
@@ -187,8 +193,10 @@ class ConverterSet {
      * @param removed  if not null, element 0 is set to the removed converter
      * @throws NullPointerException if converter is null
      */
-    ConverterSet remove(Converter converter, Converter[] removed) {
-        Converter[] converters = iConverters;
+
+    @SuppressWarnings("index:array.access.unsafe.high") // Won't reach removed unless the array exists.
+    ConverterSet remove(Converter converter, Converter @Positive [] removed) {
+        Converter @Positive [] converters = iConverters;
         int length = converters.length;
 
         for (int i=0; i<length; i++) {
@@ -212,8 +220,10 @@ class ConverterSet {
      * @param removed if not null, element 0 is set to the removed converter
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    ConverterSet remove(final int index, Converter[] removed) {
-        Converter[] converters = iConverters;
+
+    @SuppressWarnings({"index:array.access.unsafe.high"}) // can't check copy[j++], converters[i]. Also, should never be able to reach removed[0] unless removed exists, and so has positive length
+    ConverterSet remove(final @NonNegative int index, Converter @Positive [] removed) {
+        Converter @Positive [] converters = iConverters;
         int length = converters.length;
         if (index >= length) {
             throw new IndexOutOfBoundsException();
@@ -223,7 +233,7 @@ class ConverterSet {
             removed[0] = converters[index];
         }
 
-        Converter[] copy = new Converter[length - 1];
+        Converter @Positive [] copy = new Converter @Positive [length - 1];
                 
         int j = 0;
         for (int i=0; i<length; i++) {
@@ -239,12 +249,14 @@ class ConverterSet {
      * Returns the closest matching converter for the given type, but not very
      * efficiently.
      */
+
+    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) // Length -1 should never be negative, as length of an array will need to be >= 1. Also, can't check converters[i], [j]
     private static Converter selectSlow(ConverterSet set, Class<?> type) {
-        Converter[] converters = set.iConverters;
+        Converter @Positive [] converters = set.iConverters;
         int length = converters.length;
         Converter converter;
 
-        for (int i=length; --i>=0; ) {
+        for (@NonNegative int i=length; --i>=0; ) {
             converter = converters[i];
             Class<?> supportedType = converter.getSupportedType();
 
@@ -274,10 +286,10 @@ class ConverterSet {
         // At this point, there exist multiple potential converters.
 
         // Eliminate supertypes.
-        for (int i=length; --i>=0; ) {
+        for (@NonNegative int i=length; --i>=0; ) {
             converter = converters[i];
             Class<?> supportedType = converter.getSupportedType();
-            for (int j=length; --j>=0; ) {
+            for (@NonNegative int j=length; --j>=0; ) {
                 if (j != i && converters[j].getSupportedType().isAssignableFrom(supportedType)) {
                     // Eliminate supertype.
                     set = set.remove(j, null);

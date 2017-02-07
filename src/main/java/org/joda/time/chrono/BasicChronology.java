@@ -33,6 +33,8 @@ import org.joda.time.field.PreciseDurationField;
 import org.joda.time.field.RemainderDateTimeField;
 import org.joda.time.field.ZeroIsMaxDateTimeField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Abstract implementation for calendar systems that use a typical
  * day/month/year/leapYear model.
@@ -120,14 +122,14 @@ abstract class BasicChronology extends AssembledChronology {
         cHalfdayOfDayField = new HalfdayField();
     }
 
-    private static final int CACHE_SIZE = 1 << 10;
+    private static final @NonNegative int CACHE_SIZE = 1 << 10;
     private static final int CACHE_MASK = CACHE_SIZE - 1;
 
     private transient final YearInfo[] iYearInfoCache = new YearInfo[CACHE_SIZE];
 
-    private final int iMinDaysInFirstWeek;
+    private final @Positive int iMinDaysInFirstWeek;
 
-    BasicChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    BasicChronology(Chronology base, Object param, @Positive int minDaysInFirstWeek) {
         super(base, param);
 
         if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7) {
@@ -148,7 +150,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     @Override
     public long getDateTimeMillis(
-            int year, int monthOfYear, int dayOfMonth, int millisOfDay)
+            int year, @Positive int monthOfYear, int dayOfMonth, int millisOfDay)
             throws IllegalArgumentException {
         Chronology base;
         if ((base = getBase()) != null) {
@@ -162,7 +164,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     @Override
     public long getDateTimeMillis(
-            int year, int monthOfYear, int dayOfMonth,
+            int year, @Positive int monthOfYear, int dayOfMonth,
             int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond)
             throws IllegalArgumentException {
         Chronology base;
@@ -182,7 +184,7 @@ abstract class BasicChronology extends AssembledChronology {
         return getDateTimeMillis0(year, monthOfYear, dayOfMonth, (int) millisOfDay);
     }
 
-    private long getDateTimeMillis0(int year, int monthOfYear, int dayOfMonth, int millisOfDay) {
+    private long getDateTimeMillis0(int year, @Positive int monthOfYear, int dayOfMonth, int millisOfDay) {
         long dayInstant = getDateMidnightMillis(year, monthOfYear, dayOfMonth);
         // try reversed calculation from next day for MIN
         if (dayInstant == Long.MIN_VALUE) {
@@ -200,7 +202,7 @@ abstract class BasicChronology extends AssembledChronology {
         return result;
     }
 
-    public int getMinimumDaysInFirstWeek() {
+    public @Positive int getMinimumDaysInFirstWeek() {
         return iMinDaysInFirstWeek;
     }
 
@@ -394,7 +396,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param month The month to use
      * @return millis from 1970-01-01T00:00:00Z
      */
-    long getYearMonthMillis(int year, int month) {
+    long getYearMonthMillis(int year, @Positive int month) {
         long millis = getYearMillis(year);
         millis += getTotalMillisByYearMonth(year, month);
         return millis;
@@ -408,7 +410,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param dayOfMonth The day of the month to use
      * @return millis from 1970-01-01T00:00:00Z
      */
-    long getYearMonthDayMillis(int year, int month, int dayOfMonth) {
+    long getYearMonthDayMillis(int year, @Positive int month, int dayOfMonth) {
         long millis = getYearMillis(year);
         millis += getTotalMillisByYearMonth(year, month);
         return millis + (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
@@ -458,7 +460,9 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * @param millis from 1970-01-01T00:00:00Z
      */
-    int getMonthOfYear(long millis) {
+    // We are looking at an instant after the start of the year
+    @SuppressWarnings("index:return.type.incompatible")
+    @Positive int getMonthOfYear(long millis) {
         return getMonthOfYear(millis, getYear(millis));
     }
 
@@ -473,7 +477,8 @@ abstract class BasicChronology extends AssembledChronology {
      */
     int getDayOfMonth(long millis) {
         int year = getYear(millis);
-        int month = getMonthOfYear(millis, year);
+        @SuppressWarnings("index") // current year
+        @Positive int month = getMonthOfYear(millis, year);
         return getDayOfMonth(millis, year, month);
     }
 
@@ -481,6 +486,8 @@ abstract class BasicChronology extends AssembledChronology {
      * @param millis from 1970-01-01T00:00:00Z
      * @param year precalculated year of millis
      */
+    // can't expres millis in year
+    @SuppressWarnings("index:argument.type.incompatible")
     int getDayOfMonth(long millis, int year) {
         int month = getMonthOfYear(millis, year);
         return getDayOfMonth(millis, year, month);
@@ -491,7 +498,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param year precalculated year of millis
      * @param month precalculated month of millis
      */
-    int getDayOfMonth(long millis, int year, int month) {
+    int getDayOfMonth(long millis, int year, @Positive int month) {
         long dateMillis = getYearMillis(year);
         dateMillis += getTotalMillisByYearMonth(year, month);
         return (int) ((millis - dateMillis) / DateTimeConstants.MILLIS_PER_DAY) + 1;
@@ -500,7 +507,9 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
-    int getDayOfYear(long instant) {
+    // we are looking at an instant after the beginning of the year
+    @SuppressWarnings("index:return.type.incompatible")
+    @Positive int getDayOfYear(long instant) {
         return getDayOfYear(instant, getYear(instant));
     }
 
@@ -600,7 +609,8 @@ abstract class BasicChronology extends AssembledChronology {
      */
     int getDaysInMonthMax(long instant) {
         int thisYear = getYear(instant);
-        int thisMonth = getMonthOfYear(instant, thisYear);
+        @SuppressWarnings("index") // current year
+        @Positive int thisMonth = getMonthOfYear(instant, thisYear);
         return getDaysInYearMonth(thisYear, thisMonth);
     }
 
@@ -626,7 +636,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param dayOfMonth  the day
      * @return the milliseconds
      */
-    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth) {
+    long getDateMidnightMillis(int year, @Positive int monthOfYear, int dayOfMonth) {
         FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear() - 1, getMaxYear() + 1);
         FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, getMaxMonth(year));
         FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, getDaysInYearMonth(year, monthOfYear));
@@ -674,7 +684,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param month  the month
      * @return the number of days
      */
-    abstract int getDaysInYearMonth(int year, int month);
+    abstract int getDaysInYearMonth(int year, @Positive int month);
 
     /**
      * Gets the maximum days in the specified month.
@@ -682,7 +692,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param month  the month
      * @return the max days
      */
-    abstract int getDaysInMonthMax(int month);
+    abstract int getDaysInMonthMax(@Positive int month);
 
     /**
      * Gets the total number of millis elapsed in this year at the start
@@ -692,7 +702,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param month  the month
      * @return the elapsed millis at the start of the month
      */
-    abstract long getTotalMillisByYearMonth(int year, int month);
+    abstract long getTotalMillisByYearMonth(int year, @Positive int month);
 
     /**
      * Gets the millisecond value of the first day of the year.
@@ -778,6 +788,8 @@ abstract class BasicChronology extends AssembledChronology {
 
     //-----------------------------------------------------------------------
     // Although accessed by multiple threads, this method doesn't need to be synchronized.
+    // iYearInfoCache.length == CACHE_MASK + 1, so the accesses are safe
+    @SuppressWarnings("index:array.access.unsafe.high")
     private YearInfo getYearInfo(int year) {
         YearInfo info = iYearInfoCache[year & CACHE_MASK];
         if (info == null || info.iYear != year) {
@@ -795,6 +807,8 @@ abstract class BasicChronology extends AssembledChronology {
             super(DateTimeFieldType.halfdayOfDay(), cHalfdaysField, cDaysField);
         }
 
+        // General fieldValue can be negative
+        @SuppressWarnings("index:argument.type.incompatible")
         public String getAsText(int fieldValue, Locale locale) {
             return GJLocaleSymbols.forLocale(locale).halfdayValueToText(fieldValue);
         }

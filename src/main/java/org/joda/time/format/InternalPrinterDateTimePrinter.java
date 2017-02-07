@@ -23,6 +23,8 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Adapter between old and new printer interface.
  *
@@ -51,7 +53,7 @@ class InternalPrinterDateTimePrinter implements DateTimePrinter, InternalPrinter
     }
 
     //-----------------------------------------------------------------------
-    public int estimatePrintedLength() {
+    public @NonNegative int estimatePrintedLength() {
         return underlying.estimatePrintedLength();
     }
 

@@ -23,6 +23,8 @@ import org.joda.time.ReadablePeriod;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * AbstractPeriod provides the common behaviour for period classes.
  * <p>
@@ -52,7 +54,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * @return the number of fields supported
      * @since 2.0 (previously on BasePeriod)
      */
-    public int size() {
+    public @NonNegative int size() {
         return getPeriodType().size();
     }
 
@@ -64,7 +66,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * @throws IndexOutOfBoundsException if the index is invalid
      * @since 2.0 (previously on BasePeriod)
      */
-    public DurationFieldType getFieldType(int index) {
+    public DurationFieldType getFieldType(@NonNegative int index) {
         return getPeriodType().getFieldType(index);
     }
 
@@ -77,7 +79,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      */
     public DurationFieldType[] getFieldTypes() {
         DurationFieldType[] result = new DurationFieldType[size()];
-        for (int i = 0; i < result.length; i++) {
+        for (@LTLengthOf("result") int i = 0; i < result.length; i++) {
             result[i] = getFieldType(i);
         }
         return result;
@@ -133,7 +135,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * @param type  the type to check, may be null which returns -1
      * @return the index of -1 if not supported
      */
-    public int indexOf(DurationFieldType type) {
+    public @GTENegativeOne int indexOf(DurationFieldType type) {
         return getPeriodType().indexOf(type);
     }
 

@@ -30,6 +30,8 @@ import org.joda.time.ReadablePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * BaseSingleFieldPeriod is an abstract implementation of ReadablePeriod that
  * manages a single duration field, such as days or minutes.
@@ -86,6 +88,10 @@ public abstract class BaseSingleFieldPeriod
      * @return the period
      * @throws IllegalArgumentException if the partials are null or invalid
      */
+
+    // Unclear if accessing values[0] is safe; that is, if values is
+    // always supposed to be unempty.
+    @SuppressWarnings("index:array.access.unsafe.high")
     protected static int between(ReadablePartial start, ReadablePartial end, ReadablePeriod zeroInstance) {
         if (start == null || end == null) {
             throw new IllegalArgumentException("ReadablePartial objects must not be null");
@@ -199,7 +205,7 @@ public abstract class BaseSingleFieldPeriod
      *
      * @return the number of fields supported, which is one
      */
-    public int size() {
+    public @Positive int size() {
         return 1;
     }
 

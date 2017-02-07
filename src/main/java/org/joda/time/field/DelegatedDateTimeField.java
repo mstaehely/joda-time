@@ -22,6 +22,8 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * <code>DelegatedDateTimeField</code> delegates each method call to the
  * date time field it wraps.
@@ -158,11 +160,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.add(instant, value);
     }
 
-    public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] add(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         return iField.add(instant, fieldIndex, values, valueToAdd);
     }
 
-    public int[] addWrapPartial(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addWrapPartial(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         return iField.addWrapPartial(instant, fieldIndex, values, valueToAdd);
     }
 
@@ -170,7 +172,7 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.addWrapField(instant, value);
     }
 
-    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addWrapField(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         return iField.addWrapField(instant, fieldIndex, values, valueToAdd);
     }
 
@@ -194,11 +196,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.set(instant, text);
     }
 
-    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
+    public int @SameLen("#3") [] set(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int newValue) {
         return iField.set(instant, fieldIndex, values, newValue);
     }
 
-    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale) {
+    public int[] set(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, String text, Locale locale) {
         return iField.set(instant, fieldIndex, values, text, locale);
     }
 

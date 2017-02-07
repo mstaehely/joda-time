@@ -18,6 +18,8 @@ package org.joda.time.chrono;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Abstract Chronology for implementing chronologies based on Gregorian/Julian formulae.
  * Most of the utility methods required by subclasses are package-private,
@@ -30,8 +32,7 @@ import org.joda.time.DateTimeConstants;
  * @author Brian S O'Neill
  * @author Guy Allard
  * @since 1.2, refactored from CommonGJChronology
- */
-abstract class BasicGJChronology extends BasicChronology {
+ */ abstract class BasicGJChronology extends BasicChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 538276888268L;
@@ -39,7 +40,7 @@ abstract class BasicGJChronology extends BasicChronology {
     // These arrays are NOT public. We trust ourselves not to alter the array.
     // They use zero-based array indexes so the that valid range of months is
     // automatically checked.
-    private static final int[] MIN_DAYS_PER_MONTH_ARRAY = {
+    private static final int @MinLen(12) [] MIN_DAYS_PER_MONTH_ARRAY = {
         31,28,31,30,31,30,31,31,30,31,30,31
     };
     private static final int[] MAX_DAYS_PER_MONTH_ARRAY = {
@@ -55,7 +56,11 @@ abstract class BasicGJChronology extends BasicChronology {
 
         long minSum = 0;
         long maxSum = 0;
-        for (int i = 0; i < 11; i++) {
+        for (@LTOMLengthOf({"MIN_DAYS_PER_MONTH_ARRAY",
+                            "MAX_DAYS_PER_MONTH_ARRAY",
+                            "MIN_TOTAL_MILLIS_BY_MONTH_ARRAY",
+                            "MAX_TOTAL_MILLIS_BY_MONTH_ARRAY"})
+             int i = 0; i < 11; i++) {
             long millis = MIN_DAYS_PER_MONTH_ARRAY[i]
                 * (long)DateTimeConstants.MILLIS_PER_DAY;
             minSum += millis;
@@ -71,7 +76,7 @@ abstract class BasicGJChronology extends BasicChronology {
     /**
      * Constructor.
      */
-    BasicGJChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    BasicGJChronology(Chronology base, Object param, @Positive int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 
@@ -121,7 +126,9 @@ abstract class BasicGJChronology extends BasicChronology {
      * @param month  the month
      * @return the number of days
      */
-    int getDaysInYearMonth(int year, int month) {
+    // Cant check month upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    int getDaysInYearMonth(int year, @Positive int month) {
         if (isLeapYear(year)) {
             return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
         } else {
@@ -130,7 +137,9 @@ abstract class BasicGJChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
-    int getDaysInMonthMax(int month) {
+    // Cant check month upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    int getDaysInMonthMax(@Positive int month) {
         return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
     }
 
@@ -140,7 +149,9 @@ abstract class BasicGJChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
-    long getTotalMillisByYearMonth(int year, int month) {
+    // Cant check month upper bound
+    @SuppressWarnings("index:array.access.unsafe.high")
+    long getTotalMillisByYearMonth(int year, @Positive int month) {
         if (isLeapYear(year)) {
             return MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[month - 1];
         } else {

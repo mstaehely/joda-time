@@ -24,6 +24,8 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * An immutable time period specifying a set of duration field values.
  * <p>
@@ -262,7 +264,8 @@ public final class Period
         }
         DurationFieldType[] types = new DurationFieldType[start.size()];
         int[] values = new int[start.size()];
-        for (int i = 0, isize = start.size(); i < isize; i++) {
+        int isize = start.size();
+        for (@LTLengthOf({"MonthDay.FIELD_TYPES", "YearMonth.FIELD_TYPES", "types", "values"})int i = 0; i < isize; i++) {
             if (start.getFieldType(i) != end.getFieldType(i)) {
                 throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
             }
@@ -753,6 +756,7 @@ public final class Period
      * 
      * @return the number of years in the period, zero if unsupported
      */
+
     public int getYears() {
         return getPeriodType().getIndexedField(this, PeriodType.YEAR_INDEX);
     }
@@ -762,6 +766,7 @@ public final class Period
      * 
      * @return the number of months in the period, zero if unsupported
      */
+  
     public int getMonths() {
         return getPeriodType().getIndexedField(this, PeriodType.MONTH_INDEX);
     }
@@ -771,6 +776,7 @@ public final class Period
      * 
      * @return the number of weeks in the period, zero if unsupported
      */
+
     public int getWeeks() {
         return getPeriodType().getIndexedField(this, PeriodType.WEEK_INDEX);
     }
@@ -780,6 +786,7 @@ public final class Period
      * 
      * @return the number of days in the period, zero if unsupported
      */
+
     public int getDays() {
         return getPeriodType().getIndexedField(this, PeriodType.DAY_INDEX);
     }
@@ -790,6 +797,7 @@ public final class Period
      * 
      * @return the number of hours in the period, zero if unsupported
      */
+    
     public int getHours() {
         return getPeriodType().getIndexedField(this, PeriodType.HOUR_INDEX);
     }
@@ -799,6 +807,7 @@ public final class Period
      * 
      * @return the number of minutes in the period, zero if unsupported
      */
+    
     public int getMinutes() {
         return getPeriodType().getIndexedField(this, PeriodType.MINUTE_INDEX);
     }
@@ -808,6 +817,7 @@ public final class Period
      * 
      * @return the number of seconds in the period, zero if unsupported
      */
+
     public int getSeconds() {
         return getPeriodType().getIndexedField(this, PeriodType.SECOND_INDEX);
     }
@@ -817,6 +827,7 @@ public final class Period
      * 
      * @return the number of millis in the period, zero if unsupported
      */
+
     public int getMillis() {
         return getPeriodType().getIndexedField(this, PeriodType.MILLI_INDEX);
     }

@@ -36,6 +36,8 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.field.MillisDurationField;
 import org.joda.time.field.PreciseDateTimeField;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Factory that creates complex instances of DateTimeFormatter via method calls.
  * <p>
@@ -302,14 +304,16 @@ public class DateTimeFormatterBuilder {
      * @throws IllegalArgumentException if any printer or parser is of an invalid type
      * @throws IllegalArgumentException if any parser element but the last is null
      */
-    public DateTimeFormatterBuilder append(DateTimePrinter printer, DateTimeParser[] parsers) {
+
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check copyOfParsers[i]
+    public DateTimeFormatterBuilder append(DateTimePrinter printer, DateTimeParser @NonNegative [] parsers) {
         if (printer != null) {
             checkPrinter(printer);
         }
         if (parsers == null) {
             throw new IllegalArgumentException("No parsers supplied");
         }
-        int length = parsers.length;
+        @NonNegative int length = parsers.length;
         if (length == 1) {
             if (parsers[0] == null) {
                 throw new IllegalArgumentException("No parser supplied");
@@ -317,8 +321,8 @@ public class DateTimeFormatterBuilder {
             return append0(DateTimePrinterInternalPrinter.of(printer), DateTimeParserInternalParser.of(parsers[0]));
         }
 
-        InternalParser[] copyOfParsers = new InternalParser[length];
-        int i;
+        InternalParser @NonNegative [] copyOfParsers = new InternalParser @NonNegative [length];
+        @NonNegative int i;
         for (i = 0; i < length - 1; i++) {
             if ((copyOfParsers[i] = DateTimeParserInternalParser.of(parsers[i])) == null) {
                 throw new IllegalArgumentException("Incomplete parser array");
@@ -344,7 +348,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder appendOptional(DateTimeParser parser) {
         checkParser(parser);
-        InternalParser[] parsers = new InternalParser[] {DateTimeParserInternalParser.of(parser), null};
+        InternalParser @NonNegative [] parsers = new InternalParser @NonNegative [] {DateTimeParserInternalParser.of(parser), null};
         return append0(null, new MatchingParser(parsers));
     }
 
@@ -1088,7 +1092,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetText, boolean showSeparators,
-            int minFields, int maxFields) {
+            @NonNegative int minFields, @NonNegative int maxFields) {
         return append0(new TimeZoneOffset
                        (zeroOffsetText, zeroOffsetText, showSeparators, minFields, maxFields));
     }
@@ -1115,7 +1119,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetPrintText, String zeroOffsetParseText, boolean showSeparators,
-            int minFields, int maxFields) {
+            @NonNegative int minFields, @NonNegative int maxFields) {
         return append0(new TimeZoneOffset
                        (zeroOffsetPrintText, zeroOffsetParseText, showSeparators, minFields, maxFields));
     }
@@ -1203,7 +1207,7 @@ public class DateTimeFormatterBuilder {
             iValue = value;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             return 1;
         }
 
@@ -1217,11 +1221,11 @@ public class DateTimeFormatterBuilder {
             appendable.append(iValue);
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return 1;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             if (position >= text.length()) {
                 return ~position;
             }
@@ -1256,7 +1260,7 @@ public class DateTimeFormatterBuilder {
             iValue = value;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength(){
             return iValue.length();
         }
 
@@ -1270,11 +1274,11 @@ public class DateTimeFormatterBuilder {
             appendable.append(iValue);
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return iValue.length();
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             if (csStartsWithIgnoreCase(text, position, iValue)) {
                 return position + iValue.length();
             }
@@ -1286,22 +1290,22 @@ public class DateTimeFormatterBuilder {
     static abstract class NumberFormatter
             implements InternalPrinter, InternalParser {
         protected final DateTimeFieldType iFieldType;
-        protected final int iMaxParsedDigits;
+        protected final @NonNegative int iMaxParsedDigits;
         protected final boolean iSigned;
 
         NumberFormatter(DateTimeFieldType fieldType,
-                int maxParsedDigits, boolean signed) {
+                @NonNegative int maxParsedDigits, boolean signed) {
             super();
             iFieldType = fieldType;
             iMaxParsedDigits = maxParsedDigits;
             iSigned = signed;
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return iMaxParsedDigits;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             int limit = Math.min(iMaxParsedDigits, text.length() - position);
 
             boolean negative = false;
@@ -1372,12 +1376,12 @@ public class DateTimeFormatterBuilder {
     static class UnpaddedNumber extends NumberFormatter {
 
         protected UnpaddedNumber(DateTimeFieldType fieldType,
-                       int maxParsedDigits, boolean signed)
+                       @NonNegative int maxParsedDigits, boolean signed)
         {
             super(fieldType, maxParsedDigits, signed);
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength(){
             return iMaxParsedDigits;
         }
 
@@ -1408,16 +1412,16 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class PaddedNumber extends NumberFormatter {
 
-        protected final int iMinPrintedDigits;
+        protected final @NonNegative int iMinPrintedDigits;
 
-        protected PaddedNumber(DateTimeFieldType fieldType, int maxParsedDigits,
-                     boolean signed, int minPrintedDigits)
+        protected PaddedNumber(DateTimeFieldType fieldType, @NonNegative int maxParsedDigits,
+                     boolean signed, @NonNegative int minPrintedDigits)
         {
             super(fieldType, maxParsedDigits, signed);
             iMinPrintedDigits = minPrintedDigits;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength(){
             return iMaxParsedDigits;
         }
 
@@ -1448,12 +1452,12 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class FixedNumber extends PaddedNumber {
 
-        protected FixedNumber(DateTimeFieldType fieldType, int numDigits, boolean signed) {
+        protected FixedNumber(DateTimeFieldType fieldType, @NonNegative int numDigits, boolean signed) {
             super(fieldType, numDigits, signed, numDigits);
         }
 
         @Override
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             int newPos = super.parseInto(bucket, text, position);
             if (newPos < 0) {
                 return newPos;
@@ -1495,11 +1499,11 @@ public class DateTimeFormatterBuilder {
             iLenientParse = lenientParse;
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return iLenientParse ? 4 : 2;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             int limit = text.length() - position;
 
             if (!iLenientParse) {
@@ -1598,7 +1602,7 @@ public class DateTimeFormatterBuilder {
             return position + 2;
         }
         
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength(){
             return 2;
         }
 
@@ -1654,8 +1658,8 @@ public class DateTimeFormatterBuilder {
     static class TextField
             implements InternalPrinter, InternalParser {
 
-        private static Map<Locale, Map<DateTimeFieldType, Object[]>> cParseCache =
-                    new ConcurrentHashMap<Locale, Map<DateTimeFieldType, Object[]>>();
+        private static Map<Locale, Map<DateTimeFieldType, Object @NonNegative []>> cParseCache =
+                    new ConcurrentHashMap<Locale, Map<DateTimeFieldType, Object @NonNegative []>>();
         private final DateTimeFieldType iFieldType;
         private final boolean iShort;
 
@@ -1665,7 +1669,7 @@ public class DateTimeFormatterBuilder {
             iShort = isShort;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             return iShort ? 6 : 20;
         }
 
@@ -1709,20 +1713,20 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return estimatePrintedLength();
         }
 
-        @SuppressWarnings("unchecked")
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        @SuppressWarnings({"unchecked", "index:array.access.unsafe.high"}) // can't check array[] accesses
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             Locale locale = bucket.getLocale();
             // handle languages which might have non ASCII A-Z or punctuation
             // bug 1788282
             Map<String, Boolean> validValues = null;
             int maxLength = 0;
-            Map<DateTimeFieldType, Object[]> innerMap = cParseCache.get(locale);
+            Map<DateTimeFieldType, Object @NonNegative []> innerMap = cParseCache.get(locale);
             if (innerMap == null) {
-                innerMap = new ConcurrentHashMap<DateTimeFieldType, Object[]>();
+                innerMap = new ConcurrentHashMap<DateTimeFieldType, Object @NonNegative []>();
                 cParseCache.put(locale, innerMap);
             }
             Object[] array = innerMap.get(iFieldType);
@@ -1753,7 +1757,7 @@ public class DateTimeFormatterBuilder {
                     validValues.put("ce", Boolean.TRUE);
                     maxLength = 3;
                 }
-                array = new Object[] {validValues, Integer.valueOf(maxLength)};
+                array = new Object @NonNegative [] {validValues, Integer.valueOf(maxLength)};
                 innerMap.put(iFieldType, array);
             } else {
                 validValues = (Map<String, Boolean>) array[0];
@@ -1777,10 +1781,10 @@ public class DateTimeFormatterBuilder {
             implements InternalPrinter, InternalParser {
 
         private final DateTimeFieldType iFieldType;
-        protected int iMinDigits;
-        protected int iMaxDigits;
+        protected @NonNegative int iMinDigits;
+        protected @NonNegative int iMaxDigits;
 
-        protected Fraction(DateTimeFieldType fieldType, int minDigits, int maxDigits) {
+        protected Fraction(DateTimeFieldType fieldType, @NonNegative int minDigits, @NonNegative int maxDigits) {
             super();
             iFieldType = fieldType;
             // Limit the precision requirements.
@@ -1791,7 +1795,7 @@ public class DateTimeFormatterBuilder {
             iMaxDigits = maxDigits;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             return iMaxDigits;
         }
 
@@ -1808,6 +1812,7 @@ public class DateTimeFormatterBuilder {
             printTo(appendable, millis, partial.getChronology());
         }
 
+        @SuppressWarnings("index:array.access.unsafe.high") // can't check fractionData access
         protected void printTo(Appendable appendable, long instant, Chronology chrono)
             throws IOException
         {
@@ -1868,7 +1873,7 @@ public class DateTimeFormatterBuilder {
             appendable.append(str);
         }
         
-        private long[] getFractionData(long fraction, DateTimeField field) {
+        private long @NonNegative [] getFractionData(long fraction, DateTimeField field) {
             long rangeMillis = field.getDurationField().getUnitMillis();
             long scalar;
             int maxDigits = iMaxDigits;
@@ -1901,14 +1906,14 @@ public class DateTimeFormatterBuilder {
                 maxDigits--;
             }
             
-            return new long[] {fraction * scalar / rangeMillis, maxDigits};
+            return new long @NonNegative [] {fraction * scalar / rangeMillis, maxDigits};
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return iMaxDigits;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             DateTimeField field = iFieldType.getField(bucket.getChronology());
             
             int limit = Math.min(iMaxDigits, text.length() - position);
@@ -1955,12 +1960,12 @@ public class DateTimeFormatterBuilder {
         private final String iZeroOffsetPrintText;
         private final String iZeroOffsetParseText;
         private final boolean iShowSeparators;
-        private final int iMinFields;
-        private final int iMaxFields;
+        private final @NonNegative int iMinFields;
+        private final @NonNegative int iMaxFields;
 
         TimeZoneOffset(String zeroOffsetPrintText, String zeroOffsetParseText,
                                 boolean showSeparators,
-                                int minFields, int maxFields)
+                                @NonNegative int minFields, @NonNegative int maxFields)
         {
             super();
             iZeroOffsetPrintText = zeroOffsetPrintText;
@@ -1977,7 +1982,7 @@ public class DateTimeFormatterBuilder {
             iMaxFields = maxFields;
         }
             
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             int est = 1 + iMinFields << 1;
             if (iShowSeparators) {
                 est += iMinFields - 1;
@@ -2051,11 +2056,11 @@ public class DateTimeFormatterBuilder {
             // no zone info
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return estimatePrintedLength();
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             int limit = text.length() - position;
 
             zeroOffset:
@@ -2230,7 +2235,7 @@ public class DateTimeFormatterBuilder {
          * Returns actual amount of digits to parse, but no more than original
          * 'amount' parameter.
          */
-        private int digitCount(CharSequence text, int position, int amount) {
+        private @NonNegative int digitCount(CharSequence text, @NonNegative int position, @NonNegative int amount) {
             int limit = Math.min(text.length() - position, amount);
             amount = 0;
             for (; limit > 0; limit--) {
@@ -2248,19 +2253,19 @@ public class DateTimeFormatterBuilder {
     static class TimeZoneName
             implements InternalPrinter, InternalParser {
 
-        static final int LONG_NAME = 0;
-        static final int SHORT_NAME = 1;
+        static final @NonNegative int LONG_NAME = 0;
+        static final @NonNegative int SHORT_NAME = 1;
 
         private final Map<String, DateTimeZone> iParseLookup;
-        private final int iType;
+        private final @NonNegative int iType;
 
-        TimeZoneName(int type, Map<String, DateTimeZone> parseLookup) {
+        TimeZoneName(@NonNegative int type, Map<String, DateTimeZone> parseLookup) {
             super();
             iType = type;
             iParseLookup = parseLookup;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             return (iType == SHORT_NAME ? 4 : 20);
         }
 
@@ -2287,11 +2292,11 @@ public class DateTimeFormatterBuilder {
             // no zone info
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return (iType == SHORT_NAME ? 4 : 20);
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             Map<String, DateTimeZone> parseLookup = iParseLookup;
             parseLookup = (parseLookup != null ? parseLookup : DateTimeUtils.getDefaultTimeZoneNames());
             String matched = null;
@@ -2320,8 +2325,8 @@ public class DateTimeFormatterBuilder {
         // group of "" is for zones that do not have a "/" in the name
         private static final Map<String, List<String>> GROUPED_IDS;
         private static final List<String> BASE_GROUPED_IDS = new ArrayList<String>();
-        static final int MAX_LENGTH;
-        static final int MAX_PREFIX_LENGTH;
+        static final @NonNegative int MAX_LENGTH;
+        static final @NonNegative int MAX_PREFIX_LENGTH;
         static {
             ALL_IDS = new ArrayList<String>(DateTimeZone.getAvailableIDs());
             Collections.sort(ALL_IDS);
@@ -2350,7 +2355,7 @@ public class DateTimeFormatterBuilder {
             MAX_PREFIX_LENGTH = maxPrefix;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             return MAX_LENGTH;
         }
 
@@ -2364,11 +2369,11 @@ public class DateTimeFormatterBuilder {
             // no zone info
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return MAX_LENGTH;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             // select the base set of identifiers that do not have a slash
             List<String> suffixSet = BASE_GROUPED_IDS;
             // hunt for a slash only as far as the max prefix length
@@ -2416,11 +2421,11 @@ public class DateTimeFormatterBuilder {
     static class Composite
             implements InternalPrinter, InternalParser {
 
-        private final InternalPrinter[] iPrinters;
-        private final InternalParser[] iParsers;
+        private final InternalPrinter @NonNegative [] iPrinters;
+        private final InternalParser @NonNegative [] iParsers;
 
-        private final int iPrintedLengthEstimate;
-        private final int iParsedLengthEstimate;
+        private final @NonNegative int iPrintedLengthEstimate;
+        private final @NonNegative int iParsedLengthEstimate;
 
         Composite(List<Object> elementPairs) {
             super();
@@ -2435,8 +2440,8 @@ public class DateTimeFormatterBuilder {
                 iPrintedLengthEstimate = 0;
             } else {
                 int size = printerList.size();
-                iPrinters = new InternalPrinter[size];
-                int printEst = 0;
+                iPrinters = new InternalPrinter @NonNegative [size];
+                @NonNegative int printEst = 0;
                 for (int i=0; i<size; i++) {
                     InternalPrinter printer = (InternalPrinter) printerList.get(i);
                     printEst += printer.estimatePrintedLength();
@@ -2450,7 +2455,7 @@ public class DateTimeFormatterBuilder {
                 iParsedLengthEstimate = 0;
             } else {
                 int size = parserList.size();
-                iParsers = new InternalParser[size];
+                iParsers = new InternalParser @NonNegative [size];
                 int parseEst = 0;
                 for (int i=0; i<size; i++) {
                     InternalParser parser = (InternalParser) parserList.get(i);
@@ -2461,14 +2466,14 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             return iPrintedLengthEstimate;
         }
 
         public void printTo(
                 Appendable appendable, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
-            InternalPrinter[] elements = iPrinters;
+            InternalPrinter @NonNegative [] elements = iPrinters;
             if (elements == null) {
                 throw new UnsupportedOperationException();
             }
@@ -2501,11 +2506,12 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return iParsedLengthEstimate;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        @SuppressWarnings("index:assignment.type.incompatible") // positionmust be a nonnegativ value to reach line 2522 by definition
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             InternalParser[] elements = iParsers;
             if (elements == null) {
                 throw new UnsupportedOperationException();
@@ -2549,7 +2555,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        private void addArrayToList(List<Object> list, Object[] array) {
+        private void addArrayToList(List<Object> list, Object @NonNegative [] array) {
             if (array != null) {
                 for (int i=0; i<array.length; i++) {
                     list.add(array[i]);
@@ -2562,14 +2568,14 @@ public class DateTimeFormatterBuilder {
     static class MatchingParser
             implements InternalParser {
 
-        private final InternalParser[] iParsers;
-        private final int iParsedLengthEstimate;
+        private final InternalParser @NonNegative [] iParsers;
+        private final @NonNegative int iParsedLengthEstimate;
 
-        MatchingParser(InternalParser[] parsers) {
+        MatchingParser(InternalParser @NonNegative [] parsers) {
             super();
             iParsers = parsers;
             int est = 0;
-            for (int i=parsers.length; --i>=0 ;) {
+            for (@NonNegative int i=parsers.length; --i>=0 ;) {
                 InternalParser parser = parsers[i];
                 if (parser != null) {
                     int len = parser.estimateParsedLength();
@@ -2581,11 +2587,12 @@ public class DateTimeFormatterBuilder {
             iParsedLengthEstimate = est;
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return iParsedLengthEstimate;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        @SuppressWarnings("index:array.access.unsafe.high") // can't check parsers[i + 1]
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             InternalParser[] parsers = iParsers;
             int length = parsers.length;
 
@@ -2643,7 +2650,7 @@ public class DateTimeFormatterBuilder {
         }
     }
 
-    static boolean csStartsWith(CharSequence text, int position, String search) {
+    static boolean csStartsWith(CharSequence text, @NonNegative int position, String search) {
         int searchLen = search.length();
         if ((text.length() - position) < searchLen) {
             return false;
@@ -2656,7 +2663,7 @@ public class DateTimeFormatterBuilder {
         return true;
     }
 
-    static boolean csStartsWithIgnoreCase(CharSequence text, int position, String search) {
+    static boolean csStartsWithIgnoreCase(CharSequence text, @NonNegative int position, String search) {
         int searchLen = search.length();
         if ((text.length() - position) < searchLen) {
             return false;

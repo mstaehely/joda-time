@@ -27,6 +27,8 @@ import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * DateMidnight defines a date where the time component is fixed at midnight.
  * The class uses a time zone, thus midnight is local unless a UTC time zone is used.
@@ -313,7 +315,7 @@ public final class DateMidnight
      * @param monthOfYear  the month of the year, from 1 to 12
      * @param dayOfMonth  the day of the month, from 1 to 31
      */
-    public DateMidnight(int year, int monthOfYear, int dayOfMonth) {
+    public DateMidnight(int year, @Positive int monthOfYear, int dayOfMonth) {
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0);
     }
 
@@ -329,7 +331,7 @@ public final class DateMidnight
      * @param dayOfMonth  the day of the month, from 1 to 31
      * @param zone  the time zone, null means default time zone
      */
-    public DateMidnight(int year, int monthOfYear, int dayOfMonth, DateTimeZone zone) {
+    public DateMidnight(int year, @Positive int monthOfYear, int dayOfMonth, DateTimeZone zone) {
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0, zone);
     }
 
@@ -346,7 +348,7 @@ public final class DateMidnight
      * @param dayOfMonth  the day of the month, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public DateMidnight(int year, int monthOfYear, int dayOfMonth, Chronology chronology) {
+    public DateMidnight(int year, @Positive int monthOfYear, int dayOfMonth, Chronology chronology) {
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0, chronology);
     }
 

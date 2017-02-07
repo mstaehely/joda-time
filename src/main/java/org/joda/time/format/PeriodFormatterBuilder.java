@@ -36,6 +36,8 @@ import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Factory that creates complex instances of PeriodFormatter via method calls.
  * <p>
@@ -581,11 +583,12 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
-    private void appendField(int type) {
+    private void appendField(@NonNegative int type) {
         appendField(type, iMinPrintedDigits);
     }
 
-    private void appendField(int type, int minPrinted) {
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check iFieldFormattrs[type]
+    private void appendField(@NonNegative int type, int minPrinted) {
         FieldFormatter field = new FieldFormatter(minPrinted, iPrintZeroSetting,
             iMaxParsedDigits, iRejectSignedValues, type, iFieldFormatters, iPrefix, null);
         append0(field, field);
@@ -681,6 +684,8 @@ public class PeriodFormatterBuilder {
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
+
+    @SuppressWarnings({"index:argument.type.incompatible", "index:array.access.unsafe.high"} ) // iElementPairs is a list. Can't check iFieldFormatters[newField.getFieldType()]
     private PeriodFormatterBuilder appendSuffix(PeriodFieldAffix suffix) {
         final Object originalPrinter;
         final Object originalParser;
@@ -819,7 +824,8 @@ public class PeriodFormatterBuilder {
                                                   String[] variants) {
         return appendSeparator(text, finalText, variants, true, true);
     }
-
+    
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check comp[0], [1]
     private PeriodFormatterBuilder appendSeparator(String text, String finalText,
                                                    String[] variants,
                                                    boolean useBefore, boolean useAfter) {
@@ -842,7 +848,7 @@ public class PeriodFormatterBuilder {
         }
         
         // find the last separator added
-        int i;
+        @NonNegative int i;
         Separator lastSeparator = null;
         for (i=pairs.size(); --i>=0; ) {
             if (pairs.get(i) instanceof Separator) {
@@ -887,7 +893,9 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
+         @SuppressWarnings("index:array.access.unsafe.high") // can't check comp[0], [1]
+             
+         private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
         if (notPrinter && notParser) {
             throw new IllegalStateException("Builder has created neither a printer nor a parser");
         }
@@ -928,21 +936,21 @@ public class PeriodFormatterBuilder {
      * This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
      */
     static interface PeriodFieldAffix {
-        int calculatePrintedLength(int value);
+        int calculatePrintedLength(@NonNegative int value);
         
-        void printTo(StringBuffer buf, int value);
+        void printTo(StringBuffer buf, @NonNegative int value);
         
-        void printTo(Writer out, int value) throws IOException;
+        void printTo(Writer out, @NonNegative int value) throws IOException;
         
         /**
          * @return new position after parsing affix, or ~position of failure
          */
-        int parse(String periodStr, int position);
+        int parse(String periodStr, @NonNegative int position);
 
         /**
          * @return position where affix starts, or original ~position if not found
          */
-        int scan(String periodStr, int position);
+        int scan(String periodStr, @NonNegative int position);
 
         /**
          * @return a copy of array of affixes
@@ -1059,7 +1067,7 @@ public class PeriodFormatterBuilder {
             return ~position;
         }
 
-        public int scan(String periodStr, final int position) {
+        public int scan(String periodStr, final @NonNegative int position) {
             String text = iText;
             int textLength = text.length();
             int sourceLength = periodStr.length();
@@ -1187,7 +1195,7 @@ public class PeriodFormatterBuilder {
         };
         
         private final String[] iSuffixes;
-        private final Pattern[] iPatterns;
+        private final Pattern @Positive [] iPatterns;
 
         // The parse method has to iterate over the suffixes from the longest one to the shortest one
         // Otherwise it might consume not enough characters.
@@ -1195,7 +1203,7 @@ public class PeriodFormatterBuilder {
 
         RegExAffix(String[] regExes, String[] texts) {
             iSuffixes = texts.clone();
-            iPatterns = new Pattern[regExes.length];
+            iPatterns = new Pattern @Positive [regExes.length];
             for (int i = 0; i < regExes.length; i++) {
                 Pattern pattern = PATTERNS.get(regExes[i]);
                 if (pattern == null) {
@@ -1208,7 +1216,8 @@ public class PeriodFormatterBuilder {
             Arrays.sort(iSuffixesSortedDescByLength, LENGTH_DESC_COMPARATOR);
         }
 
-        private int selectSuffixIndex(int value) {
+        @SuppressWarnings("index:return.type.incompatible") // iPatterns.length should never be 0.
+        private @NonNegative int selectSuffixIndex(@NonNegative int value) {
             String valueString = String.valueOf(value);
             for (int i = 0; i < iPatterns.length; i++) {
                 if (iPatterns[i].matcher(valueString).matches()) {
@@ -1217,16 +1226,17 @@ public class PeriodFormatterBuilder {
             }
             return iPatterns.length - 1;
         }
-
-        public int calculatePrintedLength(int value) {
+        @SuppressWarnings("index:array.access.unsafe.high") // can't checkiSuffixes[selectSuffixIndex(value)] 
+        public int calculatePrintedLength(@NonNegative int value) {
             return iSuffixes[selectSuffixIndex(value)].length();
         }
-
-        public void printTo(StringBuffer buf, int value) {
+        @SuppressWarnings("index:array.access.unsafe.high") // can't checkiSufixes[selectSuffixIndex(value)] 
+        public void printTo(StringBuffer buf, @NonNegative int value) {
             buf.append(iSuffixes[selectSuffixIndex(value)]);
         }
 
-        public void printTo(Writer out, int value) throws IOException {
+        @SuppressWarnings("index:array.access.unsafe.high") // can't check iSuffixes[selectSuffixIndex(value)]
+        public void printTo(Writer out, @NonNegative int value) throws IOException {
             out.write(iSuffixes[selectSuffixIndex(value)]);
         }
 
@@ -1284,22 +1294,22 @@ public class PeriodFormatterBuilder {
             iLeftRightCombinations =  result.toArray(new String[result.size()]);
         }
 
-        public int calculatePrintedLength(int value) {
+        public int calculatePrintedLength(@NonNegative int value) {
             return iLeft.calculatePrintedLength(value)
                 + iRight.calculatePrintedLength(value);
         }
 
-        public void printTo(StringBuffer buf, int value) {
+        public void printTo(StringBuffer buf, @NonNegative int value) {
             iLeft.printTo(buf, value);
             iRight.printTo(buf, value);
         }
 
-        public void printTo(Writer out, int value) throws IOException {
+        public void printTo(Writer out, @NonNegative int value) throws IOException {
             iLeft.printTo(out, value);
             iRight.printTo(out, value);
         }
 
-        public int parse(String periodStr, int position) {
+        public int parse(String periodStr, @NonNegative int position) {
             int pos = iLeft.parse(periodStr, position);
             if (pos >= 0) {
                 pos = iRight.parse(periodStr, pos);
@@ -1310,7 +1320,8 @@ public class PeriodFormatterBuilder {
             return pos;
         }
 
-        public int scan(String periodStr, final int position) {
+        @SuppressWarnings("index:argument.type.incompatible") // Scan may return a negative value. Will not reach method call as an argument if this is the case.
+        public int scan(String periodStr, final @NonNegative int position) {
             int leftPosition = iLeft.scan(periodStr, position);
             if (leftPosition >= 0) {
                 int rightPosition = iRight.scan(periodStr, iLeft.parse(periodStr, leftPosition));
@@ -1342,7 +1353,7 @@ public class PeriodFormatterBuilder {
         private final boolean iRejectSignedValues;
         
         /** The index of the field type, 0=year, etc. */
-        private final int iFieldType;
+        private final @NonNegative int iFieldType;
         /**
          * The array of the latest formatter added for each type.
          * This is shared between all the field formatters in a formatter.
@@ -1354,7 +1365,7 @@ public class PeriodFormatterBuilder {
 
         FieldFormatter(int minPrintedDigits, int printZeroSetting,
                        int maxParsedDigits, boolean rejectSignedValues,
-                       int fieldType, FieldFormatter[] fieldFormatters,
+                       @NonNegative int fieldType, FieldFormatter[] fieldFormatters,
                        PeriodFieldAffix prefix, PeriodFieldAffix suffix) {
             iMinPrintedDigits = minPrintedDigits;
             iPrintZeroSetting = printZeroSetting;
@@ -1410,7 +1421,8 @@ public class PeriodFormatterBuilder {
             return 0;
         }
 
-        public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
+         @SuppressWarnings("index:assignment.type.incompatible") // Due to structure of inheritance of this program, printTo requires non-negative values. DateTime constants are all positive, and valueLong returns a non-negative no matter what. Should not need to annotate the DateTime constants, as they are hard-coded in to that class.
+       public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
             long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
                 return 0;
@@ -1430,7 +1442,7 @@ public class PeriodFormatterBuilder {
                 // reset valueLong to refer to the seconds part for the prefic/suffix calculation
                 valueLong = valueLong / DateTimeConstants.MILLIS_PER_SECOND;
             }
-            int value = (int) valueLong;
+            @NonNegative int value = (int) valueLong;
 
             if (iPrefix != null) {
                 sum += iPrefix.calculatePrintedLength(value);
@@ -1441,13 +1453,14 @@ public class PeriodFormatterBuilder {
 
             return sum;
         }
-        
+         @SuppressWarnings("index:assignment.type.incompatible") // Due to structure of inheritance of this program, printTo requires non-negative values. DateTime constants are all positive, and valueLong returns a non-negative no matter what. Should not need to annotate the DateTime constants, as they are hard-coded in to that class.
+       
         public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
-            long valueLong = getFieldValue(period);
+            @NonNegative long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
                 return;
             }
-            int value = (int) valueLong;
+            @NonNegative int value = (int) valueLong;
             if (iFieldType >= SECONDS_MILLIS) {
                 value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
             }
@@ -1477,12 +1490,13 @@ public class PeriodFormatterBuilder {
             }
         }
 
+        @SuppressWarnings("index:assignment.type.incompatible") // Due to structure of inheritance of this program, printTo requires non-negative values. DateTime constants are all positive, and valueLong returns a non-negative no matter what. Should not need to annotate the DateTime constants, as they are hard-coded in to that class.
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
-            long valueLong = getFieldValue(period);
+            @NonNegative long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
                 return;
             }
-            int value = (int) valueLong;
+            @NonNegative int value = (int) valueLong;
             if (iFieldType >= SECONDS_MILLIS) {
                 value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
             }
@@ -1508,9 +1522,11 @@ public class PeriodFormatterBuilder {
             }
         }
 
+        @SuppressWarnings({"index:assignment.type.incompatible", "index:argument.type.incompatible"}) // parse can return negative values when it fails, so cannot guarantee position will be NonNegative at that return.  fractPos - position - 1 is guaranteed to be >= 0 when passed to ParseInt
+            
         public int parseInto(
                 ReadWritablePeriod period, String text, 
-                int position, Locale locale) {
+                @NonNegative int position, Locale locale) {
 
             boolean mustParse = (iPrintZeroSetting == PRINT_ZERO_ALWAYS);
 
@@ -1677,7 +1693,7 @@ public class PeriodFormatterBuilder {
          * @param length exact count of characters to parse
          * @return parsed int value
          */
-        private int parseInt(String text, int position, int length) {
+        private int parseInt(String text, @NonNegative int position, @NonNegative int length) {
             if (length >= 10) {
                 // Since value may exceed max, use stock parser which checks for this.
                 return Integer.parseInt(text.substring(position, position + length));
@@ -1707,6 +1723,8 @@ public class PeriodFormatterBuilder {
         /**
          * @return Long.MAX_VALUE if nothing to print, otherwise value
          */
+
+        @SuppressWarnings("index:array.access.unsafe.high") // can't check iFieldFormatters[iFieldType], [i]
         long getFieldValue(ReadablePeriod period) {
             PeriodType type;
             if (iPrintZeroSetting == PRINT_ZERO_ALWAYS) {
@@ -1857,7 +1875,7 @@ public class PeriodFormatterBuilder {
             }
         }
 
-        int getFieldType() {
+        @NonNegative int getFieldType() {
             return iFieldType;
         }
     }
@@ -1893,7 +1911,7 @@ public class PeriodFormatterBuilder {
 
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
-                int position, Locale locale) {
+                @NonNegative int position, Locale locale) {
             if (periodStr.regionMatches(true, position, iText, 0, iText.length())) {
                 return position + iText.length();
             }
@@ -1936,7 +1954,7 @@ public class PeriodFormatterBuilder {
                 parsedSet.add(text);
                 parsedSet.add(finalText);
                 if (variants != null) {
-                    for (int i=variants.length; --i>=0; ) {
+                    for (@NonNegative int i=variants.length; --i>=0; ) {
                         parsedSet.add(variants[i]);
                     }
                 }
@@ -2028,9 +2046,10 @@ public class PeriodFormatterBuilder {
             after.printTo(out, period, locale);
         }
 
+        @SuppressWarnings("index:assignment.type.incompatible") // position is guaranteed to be >= 0 whenever it is used as a parameter to the parseInto method.
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
-                int position, Locale locale) {
+                @NonNegative int position, Locale locale) {
             int oldPos = position;
             position = iBeforeParser.parseInto(period, periodStr, position, locale);
 
@@ -2118,7 +2137,7 @@ public class PeriodFormatterBuilder {
         public int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale locale) {
             int sum = 0;
             PeriodPrinter[] printers = iPrinters;
-            for (int i=printers.length; sum < stopAt && --i>=0; ) {
+            for(@NonNegative int i=printers.length; sum < stopAt && --i>=0; ) {
                 sum += printers[i].countFieldsToPrint(period, Integer.MAX_VALUE, locale);
             }
             return sum;
@@ -2127,7 +2146,7 @@ public class PeriodFormatterBuilder {
         public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
             int sum = 0;
             PeriodPrinter[] printers = iPrinters;
-            for (int i=printers.length; --i>=0; ) {
+            for (@NonNegative int i=printers.length; --i>=0; ) {
                 sum += printers[i].calculatePrintedLength(period, locale);
             }
             return sum;
@@ -2149,9 +2168,10 @@ public class PeriodFormatterBuilder {
             }
         }
 
+        @SuppressWarnings("index:assignment.type.incompatible") // Position is guaranteed to be >= 0 and len is guaranteed to be >= 0
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
-                int position, Locale locale) {
+                @NonNegative int position, Locale locale) {
             PeriodParser[] parsers = iParsers;
             if (parsers == null) {
                 throw new UnsupportedOperationException();

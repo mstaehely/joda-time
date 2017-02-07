@@ -27,6 +27,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Factory that creates instances of DateTimeFormatter from patterns and styles.
  * <p>
@@ -197,7 +199,7 @@ public class DateTimeFormat {
      * @return the formatter
      * @throws IllegalArgumentException if the style is invalid
      */
-    public static DateTimeFormatter forStyle(String style) {
+    public static DateTimeFormatter forStyle(@MinLen(2) String style) {
         return createFormatterForStyle(style);
     }
 
@@ -215,7 +217,7 @@ public class DateTimeFormat {
      * @throws IllegalArgumentException if the style is invalid
      * @since 1.3
      */
-    public static String patternForStyle(String style, Locale locale) {
+    public static String patternForStyle(@MinLen(2) String style, Locale locale) {
         DateTimeFormatter formatter = createFormatterForStyle(style);
         if (locale == null) {
             locale = Locale.getDefault();
@@ -405,7 +407,7 @@ public class DateTimeFormat {
      */
     private static void parsePatternTo(DateTimeFormatterBuilder builder, String pattern) {
         int length = pattern.length();
-        int[] indexRef = new int[1];
+        @NonNegative int @NonNegative [] indexRef = new int @NonNegative [1];
 
         for (int i=0; i<length; i++) {
             indexRef[0] = i;
@@ -577,10 +579,11 @@ public class DateTimeFormat {
      *  location and the output is the location after parsing the token
      * @return the parsed token
      */
-    private static String parseToken(String pattern, int[] indexRef) {
+    @SuppressWarnings("index:array.access.unsafe.high") // can't check indexRef[0]
+    private static String parseToken(String pattern, @NonNegative int @NonNegative [] indexRef) {
         StringBuilder buf = new StringBuilder();
 
-        int i = indexRef[0];
+        @NonNegative int i = indexRef[0];
         int length = pattern.length();
 
         char c = pattern.charAt(i);
@@ -707,12 +710,12 @@ public class DateTimeFormat {
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @throws IllegalArgumentException if the style is invalid
      */
-    private static DateTimeFormatter createFormatterForStyle(String style) {
+    private static DateTimeFormatter createFormatterForStyle(@MinLen(2) String style) {
         if (style == null || style.length() != 2) {
             throw new IllegalArgumentException("Invalid style specification: " + style);
         }
-        int dateStyle = selectStyle(style.charAt(0));
-        int timeStyle = selectStyle(style.charAt(1));
+        @NonNegative int dateStyle = selectStyle(style.charAt(0));
+        @NonNegative int timeStyle = selectStyle(style.charAt(1));
         if (dateStyle == NONE && timeStyle == NONE) {
             throw new IllegalArgumentException("Style '--' is invalid");
         }
@@ -726,8 +729,8 @@ public class DateTimeFormat {
      * @param timeStyle  the time style
      * @return the formatter
      */
-    private static DateTimeFormatter createFormatterForStyleIndex(int dateStyle, int timeStyle) {
-        int index = ((dateStyle << 2) + dateStyle) + timeStyle;  // (dateStyle * 5 + timeStyle);
+    private static DateTimeFormatter createFormatterForStyleIndex(@NonNegative int dateStyle, @NonNegative int timeStyle) {
+        @NonNegative int index = ((dateStyle << 2) + dateStyle) + timeStyle;  // (dateStyle * 5 + timeStyle);
         // Should never happen but do a double check...
         if (index >= cStyleCache.length()) {
             return createDateTimeFormatter(dateStyle, timeStyle);
@@ -766,7 +769,7 @@ public class DateTimeFormat {
      * @param ch  the Joda style code
      * @return the JDK style code
      */
-    private static int selectStyle(char ch) {
+    private static @NonNegative int selectStyle(char ch) {
         switch (ch) {
         case 'S':
             return SHORT;
@@ -800,7 +803,7 @@ public class DateTimeFormat {
             iType = type;
         }
 
-        public int estimatePrintedLength() {
+        public @NonNegative int estimatePrintedLength() {
             return 40;  // guess
         }
 
@@ -816,15 +819,17 @@ public class DateTimeFormat {
             p.printTo(appendable, partial, locale);
         }
 
-        public int estimateParsedLength() {
+        public @NonNegative int estimateParsedLength() {
             return 40;  // guess
         }
 
-        public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+        public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             InternalParser p = getFormatter(bucket.getLocale()).getParser0();
             return p.parseInto(bucket, text, position);
         }
 
+
+        @SuppressWarnings("index:return.type.incompatible") // DateFormat not supported by index checker
         private DateTimeFormatter getFormatter(Locale locale) {
             locale = (locale == null ? Locale.getDefault() : locale);
             StyleFormatterCacheKey key = new StyleFormatterCacheKey(iType, iDateStyle, iTimeStyle, locale);
@@ -839,6 +844,7 @@ public class DateTimeFormat {
             return f;
         }
 
+        @SuppressWarnings("index:return.type.incompatible") // DateFormat not supported by index checker
         String getPattern(Locale locale) {
             DateFormat f = null;
             switch (iType) {

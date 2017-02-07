@@ -23,6 +23,8 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Standard mutable time period implementation.
  * <p>
@@ -441,7 +443,7 @@ public class MutablePeriod
      * @param value  the new value for the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public void setValue(int index, int value) {
+    public void setValue(@NonNegative int index, int value) {
         super.setValue(index, value);
     }
 
@@ -742,6 +744,7 @@ public class MutablePeriod
      * 
      * @return the number of years in the period, zero if unsupported
      */
+
     public int getYears() {
         return getPeriodType().getIndexedField(this, PeriodType.YEAR_INDEX);
     }
@@ -751,6 +754,7 @@ public class MutablePeriod
      * 
      * @return the number of months in the period, zero if unsupported
      */
+
     public int getMonths() {
         return getPeriodType().getIndexedField(this, PeriodType.MONTH_INDEX);
     }
@@ -760,6 +764,7 @@ public class MutablePeriod
      * 
      * @return the number of weeks in the period, zero if unsupported
      */
+    
     public int getWeeks() {
         return getPeriodType().getIndexedField(this, PeriodType.WEEK_INDEX);
     }
@@ -769,6 +774,7 @@ public class MutablePeriod
      * 
      * @return the number of days in the period, zero if unsupported
      */
+
     public int getDays() {
         return getPeriodType().getIndexedField(this, PeriodType.DAY_INDEX);
     }
@@ -779,6 +785,7 @@ public class MutablePeriod
      * 
      * @return the number of hours in the period, zero if unsupported
      */
+
     public int getHours() {
         return getPeriodType().getIndexedField(this, PeriodType.HOUR_INDEX);
     }
@@ -788,6 +795,7 @@ public class MutablePeriod
      * 
      * @return the number of minutes in the period, zero if unsupported
      */
+
     public int getMinutes() {
         return getPeriodType().getIndexedField(this, PeriodType.MINUTE_INDEX);
     }
@@ -797,6 +805,7 @@ public class MutablePeriod
      * 
      * @return the number of seconds in the period, zero if unsupported
      */
+
     public int getSeconds() {
         return getPeriodType().getIndexedField(this, PeriodType.SECOND_INDEX);
     }
@@ -806,6 +815,7 @@ public class MutablePeriod
      * 
      * @return the number of millis in the period, zero if unsupported
      */
+
     public int getMillis() {
         return getPeriodType().getIndexedField(this, PeriodType.MILLI_INDEX);
     }

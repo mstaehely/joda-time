@@ -15,6 +15,8 @@
  */
 package org.joda.time.format;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * Adapter between old and new parser interface.
  *
@@ -44,11 +46,11 @@ class DateTimeParserInternalParser implements InternalParser {
         return underlying;
     }
 
-    public int estimateParsedLength() {
+    public @NonNegative int estimateParsedLength() {
         return underlying.estimateParsedLength();
     }
 
-    public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+    public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
         return underlying.parseInto(bucket, text.toString(), position);
     }
 
