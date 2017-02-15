@@ -355,7 +355,10 @@ public final class Partial
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // Cannot guarantee size of iTypes
+    @SuppressWarnings("index:array.access.unsafe.high")
+    // Unable to annotate this as IndexFor("iTypes") due to the abstract
+    // class "AbstractPartial" which seven classes extend. Not all of those
+    // classes contain the array 'iTypes' so this cannot be annotated.
     protected DateTimeField getField(@NonNegative int index, Chronology chrono) {
         return iTypes[index].getField(chrono);
     }
@@ -367,7 +370,10 @@ public final class Partial
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // Cannot guarantee size of iTypes
+    @SuppressWarnings("index:array.access.unsafe.high")
+    // Unable to annotate this as IndexFor("iTypes") due to the abstract
+    // class "AbstractPartial" which seven classes extend. Not all of those
+    // classes contain the array 'iTypes' so this cannot be annotated.
     public DateTimeFieldType getFieldType(@NonNegative int index) {
         return iTypes[index];
     }
@@ -392,7 +398,10 @@ public final class Partial
      * @return the value
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // Cannot guarantee size of iValues
+    @SuppressWarnings("index:array.access.unsafe.high")
+    // Unable to annotate this as IndexFor("iValues") due to the interface
+    // "ReadablePartial" which ten classes implement. Not all of those
+    // classes contain the array 'iValues' so this cannot be annotated.
     public int getValue(@NonNegative int index) {
         return iValues[index];
     }
@@ -453,10 +462,14 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      */
     @SuppressWarnings("index")
-    // Because the existence of a field cannot be guaranteed, this is
-    // suppressed. If the indicated field does exist, then an array of
-    // the same length as this one's will be created. The loop will not
-    // exceed the arrays' lengths.
+    // Two warnings are suppressed here: array.access.unsafe.high and
+    // argument.type.incompatible. The high array access is a result of
+    // index arithmetic such as i + 1 or because the existence of the
+    // array being indexed cannot be guaranteed unless the fieldType
+    // parameter is non-null, and the field being searched for exists.
+    // If the field does exist, the index will be unable to exceed the
+    // bounds. The incompatible arguments are a result of the Index
+    // Checker being unable to handle list-like objects.
     public Partial with(DateTimeFieldType fieldType, int value) {
         if (fieldType == null) {
             throw new IllegalArgumentException("The field type must not be null");
@@ -556,7 +569,12 @@ public final class Partial
      * @return a copy of this instance with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+    @SuppressWarnings("index:argument.type.incompatible")
+    // Index cannot be annotated as an index for newValues as newValues
+    // does not exist at the time of initialization for 'index'. Further,
+    // indexOfSupported can make no guarantees about its upper bound
+    // value, but is guaranteed to return the index of the field being
+    // searched for if it exists.
     public Partial withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
@@ -581,7 +599,12 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
-    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+    @SuppressWarnings("index:argument.type.incompatible")
+    // Index cannot be annotated as an index for newValues as newValues
+    // does not exist at the time of initialization for 'index'. Further,
+    // indexOfSupported can make no guarantees about its upper bound
+    // value, but is guaranteed to return the index of the field being
+    // searched for if it exists.
     public Partial withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
@@ -606,7 +629,12 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
-    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+    @SuppressWarnings("index:argument.type.incompatible")
+    // Index cannot be annotated as an index for newValues as newValues
+    // does not exist at the time of intialization for 'index'. Further,
+    // indexOfSupported can make no guarantees about its upper bound
+    // value, but is guaranteed to return the index of the field being
+    // searched for if it exists.
     public Partial withFieldAddWrapped(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
@@ -632,7 +660,12 @@ public final class Partial
      * @return a copy of this instance with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
-    @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+    @SuppressWarnings("index:argument.type.incompatible")
+    // The value of index cannot be guaranteed to be a valid index for
+    // the add method, as indexOf can return -1 if the request field
+    // is not supported by this partial. However, the if statement
+    // guarantees that -1 will not be passed, and indexOf guarantees
+    // the value of index will be valid.
     public Partial withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
             return this;
@@ -937,7 +970,11 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+        @SuppressWarnings("index:argument.type.incompatible")
+        // iFieldIndex cannot be annotated as an index for newValues as
+        // newValues does not exist at the time of initialization of
+        // iFieldIndex. The Index Checker does not currently handle
+        // list like objects.
         public Partial addToCopy(int valueToAdd) {
             int[] newValues = iPartial.getValues();
             newValues = getField().add(iPartial, iFieldIndex, newValues, valueToAdd);
@@ -962,7 +999,11 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+        @SuppressWarnings("index:argument.type.incompatible")
+        // iFieldIndex cannot be annotated as an index for newValues as
+        // newValues does not exist at the time of initialization of
+        // iFieldIndex. The Index Checker does not currently handle
+        // list like objects.
         public Partial addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iPartial.getValues();
             newValues = getField().addWrapField(iPartial, iFieldIndex, newValues, valueToAdd);
@@ -980,7 +1021,11 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+        @SuppressWarnings("index:argument.type.incompatible")
+        // iFieldIndex cannot be annotated as an index for newValues as
+        // newValues does not exist at the time of initialization of
+        // iFieldIndex. The Index Checker does not currently handle
+        // list like objects.
         public Partial setCopy(int value) {
             int[] newValues = iPartial.getValues();
             newValues = getField().set(iPartial, iFieldIndex, newValues, value);
@@ -998,7 +1043,11 @@ public final class Partial
          * @return a copy of the Partial with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-        @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
+        @SuppressWarnings("index:argument.type.incompatible")
+        // iFieldIndex cannot be annotated as an index for newValues as
+        // newValues does not exist at the time of initialization of
+        // iFieldIndex. The Index Checker does not currently handle
+        // list like objects.
         public Partial setCopy(String text, Locale locale) {
             int[] newValues = iPartial.getValues();
             newValues = getField().set(iPartial, iFieldIndex, newValues, text, locale);

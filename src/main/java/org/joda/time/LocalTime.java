@@ -411,7 +411,7 @@ public final class LocalTime
     // length equal to the return value of the size() method provided
     // by this class. In tihs case, size is 4 and the array has 4
     // indices, directly accessed.
-    @SuppressWarnings("index")
+    @SuppressWarnings("index:array.access.unsafe.high")
     public LocalTime(Object instant, DateTimeZone zone) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
@@ -443,7 +443,7 @@ public final class LocalTime
     // length equal to the return value of the size() method provided
     // by this class. In tihs case, size is 4 and the array has 4
     // indices, directly accessed.
-    @SuppressWarnings("index")
+    @SuppressWarnings("index:array.access.unsafe.high")
     public LocalTime(Object instant, Chronology chronology) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         chronology = converter.getChronology(instant, chronology);

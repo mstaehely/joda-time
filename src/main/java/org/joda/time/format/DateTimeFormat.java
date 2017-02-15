@@ -579,7 +579,8 @@ public class DateTimeFormat {
      *  location and the output is the location after parsing the token
      * @return the parsed token
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check indexRef[0]
+    @SuppressWarnings("index:array.access.unsafe.high") 
+    // indexRef guaranteed to be length of at least 1.
     private static String parseToken(String pattern, @NonNegative int @NonNegative [] indexRef) {
         StringBuilder buf = new StringBuilder();
 

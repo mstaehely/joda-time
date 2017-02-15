@@ -47,7 +47,10 @@ class ConverterSet {
      * equally well
      */
 
-    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) // If entries is positive, entries.length is positive. Can not verify length of index within system. Can't check entries[i], newEntries[index]
+    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"})
+        // If entries is positive, entries.length is positive. Can 
+        // not verify length of index within system. Can't check 
+        // entries[i], newEntries[index]
     Converter select(Class<?> type) throws IllegalStateException {
         // Check the hashtable first.
         Entry @Positive [] entries = iSelectEntries;
@@ -125,6 +128,9 @@ class ConverterSet {
     /**
      * Copies all the converters in the set to the given array.
      */
+    @SuppressWarnings("index:argument.type.incompatible")
+    // Annotating converters as having the same length as iConverters
+    // does not get rid of the incompatible argument.
     void copyInto(Converter @Positive [] converters) {
         System.arraycopy(iConverters, 0, converters, 0, iConverters.length);
     }
@@ -140,7 +146,11 @@ class ConverterSet {
      * @throws NullPointerException if converter is null
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high") // Can't check removed[0], which should be unreachable unless removed exists. Can't check copy[length]
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
+    // High index waring is because checker can't check removed[0], which 
+    // should be unreachable unless removed exists. Incompatible argument
+    // is a result of being unable to annotate copy as having the same
+    // length as iConverters, because it may end up one longer.
     ConverterSet add(Converter converter, Converter @Positive [] removed) {
         Converter @Positive [] converters = iConverters;
         int length = converters.length;
@@ -194,7 +204,8 @@ class ConverterSet {
      * @throws NullPointerException if converter is null
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high") // Won't reach removed unless the array exists.
+    @SuppressWarnings("index:array.access.unsafe.high") 
+    // Won't reach removed unless the array exists.
     ConverterSet remove(Converter converter, Converter @Positive [] removed) {
         Converter @Positive [] converters = iConverters;
         int length = converters.length;
@@ -221,7 +232,9 @@ class ConverterSet {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
 
-    @SuppressWarnings({"index:array.access.unsafe.high"}) // can't check copy[j++], converters[i]. Also, should never be able to reach removed[0] unless removed exists, and so has positive length
+    @SuppressWarnings({"index:array.access.unsafe.high"}) 
+    // can't check copy[j++], converters[i]. Also, should never be able to 
+    // reach removed[0] unless removed exists, and so has positive length
     ConverterSet remove(final @NonNegative int index, Converter @Positive [] removed) {
         Converter @Positive [] converters = iConverters;
         int length = converters.length;
@@ -250,7 +263,9 @@ class ConverterSet {
      * efficiently.
      */
 
-    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) // Length -1 should never be negative, as length of an array will need to be >= 1. Also, can't check converters[i], [j]
+    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) 
+        // Length -1 should never be negative, as length of an array will 
+        // need to be >= 1. Also, can't check converters[i], [j]
     private static Converter selectSlow(ConverterSet set, Class<?> type) {
         Converter @Positive [] converters = set.iConverters;
         int length = converters.length;

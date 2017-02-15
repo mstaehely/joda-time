@@ -138,7 +138,8 @@ public abstract class AbstractDateTime
      * 
      * @return the month of year
      */
-    @SuppressWarnings("index:return.type.incompatible") // months positive
+    @SuppressWarnings("index:return.type.incompatible") 
+    // Months are listed 1-12.
     public @Positive int getMonthOfYear() {
         return getChronology().monthOfYear().get(getMillis());
     }

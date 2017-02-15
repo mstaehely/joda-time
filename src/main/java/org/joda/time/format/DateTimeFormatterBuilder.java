@@ -305,7 +305,9 @@ public class DateTimeFormatterBuilder {
      * @throws IllegalArgumentException if any parser element but the last is null
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check copyOfParsers[i]
+    @SuppressWarnings("index:array.access.unsafe.high") 
+    // Can't guarantee length of parsers.
+    // Can't guarantee length of copyOfParsers.
     public DateTimeFormatterBuilder append(DateTimePrinter printer, DateTimeParser @NonNegative [] parsers) {
         if (printer != null) {
             checkPrinter(printer);
@@ -1260,6 +1262,7 @@ public class DateTimeFormatterBuilder {
             iValue = value;
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public @NonNegative int estimatePrintedLength(){
             return iValue.length();
         }
@@ -1270,10 +1273,12 @@ public class DateTimeFormatterBuilder {
             appendable.append(iValue);
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public void printTo(Appendable appendable, ReadablePartial partial, Locale locale) throws IOException {
             appendable.append(iValue);
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public @NonNegative int estimateParsedLength() {
             return iValue.length();
         }
@@ -1717,7 +1722,9 @@ public class DateTimeFormatterBuilder {
             return estimatePrintedLength();
         }
 
-        @SuppressWarnings({"unchecked", "index:array.access.unsafe.high"}) // can't check array[] accesses
+        @SuppressWarnings({"unchecked", "index:array.access.unsafe.high"}) 
+        // Can't guarantee size of array. If it is null, does not attempt
+        // to access the array.
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             Locale locale = bucket.getLocale();
             // handle languages which might have non ASCII A-Z or punctuation
@@ -1812,7 +1819,7 @@ public class DateTimeFormatterBuilder {
             printTo(appendable, millis, partial.getChronology());
         }
 
-        @SuppressWarnings("index:array.access.unsafe.high") // can't check fractionData access
+        @SuppressWarnings("index") // Not working with String.
         protected void printTo(Appendable appendable, long instant, Chronology chrono)
             throws IOException
         {
@@ -2373,6 +2380,7 @@ public class DateTimeFormatterBuilder {
             return MAX_LENGTH;
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             // select the base set of identifiers that do not have a slash
             List<String> suffixSet = BASE_GROUPED_IDS;
@@ -2510,7 +2518,9 @@ public class DateTimeFormatterBuilder {
             return iParsedLengthEstimate;
         }
 
-        @SuppressWarnings("index:assignment.type.incompatible") // positionmust be a nonnegativ value to reach line 2522 by definition
+        @SuppressWarnings("index:assignment.type.incompatible") 
+        // position must be a nonnegative value to reach line 2531 
+        // by definition
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             InternalParser[] elements = iParsers;
             if (elements == null) {
@@ -2591,7 +2601,8 @@ public class DateTimeFormatterBuilder {
             return iParsedLengthEstimate;
         }
 
-        @SuppressWarnings("index:array.access.unsafe.high") // can't check parsers[i + 1]
+        @SuppressWarnings("index:array.access.unsafe.high") 
+        // can't check parsers[i + 1]
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             InternalParser[] parsers = iParsers;
             int length = parsers.length;

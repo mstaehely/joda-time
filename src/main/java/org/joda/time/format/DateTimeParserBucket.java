@@ -322,7 +322,10 @@ public class DateTimeParserBucket {
         obtainSaveField().init(fieldType.getField(iChrono), text, locale);
     }
    
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check savedFields[savedFieldsCoount]
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
+    // Unable to annotate saved fields count as index for both savedFields 
+    // and newArray. This is also why the incompatible argument suppression
+    // is present.
     private SavedField obtainSaveField() {
         SavedField @NonNegative [] savedFields = iSavedFields;
         @NonNegative int savedFieldsCount = iSavedFieldsCount;
@@ -425,7 +428,8 @@ public class DateTimeParserBucket {
      * @since 2.4
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check savedFields[0], [i]
+    @SuppressWarnings("index:array.access.unsafe.high") 
+    // can't check savedFields[0], [i]
     public long computeMillis(boolean resetFields, CharSequence text) {
         SavedField @NonNegative [] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
@@ -499,7 +503,10 @@ public class DateTimeParserBucket {
      * casts within the insertion sort loop.
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check array[j-1], [j]
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
+    // can't check array[j-1], [j].
+    // Incompatible argument for high as it cannot be validated by the
+    // checker, but the design ensures high is a legal index.
     private static void sort(SavedField @NonNegative [] array, int high) {
         if (high > 10) {
             Arrays.sort(array, 0, high);

@@ -587,7 +587,9 @@ public class PeriodFormatterBuilder {
         appendField(type, iMinPrintedDigits);
     }
 
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check iFieldFormattrs[type]
+    @SuppressWarnings("index:array.access.unsafe.high") 
+    // Unable to check iFieldFormatters[type] because argument cannot be
+    // annotated, since iFieldFormatters is not static.
     private void appendField(@NonNegative int type, int minPrinted) {
         FieldFormatter field = new FieldFormatter(minPrinted, iPrintZeroSetting,
             iMaxParsedDigits, iRejectSignedValues, type, iFieldFormatters, iPrefix, null);
@@ -685,7 +687,9 @@ public class PeriodFormatterBuilder {
      * @see #appendPrefix
      */
 
-    @SuppressWarnings({"index:argument.type.incompatible", "index:array.access.unsafe.high"} ) // iElementPairs is a list. Can't check iFieldFormatters[newField.getFieldType()]
+    @SuppressWarnings({"index:argument.type.incompatible", "index:array.access.unsafe.high"} ) 
+        // iElementPairs is a list, and not useable with the Checker.
+        // Can't check iFieldFormatters[newField.getFieldType()]
     private PeriodFormatterBuilder appendSuffix(PeriodFieldAffix suffix) {
         final Object originalPrinter;
         final Object originalParser;
@@ -825,7 +829,6 @@ public class PeriodFormatterBuilder {
         return appendSeparator(text, finalText, variants, true, true);
     }
     
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check comp[0], [1]
     private PeriodFormatterBuilder appendSeparator(String text, String finalText,
                                                    String[] variants,
                                                    boolean useBefore, boolean useAfter) {
@@ -893,8 +896,6 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-         @SuppressWarnings("index:array.access.unsafe.high") // can't check comp[0], [1]
-             
          private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
         if (notPrinter && notParser) {
             throw new IllegalStateException("Builder has created neither a printer nor a parser");
@@ -918,7 +919,7 @@ public class PeriodFormatterBuilder {
         }
     }
 
-    private static Object[] createComposite(List<Object> elementPairs) {
+    private static Object @MinLen(2) [] createComposite(List<Object> elementPairs) {
         switch (elementPairs.size()) {
             case 0:
                 return new Object[] {Literal.EMPTY, Literal.EMPTY};
@@ -977,6 +978,7 @@ public class PeriodFormatterBuilder {
     static abstract class IgnorableAffix implements PeriodFieldAffix {
         private volatile String[] iOtherAffixes;
 
+        @SuppressWarnings("index") // Not working with String.
         public void finish(Set<PeriodFieldAffix> periodFieldAffixesToIgnore) {
             if (iOtherAffixes == null) {
                 // Calculate the shortest affix in this instance.
@@ -1017,6 +1019,7 @@ public class PeriodFormatterBuilder {
          * @return true if the other affixes (stored internally) contain a match 
          *  that is longer than the textLength parameter, false otherwise
          */
+        @SuppressWarnings("index") // Not working with String.
         protected boolean matchesOtherAffix(int textLength, String periodStr, int position) {
             if (iOtherAffixes != null) {
                 // ignore case when affix length differs
@@ -1056,6 +1059,7 @@ public class PeriodFormatterBuilder {
             out.write(iText);
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int parse(String periodStr, int position) {
             String text = iText;
             int textLength = text.length();
@@ -1067,6 +1071,7 @@ public class PeriodFormatterBuilder {
             return ~position;
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int scan(String periodStr, final @NonNegative int position) {
             String text = iText;
             int textLength = text.length();
@@ -1122,6 +1127,7 @@ public class PeriodFormatterBuilder {
             out.write(value == 1 ? iSingularText : iPluralText);
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int parse(String periodStr, int position) {
             String text1 = iPluralText;
             String text2 = iSingularText; 
@@ -1147,6 +1153,7 @@ public class PeriodFormatterBuilder {
             return ~position;
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int scan(String periodStr, final int position) {
             String text1 = iPluralText;
             String text2 = iSingularText; 
@@ -1216,7 +1223,8 @@ public class PeriodFormatterBuilder {
             Arrays.sort(iSuffixesSortedDescByLength, LENGTH_DESC_COMPARATOR);
         }
 
-        @SuppressWarnings("index:return.type.incompatible") // iPatterns.length should never be 0.
+        @SuppressWarnings("index:return.type.incompatible") 
+        // iPatterns.length should never be 0.
         private @NonNegative int selectSuffixIndex(@NonNegative int value) {
             String valueString = String.valueOf(value);
             for (int i = 0; i < iPatterns.length; i++) {
@@ -1240,6 +1248,7 @@ public class PeriodFormatterBuilder {
             out.write(iSuffixes[selectSuffixIndex(value)]);
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int parse(String periodStr, int position) {
             for (String text : iSuffixesSortedDescByLength) {
                 if (periodStr.regionMatches(true, position, text, 0, text.length())) {
@@ -1251,6 +1260,7 @@ public class PeriodFormatterBuilder {
             return ~position;
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int scan(String periodStr, final int position) {
             int sourceLength = periodStr.length();
             for (int pos = position; pos < sourceLength; pos++) {
@@ -1279,6 +1289,7 @@ public class PeriodFormatterBuilder {
         private final PeriodFieldAffix iRight;
         private final String[] iLeftRightCombinations;
 
+        @SuppressWarnings("index") // Not working with String.
         CompositeAffix(PeriodFieldAffix left, PeriodFieldAffix right) {
             iLeft = left;
             iRight = right;
@@ -1320,7 +1331,9 @@ public class PeriodFormatterBuilder {
             return pos;
         }
 
-        @SuppressWarnings("index:argument.type.incompatible") // Scan may return a negative value. Will not reach method call as an argument if this is the case.
+        @SuppressWarnings("index:argument.type.incompatible") 
+        // Scan may return a negative value. Will not reach method call 
+        // as an argument if this is the case.
         public int scan(String periodStr, final @NonNegative int position) {
             int leftPosition = iLeft.scan(periodStr, position);
             if (leftPosition >= 0) {
@@ -1421,7 +1434,12 @@ public class PeriodFormatterBuilder {
             return 0;
         }
 
-         @SuppressWarnings("index:assignment.type.incompatible") // Due to structure of inheritance of this program, printTo requires non-negative values. DateTime constants are all positive, and valueLong returns a non-negative no matter what. Should not need to annotate the DateTime constants, as they are hard-coded in to that class.
+         @SuppressWarnings("index:assignment.type.incompatible") 
+         // Due to structure of inheritance of this program, printTo 
+         // requires non-negative values. DateTime constants are all 
+         // positive, and valueLong returns a non-negative no matter what.
+         // Should not need to annotate the DateTime constants, as they 
+         // are hard-coded in to that class.
        public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
             long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
@@ -1453,7 +1471,11 @@ public class PeriodFormatterBuilder {
 
             return sum;
         }
-         @SuppressWarnings("index:assignment.type.incompatible") // Due to structure of inheritance of this program, printTo requires non-negative values. DateTime constants are all positive, and valueLong returns a non-negative no matter what. Should not need to annotate the DateTime constants, as they are hard-coded in to that class.
+         @SuppressWarnings("index:assignment.type.incompatible") 
+         // Due to structure of inheritance of this program, printTo 
+         // requires non-negative values. DateTime constants are all 
+         // positive, and valueLong returns a non-negative no matter what.
+         // Should not need to annotate the DateTime constants, as they are         // hard-coded in to that class.
        
         public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
             @NonNegative long valueLong = getFieldValue(period);
@@ -1490,7 +1512,12 @@ public class PeriodFormatterBuilder {
             }
         }
 
-        @SuppressWarnings("index:assignment.type.incompatible") // Due to structure of inheritance of this program, printTo requires non-negative values. DateTime constants are all positive, and valueLong returns a non-negative no matter what. Should not need to annotate the DateTime constants, as they are hard-coded in to that class.
+        @SuppressWarnings("index:assignment.type.incompatible") 
+        // Due to structure of inheritance of this program, printTo 
+        // requires non-negative values. DateTime constants are all 
+        // positive, and valueLong returns a non-negative no matter what.
+        // Should not need to annotate the DateTime constants, as they are
+        // hard-coded in to that class.
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
             @NonNegative long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
@@ -1522,7 +1549,11 @@ public class PeriodFormatterBuilder {
             }
         }
 
-        @SuppressWarnings({"index:assignment.type.incompatible", "index:argument.type.incompatible"}) // parse can return negative values when it fails, so cannot guarantee position will be NonNegative at that return.  fractPos - position - 1 is guaranteed to be >= 0 when passed to ParseInt
+        @SuppressWarnings({"index:assignment.type.incompatible", "index:argument.type.incompatible"}) 
+            // parse can return negative values when it fails, so cannot 
+            // guarantee position will be NonNegative at that return. 
+            // fractPos - position - 1 is guaranteed to be >= 0 when passed
+            // to ParseInt.
             
         public int parseInto(
                 ReadWritablePeriod period, String text, 
@@ -1724,7 +1755,10 @@ public class PeriodFormatterBuilder {
          * @return Long.MAX_VALUE if nothing to print, otherwise value
          */
 
-        @SuppressWarnings("index:array.access.unsafe.high") // can't check iFieldFormatters[iFieldType], [i]
+        @SuppressWarnings("index:array.access.unsafe.high") 
+        // can't check iFieldFormatters[iFieldType], [i] because iFieldType
+        // not guaranteed to be LTOM("iFieldFormatters") but the loop
+        // should ensure this.
         long getFieldValue(ReadablePeriod period) {
             PeriodType type;
             if (iPrintZeroSetting == PRINT_ZERO_ALWAYS) {
@@ -1909,6 +1943,7 @@ public class PeriodFormatterBuilder {
             out.write(iText);
         }
 
+        @SuppressWarnings("index") // Not working with String.
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
                 @NonNegative int position, Locale locale) {
@@ -2046,7 +2081,7 @@ public class PeriodFormatterBuilder {
             after.printTo(out, period, locale);
         }
 
-        @SuppressWarnings("index:assignment.type.incompatible") // position is guaranteed to be >= 0 whenever it is used as a parameter to the parseInto method.
+        @SuppressWarnings("index") // Not working with String.
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
                 @NonNegative int position, Locale locale) {
@@ -2168,7 +2203,9 @@ public class PeriodFormatterBuilder {
             }
         }
 
-        @SuppressWarnings("index:assignment.type.incompatible") // Position is guaranteed to be >= 0 and len is guaranteed to be >= 0
+        @SuppressWarnings("index:assignment.type.incompatible") 
+        // Position is guaranteed to be >= 0 and len is guaranteed to 
+        // be >= 0
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
                 @NonNegative int position, Locale locale) {

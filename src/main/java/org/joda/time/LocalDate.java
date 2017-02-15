@@ -209,12 +209,13 @@ public final class LocalDate
 
     // Calendar class does not offer a strong enough guarantee for their
     // .get() method.
-    @SuppressWarnings("index")
+    @SuppressWarnings("index:argument.type.incompatible")
     public static LocalDate fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
         }
         int era = calendar.get(Calendar.ERA);
+      
         int yearOfEra = calendar.get(Calendar.YEAR);
         return new LocalDate(
             (era == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra),
@@ -394,7 +395,7 @@ public final class LocalDate
     // by this class. In this case, size is 3 and the array has 3
     // indices, directly accessed.
 
-    @SuppressWarnings("index")
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
     public LocalDate(Object instant, DateTimeZone zone) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
@@ -430,7 +431,7 @@ public final class LocalDate
     // length equal to the return value of the size() method provided 
     // by this class. In this case, size is 3 and the array has 3
     // indices, directly accessed.
-    @SuppressWarnings("index")
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
     public LocalDate(Object instant, Chronology chronology) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         chronology = converter.getChronology(instant, chronology);
