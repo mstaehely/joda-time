@@ -811,7 +811,7 @@ public class PeriodType implements Serializable {
     // field to be removed is -1, then this PeriodType does not
     // support that field. Because this method is private and directly
     // accessed it cannt be out of bounds.
-    @SuppressWarnings("index") 
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low", "index:array.length.negative"})
     private PeriodType withFieldRemoved(int indicesIndex, String name) {
         int fieldIndex = iIndices[indicesIndex];
         if (fieldIndex == -1) {
@@ -827,7 +827,7 @@ public class PeriodType implements Serializable {
             }
         }
         
-        int[] indices = new int[8];
+        @GTENegativeOne int[] indices = new int[8];
         for (@LTLengthOf({"indices", "iIndices"}) int i = 0; i < indices.length; i++) {
             if (i < indicesIndex) {
                 indices[i] = iIndices[i];

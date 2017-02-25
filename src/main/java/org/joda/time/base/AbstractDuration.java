@@ -187,6 +187,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @return the value as an ISO8601 string
      */
     @ToString
+    @SuppressWarnings("index") // Not working with String.
     public String toString() {
         long millis = getMillis();
         StringBuffer buf = new StringBuffer();
@@ -199,7 +200,6 @@ public abstract class AbstractDuration implements ReadableDuration {
         if ((millis / 1000) * 1000 == millis) {
             buf.setLength(buf.length() - 3);
         } else {
-            @SuppressWarnings("index:assignment.type.incompatible")
             @NonNegative int decimal_position = buf.length() - 3;
             buf.insert(decimal_position, ".");
         }

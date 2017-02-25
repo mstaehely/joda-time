@@ -172,9 +172,7 @@ class GJLocaleSymbols {
         iMaxHalfdayLength = maxLength(iHalfday);
     }
 
-    // Unclear upper bound
-    @SuppressWarnings("index:array.access.unsafe.high")
-    public String eraValueToText(@NonNegative int value) {
+    public String eraValueToText(@IndexFor("iEras") int value) {
         return iEras[value];
     }
 
@@ -190,15 +188,11 @@ class GJLocaleSymbols {
         return iMaxEraLength;
     }
 
-    // Unclear upper bound
-    @SuppressWarnings("index:array.access.unsafe.high")
-    public String monthOfYearValueToText(@NonNegative int value) {
+    public String monthOfYearValueToText(@IndexFor("iMonths") int value) {
         return iMonths[value];
     }
 
-    // Unclear upper bound
-    @SuppressWarnings("index:array.access.unsafe.high")
-    public String monthOfYearValueToShortText(@NonNegative int value) {
+    public String monthOfYearValueToShortText(@IndexFor("iShortMonths") int value) {
         return iShortMonths[value];
     }
 
@@ -218,15 +212,11 @@ class GJLocaleSymbols {
         return iMaxShortMonthLength;
     }
 
-    // Unclear upper bound
-    @SuppressWarnings("index:array.access.unsafe.high")
-    public String dayOfWeekValueToText(@NonNegative int value) {
+    public String dayOfWeekValueToText(@IndexFor("iDaysOfWeek") int value) {
         return iDaysOfWeek[value];
     }
 
-    // Unclear upper bound
-    @SuppressWarnings("index:array.access.unsafe.high")
-    public String dayOfWeekValueToShortText(@NonNegative int value) {
+    public String dayOfWeekValueToShortText(@IndexFor("iShortDaysOfWeek") int value) {
         return iShortDaysOfWeek[value];
     }
 
@@ -246,9 +236,7 @@ class GJLocaleSymbols {
         return iMaxShortDayOfWeekLength;
     }
 
-    // Unclear upper bound
-    @SuppressWarnings("index:array.access.unsafe.high")
-    public String halfdayValueToText(@NonNegative int value) {
+    public String halfdayValueToText(@IndexFor("iHalfday") int value) {
         return iHalfday[value];
     }
 

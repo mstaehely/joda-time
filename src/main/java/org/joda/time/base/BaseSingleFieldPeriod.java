@@ -89,9 +89,9 @@ public abstract class BaseSingleFieldPeriod
      * @throws IllegalArgumentException if the partials are null or invalid
      */
 
-    // Unclear if accessing values[0] is safe; that is, if values is
-    // always supposed to be unempty.
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Values[0] will be safe so long as zeroInstance is not null and has
+    // some values in it.
     protected static int between(ReadablePartial start, ReadablePartial end, ReadablePeriod zeroInstance) {
         if (start == null || end == null) {
             throw new IllegalArgumentException("ReadablePartial objects must not be null");

@@ -238,6 +238,7 @@ public class PeriodFormatter {
      * @param period  the period to format, not null
      * @return the printed result
      */
+    @SuppressWarnings("index") // Not working with String.
     public String print(ReadablePeriod period) {
         checkPrinter();
         checkPeriod(period);

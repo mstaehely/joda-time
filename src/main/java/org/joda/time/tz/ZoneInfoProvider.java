@@ -51,7 +51,7 @@ public class ZoneInfoProvider implements Provider {
     /** The class loader to use. */
     private final ClassLoader iLoader;
     /** Maps ids to strings or SoftReferences to DateTimeZones. */
-    private final Map<String, @MinLen(4) Object> iZoneInfoMap;
+    private final Map<String, Object> iZoneInfoMap;
     /** Maps ids to strings or SoftReferences to DateTimeZones. */
     private final Set<String> iZoneInfoKeys;
 
@@ -140,12 +140,13 @@ public class ZoneInfoProvider implements Provider {
      * @param id  the id to load
      * @return the loaded zone
      */
+    @SuppressWarnings("cast")
     public DateTimeZone getZone(String id) {
         if (id == null) {
             return null;
         }
 
-        @MinLen(4) Object obj = iZoneInfoMap.get(id);
+        Object obj = iZoneInfoMap.get(id);
         if (obj == null) {
             return null;
         }
@@ -232,7 +233,7 @@ public class ZoneInfoProvider implements Provider {
         try {
             in = openResource(id);
             DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
-            iZoneInfoMap.put(id, new @MinLen(4) SoftReference<DateTimeZone>(tz));
+            iZoneInfoMap.put(id, new SoftReference<DateTimeZone>(tz));
             return tz;
         } catch (IOException ex) {
             uncaughtException(ex);
@@ -255,8 +256,8 @@ public class ZoneInfoProvider implements Provider {
      * @param in  the input stream
      * @return the map
      */
-    private static Map<String, @MinLen(4) Object> loadZoneInfoMap(InputStream in) throws IOException {
-        Map<String, @MinLen(4) Object> map = new ConcurrentHashMap<String, @MinLen(4) Object>();
+    private static Map<String, Object> loadZoneInfoMap(InputStream in) throws IOException {
+        Map<String, Object> map = new ConcurrentHashMap<String, Object>();
         DataInputStream din = new DataInputStream(in);
         try {
             readZoneInfoMap(din, map);
@@ -266,7 +267,7 @@ public class ZoneInfoProvider implements Provider {
             } catch (IOException ex) {
             }
         }
-        map.put("UTC", new @MinLen(4) SoftReference<DateTimeZone>(DateTimeZone.UTC));
+        map.put("UTC", new SoftReference<DateTimeZone>(DateTimeZone.UTC));
         return map;
     }
 
@@ -277,8 +278,9 @@ public class ZoneInfoProvider implements Provider {
      * @param zimap  gets filled with string id to string id mappings
      */
 
-    @SuppressWarnings("index") // Annotated library makes no guarantees about readUnsignedShort()
-    private static void readZoneInfoMap(DataInputStream din, Map<String, @MinLen(4) Object> zimap) throws IOException {
+    @SuppressWarnings("index:array.access.unsafe.high")
+    // Size of array cannot be expressed by checker.
+    private static void readZoneInfoMap(DataInputStream din, Map<String, Object> zimap) throws IOException {
         // Read the string pool.
         int size = din.readUnsignedShort();
         String[] pool = new String[size];

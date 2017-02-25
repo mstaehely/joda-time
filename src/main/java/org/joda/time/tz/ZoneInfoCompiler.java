@@ -80,7 +80,11 @@ public class ZoneInfoCompiler {
      * </pre>
      */
 
-    @SuppressWarnings("index") // can't check args[++i], sources[j] for upper bound. If control reaches File[]sources = new File[args.length -1], args must be >= 1.
+    @SuppressWarnings({"index:array.access.unsafe.high", "array.access.unsafe.low", "index:array.length.negative"}) 
+        // Cannot reach array access if args.length < 1. Possible to go
+        // beyond bounds of array, but this is a result of the user not
+        // interacting with the program properly, and cannot be easily
+        // protected against.
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             printUsage();
@@ -152,6 +156,10 @@ public class ZoneInfoCompiler {
     /**
      * @param zimap maps string ids to DateTimeZone objects.
      */
+    @SuppressWarnings("index")
+    // Incompatible argument being caused by Map requiring a NonNegative
+    // but .size() not apparently guaranteeing a nonnegative return.
+    // However, the annotated library does make this guarantee.
     static void writeZoneInfoMap(DataOutputStream dout, Map<String, DateTimeZone> zimap) throws IOException {
         // Build the string pool.
         Map<String, Short> idToIndex = new HashMap<String, Short>(zimap.size());
@@ -582,7 +590,7 @@ public class ZoneInfoCompiler {
             iZoneChar = 'w';
         }
 
-        @SuppressWarnings("index:argument.type.incompatible") // Line 629- str is a token so must have a length such that size() -1 is >= 0
+        @SuppressWarnings("index") // Not working with String.
         DateTimeOfYear(StringTokenizer st) {
             int month = 1;
             int day = 1;

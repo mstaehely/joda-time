@@ -1600,7 +1600,9 @@ public final class LocalDateTime
      *
      * @return the month of year
      */
-    @SuppressWarnings("index:return.type.incompatible") // months are positive
+    @SuppressWarnings("index:return.type.incompatible")
+    // Months must be positive, but the get method of DateTimeField
+    // does not guarantee that the return value will be positive.
     public @Positive int getMonthOfYear() {
         return getChronology().monthOfYear().get(getLocalMillis());
     }

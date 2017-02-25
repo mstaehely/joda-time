@@ -30,7 +30,10 @@ import org.checkerframework.checker.index.qual.*;
  * @since 1.0
  */
 
-@SuppressWarnings("index:assignment.type.incompatible") // cacheSize will always be positive by the end of the if/else block; cacheSize -1 will always be NonNegative, not GTENegativeOne as any positive -1 will be >= 0
+@SuppressWarnings("index:assignment.type.incompatible") 
+// cacheSize will always be positive by the end of the if/else block; 
+// cacheSize -1 will always be NonNegative, 
+// not GTENegativeOne as any positive -1 will be >= 0
 public class CachedDateTimeZone extends DateTimeZone {
 
     private static final long serialVersionUID = 5472298452022250685L;

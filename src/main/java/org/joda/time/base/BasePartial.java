@@ -238,7 +238,8 @@ public abstract class BasePartial
      * @return the value
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // cant check iValues[index]
+    @SuppressWarnings("index:array.access.unsafe.high") 
+    // Can't guarantee size of iValues.
     public int getValue(@NonNegative int index) {
         return iValues[index];
     }
@@ -281,6 +282,9 @@ public abstract class BasePartial
      * @param value  the value to set
      * @throws IndexOutOfBoundsException if the index is invalid
      */
+    @SuppressWarnings("index:argument.type.incompatible")
+    // Unable to annotate values as having the same length as iValues.i
+    // DateTimeField does not guarantee the length of its arrays.
     protected void setValue(@IndexFor("iValues") int index, int value) {
         DateTimeField field = getField(index);
         int[] values = field.set(this, index, iValues, value);
@@ -296,6 +300,9 @@ public abstract class BasePartial
      * 
      * @param values  the array of values
      */
+    @SuppressWarnings("index:argument.type.incompatible")
+    // No way to guarantee that values has the same length as iValues
+    // SameLen does not satisfy the checker.
     protected void setValues(int[] values) {
         getChronology().validate(this, values);
         System.arraycopy(values, 0, iValues, 0, iValues.length);
