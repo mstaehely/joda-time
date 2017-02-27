@@ -104,7 +104,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         // Get this year and month.
         //
         int thisYear = iChronology.getYear(instant);
-        @SuppressWarnings("index") // current year
+        @SuppressWarnings("index:assignment.type.incompatible") // current year
         @Positive int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
         // ----------------------------------------------------------
         //
@@ -171,7 +171,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         long timePart = iChronology.getMillisOfDay(instant);
 
         int thisYear = iChronology.getYear(instant);
-        @SuppressWarnings("index") // current year
+        @SuppressWarnings("index:assignment.type.incompatible") // current year
         @Positive int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
 
         long yearToUse;
@@ -265,10 +265,10 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         }
 
         int minuendYear = iChronology.getYear(minuendInstant);
-        @SuppressWarnings("index") // current year
+        @SuppressWarnings("index:assignment.type.incompatible") // current year
         @Positive int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
         int subtrahendYear = iChronology.getYear(subtrahendInstant);
-        @SuppressWarnings("index") // current year
+        @SuppressWarnings("index:assignment.type.incompatible") // current year
         @Positive int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
 
         long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
@@ -370,7 +370,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     //-----------------------------------------------------------------------
     public long roundFloor(long instant) {
         int year = iChronology.getYear(instant);
-        @SuppressWarnings("index") // current year
+        @SuppressWarnings("index:assignment.type.incompatible") // current year
         @Positive int month = iChronology.getMonthOfYear(instant, year);
         return iChronology.getYearMonthMillis(year, month);
     }

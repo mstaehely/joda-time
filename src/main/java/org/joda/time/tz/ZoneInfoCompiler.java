@@ -156,10 +156,10 @@ public class ZoneInfoCompiler {
     /**
      * @param zimap maps string ids to DateTimeZone objects.
      */
-    @SuppressWarnings("index")
-    // Incompatible argument being caused by Map requiring a NonNegative
-    // but .size() not apparently guaranteeing a nonnegative return.
-    // However, the annotated library does make this guarantee.
+    @SuppressWarnings("index:argument.type.incompatible") // Incompatible 
+    // argument being caused by Map requiring a NonNegative but .size() not
+    // apparently guaranteeing a nonnegative return. However, the annotated
+    // library does make this guarantee.
     static void writeZoneInfoMap(DataOutputStream dout, Map<String, DateTimeZone> zimap) throws IOException {
         // Build the string pool.
         Map<String, Short> idToIndex = new HashMap<String, Short>(zimap.size());

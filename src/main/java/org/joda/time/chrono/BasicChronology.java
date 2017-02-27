@@ -477,7 +477,7 @@ abstract class BasicChronology extends AssembledChronology {
      */
     int getDayOfMonth(long millis) {
         int year = getYear(millis);
-        @SuppressWarnings("index") // current year
+        @SuppressWarnings("index:assignment.type.incompatible") // current year
         @Positive int month = getMonthOfYear(millis, year);
         return getDayOfMonth(millis, year, month);
     }
@@ -609,7 +609,7 @@ abstract class BasicChronology extends AssembledChronology {
      */
     int getDaysInMonthMax(long instant) {
         int thisYear = getYear(instant);
-        @SuppressWarnings("index") // current year
+        @SuppressWarnings("index:assignment.type.incompatible") // current year
         @Positive int thisMonth = getMonthOfYear(instant, thisYear);
         return getDaysInYearMonth(thisYear, thisMonth);
     }
