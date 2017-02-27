@@ -461,7 +461,7 @@ public final class Partial
      * @return a copy of this instance with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    @SuppressWarnings("index")
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
     // Two warnings are suppressed here: array.access.unsafe.high and
     // argument.type.incompatible. The high array access is a result of
     // index arithmetic such as i + 1 or because the existence of the
@@ -534,7 +534,7 @@ public final class Partial
      * @param fieldType  the field type to remove, may be null
      * @return a copy of this instance with the field removed
      */
-    @SuppressWarnings("index")
+    @SuppressWarnings({"index:argument.type.incompatible", "index:array.length.negative"})
     // If the size of this Partial is 0, then the method will not work.
     // Otherwise, size varies but cannot be guaranteed to be non-zero,
     // and so cannot be annotated.

@@ -181,9 +181,8 @@ public final class MonthDay
      * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
      */
     
-    // Calendar class does not offer a strong enough guarantee for their
-    // .get() method.
-    @SuppressWarnings("index")
+    @SuppressWarnings("index") // Calendar class does not offer a strong 
+    // enough guarantee for their .get() method.
     public static MonthDay fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");

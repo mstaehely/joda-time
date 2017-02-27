@@ -207,9 +207,8 @@ public final class LocalDate
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
 
-    // Calendar class does not offer a strong enough guarantee for their
-    // .get() method.
-    @SuppressWarnings("index:argument.type.incompatible")
+    @SuppressWarnings("index") // Calendar class does not offer a strong 
+    // enough guarantee for their .get() method.
     public static LocalDate fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");

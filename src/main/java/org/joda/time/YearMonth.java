@@ -173,9 +173,8 @@ public final class YearMonth
      * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
      */
 
-    // Calendar class does not offer a strong enough guarantee for their
-    // .get() method.
-    @SuppressWarnings("index")
+    @SuppressWarnings("index") // Calendar class does not offer a strong 
+    // enough guarantee for their .get() method.
     public static YearMonth fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
