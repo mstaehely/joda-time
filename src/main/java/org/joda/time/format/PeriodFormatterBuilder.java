@@ -939,9 +939,9 @@ public class PeriodFormatterBuilder {
     static interface PeriodFieldAffix {
         int calculatePrintedLength(@NonNegative int value);
         
-        void printTo(StringBuffer buf, @NonNegative int value);
+        void printTo(StringBuffer buf, int value);
         
-        void printTo(Writer out, @NonNegative int value) throws IOException;
+        void printTo(Writer out, int value) throws IOException;
         
         /**
          * @return new position after parsing affix, or ~position of failure
@@ -1225,7 +1225,7 @@ public class PeriodFormatterBuilder {
 
         @SuppressWarnings("index:return.type.incompatible") 
         // iPatterns.length should never be 0.
-        private @NonNegative int selectSuffixIndex(@NonNegative int value) {
+        private @NonNegative int selectSuffixIndex(int value) {
             String valueString = String.valueOf(value);
             for (int i = 0; i < iPatterns.length; i++) {
                 if (iPatterns[i].matcher(valueString).matches()) {
@@ -1239,12 +1239,12 @@ public class PeriodFormatterBuilder {
             return iSuffixes[selectSuffixIndex(value)].length();
         }
         @SuppressWarnings("index:array.access.unsafe.high") // can't checkiSufixes[selectSuffixIndex(value)] 
-        public void printTo(StringBuffer buf, @NonNegative int value) {
+        public void printTo(StringBuffer buf, int value) {
             buf.append(iSuffixes[selectSuffixIndex(value)]);
         }
 
         @SuppressWarnings("index:array.access.unsafe.high") // can't check iSuffixes[selectSuffixIndex(value)]
-        public void printTo(Writer out, @NonNegative int value) throws IOException {
+        public void printTo(Writer out, int value) throws IOException {
             out.write(iSuffixes[selectSuffixIndex(value)]);
         }
 
@@ -1310,12 +1310,12 @@ public class PeriodFormatterBuilder {
                 + iRight.calculatePrintedLength(value);
         }
 
-        public void printTo(StringBuffer buf, @NonNegative int value) {
+        public void printTo(StringBuffer buf, int value) {
             iLeft.printTo(buf, value);
             iRight.printTo(buf, value);
         }
 
-        public void printTo(Writer out, @NonNegative int value) throws IOException {
+        public void printTo(Writer out, int value) throws IOException {
             iLeft.printTo(out, value);
             iRight.printTo(out, value);
         }
@@ -1434,12 +1434,6 @@ public class PeriodFormatterBuilder {
             return 0;
         }
 
-         @SuppressWarnings("index:assignment.type.incompatible") 
-         // Due to structure of inheritance of this program, printTo 
-         // requires non-negative values. DateTime constants are all 
-         // positive, and valueLong returns a non-negative no matter what.
-         // Should not need to annotate the DateTime constants, as they 
-         // are hard-coded in to that class.
        public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
             long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
@@ -1471,18 +1465,13 @@ public class PeriodFormatterBuilder {
 
             return sum;
         }
-         @SuppressWarnings("index:assignment.type.incompatible") 
-         // Due to structure of inheritance of this program, printTo 
-         // requires non-negative values. DateTime constants are all 
-         // positive, and valueLong returns a non-negative no matter what.
-         // Should not need to annotate the DateTime constants, as they are         // hard-coded in to that class.
-       
-        public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
-            @NonNegative long valueLong = getFieldValue(period);
+
+       public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
+            long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
                 return;
             }
-            @NonNegative int value = (int) valueLong;
+            int value = (int) valueLong;
             if (iFieldType >= SECONDS_MILLIS) {
                 value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
             }
@@ -1512,12 +1501,6 @@ public class PeriodFormatterBuilder {
             }
         }
 
-        @SuppressWarnings("index:assignment.type.incompatible") 
-        // Due to structure of inheritance of this program, printTo 
-        // requires non-negative values. DateTime constants are all 
-        // positive, and valueLong returns a non-negative no matter what.
-        // Should not need to annotate the DateTime constants, as they are
-        // hard-coded in to that class.
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
             @NonNegative long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
