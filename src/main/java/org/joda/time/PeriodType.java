@@ -626,7 +626,10 @@ public class PeriodType implements Serializable {
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // cant check iTypes[index]
+    @SuppressWarnings("index:array.access.unsafe.high") 
+    // This method overrides or is overridden by others who do not
+    // have the array iTypes and as such, the index cannot be usefully
+    // annotated for its upper bound.
     public DurationFieldType getFieldType(@NonNegative int index) {
         return iTypes[index];
     }
@@ -674,7 +677,10 @@ public class PeriodType implements Serializable {
      * @param index  the index to use
      * @return the value of the field, zero if unsupported
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // cant check iIndices
+    @SuppressWarnings("index:array.access.unsafe.high")
+    // Cannot annotate the many constant values that use this method
+    // as valid indices into iIndices. They are global and declared before
+    // iIndices is initialized.
     int getIndexedField(ReadablePeriod period, @NonNegative int index) {
         int realIndex = iIndices[index];
         return (realIndex == -1 ? 0 : period.getValue(realIndex));
