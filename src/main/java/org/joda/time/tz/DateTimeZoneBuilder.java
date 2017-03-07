@@ -1429,10 +1429,9 @@ public class DateTimeZoneBuilder {
          */
 
         @SuppressWarnings("index:array.access.unsafe.high")
-        // can't check wallOffsets[i], wallOffsets[i + 1], 
-        // standardOffsets[i], standardOffsets[i + 1], trans[i], 
-        // trans[i + 1] because ArrayList makes no guarantees about
-        // its size.
+        // ArrayList makes no guarantees about what its size will be and,
+        // furthermore, this variable is initialized before the arrays
+        // are declared.
         static PrecalculatedZone create(String id, boolean outputID, ArrayList<Transition> transitions,
                                         DSTZone tailZone) {
             @NonNegative int size = transitions.size();
@@ -1555,7 +1554,10 @@ public class DateTimeZoneBuilder {
             iTailZone = tailZone;
         }
 
-        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) // can't check iNameKeys[i], iNameKeys[i - 1]. If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 after i = ~i
+        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+        // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
+        // after i = ~i. The arithmetic performed will ensure that i or 
+        // i-1 will never be out of bounds.
         public String getNameKey(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1575,7 +1577,10 @@ public class DateTimeZoneBuilder {
             return iTailZone.getNameKey(instant);
         }
 
-        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) // can't check iWallOffsets[i - 1]. If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 after i = ~i
+        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+        // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
+        // after i = ~i. The arithmetic performed will ensure that i or 
+        // i-1 will never be out of bounds.
         public int getOffset(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1595,7 +1600,10 @@ public class DateTimeZoneBuilder {
             return iTailZone.getOffset(instant);
         }
 
-        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) // can't check iStandardOffsets[i - 1]. If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 after i = ~i
+        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"})
+        // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
+        // after i = ~i. The arithmetic performed will ensure that i or 
+        // i-1 will never be out of bounds.
         public int getStandardOffset(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1637,8 +1645,12 @@ public class DateTimeZoneBuilder {
             return iTailZone.nextTransition(instant);
         }
 
-        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) // can't check transitions[i - 1]. If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 after i = ~i
-        public long previousTransition(long instant) {
+        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+            // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
+            // after i = ~i. The arithmetic performed will ensure that i or
+            // i-1 will never be out of bounds.
+  
+            public long previousTransition(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
             if (i >= 0) {
@@ -1689,7 +1701,9 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
-        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.length.negative"}) // can't check iTransitions[i], iWallOffsets[i], iStandardOffets[i]
+        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.length.negative"})
+        // While size is a valid index for iTransitions, it cannot be
+        // expressed as one for all of the arrays used here.
         public void writeTo(DataOutput out) throws IOException {
             int size = iTransitions.length;
 

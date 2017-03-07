@@ -429,7 +429,8 @@ public class DateTimeParserBucket {
      */
 
     @SuppressWarnings("index:array.access.unsafe.high") 
-    // can't check savedFields[0], [i]
+    // savedFields[0] guaranteed to exist, as count is the number of fields
+    // in that array. savedFields[i] guaranteed to exist for same reason.
     public long computeMillis(boolean resetFields, CharSequence text) {
         SavedField @NonNegative [] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
@@ -504,7 +505,8 @@ public class DateTimeParserBucket {
      */
 
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
-    // can't check array[j-1], [j].
+    // Index j-1 guaranteed to be > 0 when used as an index. j guaranteed
+    // to be less than high, as it is equal to i.
     // Incompatible argument for high as it cannot be validated by the
     // checker, but the design ensures high is a legal index.
     private static void sort(SavedField @NonNegative [] array, int high) {

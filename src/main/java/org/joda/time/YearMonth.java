@@ -173,8 +173,9 @@ public final class YearMonth
      * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
      */
 
-    @SuppressWarnings("index") // Calendar class does not offer a strong 
-    // enough guarantee for their .get() method.
+    @SuppressWarnings("index") // Calendar class does not offer a
+    // non-negative guarantee for the get method, despite its returns
+    // being non-negative.
     public static YearMonth fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
@@ -419,7 +420,10 @@ public final class YearMonth
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check FIELD_TYPES[index]
+    @SuppressWarnings("index:array.access.unsafe.high")
+    // Several classes override this method and not all use FIELD_TYPES
+    // as their array, so index cannot be effectively annotated as an
+    // index for that array.
     public DateTimeFieldType getFieldType(@NonNegative int index) {
         return FIELD_TYPES[index];
     }

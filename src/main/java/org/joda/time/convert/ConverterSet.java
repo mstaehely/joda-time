@@ -48,14 +48,13 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"})
-        // If entries is positive, entries.length is positive. Can 
-        // not verify length of index within system. Can't check 
-        // entries[i], newEntries[index]
+        // Cannot initialize index as a valid index for newEntries, as that
+        // array does not exist yet. 
     Converter select(Class<?> type) throws IllegalStateException {
         // Check the hashtable first.
         Entry @Positive [] entries = iSelectEntries;
-        @Positive int length = entries.length;
-        int index = type == null ? 0 : type.hashCode() & (length - 1);
+        @IndexFor("entries") int length = entries.length;
+        @IndexFor("entries") int index = type == null ? 0 : type.hashCode() & (length - 1);
 
         Entry e;
         // This loop depends on there being at least one null slot.
@@ -147,7 +146,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
-    // High index waring is because checker can't check removed[0], which 
+    // High index waring is because checker can't validate removed[0], which
     // should be unreachable unless removed exists. Incompatible argument
     // is a result of being unable to annotate copy as having the same
     // length as iConverters, because it may end up one longer.
@@ -233,8 +232,10 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:array.access.unsafe.high"}) 
-    // can't check copy[j++], converters[i]. Also, should never be able to 
-    // reach removed[0] unless removed exists, and so has positive length
+    // Because this is removing a value from the array, j++ will always be 
+    // valid if it is reached, thanks to i != index.. Also, should never be
+    // able to reach removed[0] unless removed exists, and so has positive 
+    // length
     ConverterSet remove(final @NonNegative int index, Converter @Positive [] removed) {
         Converter @Positive [] converters = iConverters;
         int length = converters.length;
@@ -265,7 +266,9 @@ class ConverterSet {
 
     @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) 
         // Length -1 should never be negative, as length of an array will 
-        // need to be >= 1. Also, can't check converters[i], [j]
+        // need to be >= 1. Converters[i] is used after i is decremented, 
+        // so it cannot be too high. Converters[j] is used after j is
+        // decremented, so it cannot be too high.
     private static Converter selectSlow(ConverterSet set, Class<?> type) {
         Converter @Positive [] converters = set.iConverters;
         int length = converters.length;

@@ -2602,7 +2602,8 @@ public class DateTimeFormatterBuilder {
         }
 
         @SuppressWarnings("index:array.access.unsafe.high") 
-        // can't check parsers[i + 1]
+        // Annotation not able to be made and not required, as the 
+        // if statement beginning on line 2633 verifies valid index.
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             InternalParser[] parsers = iParsers;
             int length = parsers.length;

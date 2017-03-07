@@ -689,7 +689,9 @@ public class PeriodFormatterBuilder {
 
     @SuppressWarnings({"index:argument.type.incompatible", "index:array.access.unsafe.high"} ) 
         // iElementPairs is a list, and not useable with the Checker.
-        // Can't check iFieldFormatters[newField.getFieldType()]
+        // getFieldType() guaranteed to be non-negative and iFieldType
+        // will be a known index into the array iFieldFormatters by
+        // design.
     private PeriodFormatterBuilder appendSuffix(PeriodFieldAffix suffix) {
         final Object originalPrinter;
         final Object originalParser;
@@ -1234,16 +1236,22 @@ public class PeriodFormatterBuilder {
             }
             return iPatterns.length - 1;
         }
-        @SuppressWarnings("index:array.access.unsafe.high") // can't checkiSuffixes[selectSuffixIndex(value)] 
+        @SuppressWarnings("index:array.access.unsafe.high")
+        // There is no way to guarantee that seletSuffixIndex(value)
+        // will provide a valid IndexFor("iSuffixes").
         public int calculatePrintedLength(int value) {
             return iSuffixes[selectSuffixIndex(value)].length();
         }
-        @SuppressWarnings("index:array.access.unsafe.high") // can't checkiSufixes[selectSuffixIndex(value)] 
+        @SuppressWarnings("index:array.access.unsafe.high")
+        // There is no way to guarantee that seletSuffixIndex(value)
+        // will provide a valid IndexFor("iSuffixes").
         public void printTo(StringBuffer buf, int value) {
             buf.append(iSuffixes[selectSuffixIndex(value)]);
         }
 
-        @SuppressWarnings("index:array.access.unsafe.high") // can't check iSuffixes[selectSuffixIndex(value)]
+        @SuppressWarnings("index:array.access.unsafe.high")
+        // There is no way to guarantee that seletSuffixIndex(value)
+        // will provide a valid IndexFor("iSuffixes").
         public void printTo(Writer out, int value) throws IOException {
             out.write(iSuffixes[selectSuffixIndex(value)]);
         }
@@ -1739,9 +1747,9 @@ public class PeriodFormatterBuilder {
          */
 
         @SuppressWarnings("index:array.access.unsafe.high") 
-        // can't check iFieldFormatters[iFieldType], [i] because iFieldType
-        // not guaranteed to be LTOM("iFieldFormatters") but the loop
-        // should ensure this.
+        // Unable to annotate iFieldFormatters[iFieldType], [i] because 
+        // iFieldType not guaranteed to be LTOM("iFieldFormatters") but 
+        // the loop should ensure this.
         long getFieldValue(ReadablePeriod period) {
             PeriodType type;
             if (iPrintZeroSetting == PRINT_ZERO_ALWAYS) {

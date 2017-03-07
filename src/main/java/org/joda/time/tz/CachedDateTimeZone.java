@@ -143,11 +143,10 @@ public class CachedDateTimeZone extends DateTimeZone {
     // Although accessed by multiple threads, this method doesn't need to be
     // synchronized.
 
-    @SuppressWarnings("index:array.access.unsafe.high") // can't check cache[index]
     private Info getInfo(long millis) {
         int period = (int)(millis >> 32);
         Info[] cache = iInfoCache;
-        int index = period & cInfoCacheMask;
+        @IndexFor("cache") int index = period & cInfoCacheMask;
         Info info = cache[index];
         if (info == null || (int)((info.iPeriodStart >> 32)) != period) {
             info = createInfo(millis);
