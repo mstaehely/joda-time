@@ -937,7 +937,7 @@ public class PeriodFormatterBuilder {
      * This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
      */
     static interface PeriodFieldAffix {
-        int calculatePrintedLength(@NonNegative int value);
+        int calculatePrintedLength(int value);
         
         void printTo(StringBuffer buf, int value);
         
@@ -1235,7 +1235,7 @@ public class PeriodFormatterBuilder {
             return iPatterns.length - 1;
         }
         @SuppressWarnings("index:array.access.unsafe.high") // can't checkiSuffixes[selectSuffixIndex(value)] 
-        public int calculatePrintedLength(@NonNegative int value) {
+        public int calculatePrintedLength(int value) {
             return iSuffixes[selectSuffixIndex(value)].length();
         }
         @SuppressWarnings("index:array.access.unsafe.high") // can't checkiSufixes[selectSuffixIndex(value)] 
@@ -1305,7 +1305,7 @@ public class PeriodFormatterBuilder {
             iLeftRightCombinations =  result.toArray(new String[result.size()]);
         }
 
-        public int calculatePrintedLength(@NonNegative int value) {
+        public int calculatePrintedLength(int value) {
             return iLeft.calculatePrintedLength(value)
                 + iRight.calculatePrintedLength(value);
         }
@@ -1454,7 +1454,7 @@ public class PeriodFormatterBuilder {
                 // reset valueLong to refer to the seconds part for the prefic/suffix calculation
                 valueLong = valueLong / DateTimeConstants.MILLIS_PER_SECOND;
             }
-            @NonNegative int value = (int) valueLong;
+            int value = (int) valueLong;
 
             if (iPrefix != null) {
                 sum += iPrefix.calculatePrintedLength(value);
@@ -1502,11 +1502,11 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
-            @NonNegative long valueLong = getFieldValue(period);
+            long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
                 return;
             }
-            @NonNegative int value = (int) valueLong;
+            int value = (int) valueLong;
             if (iFieldType >= SECONDS_MILLIS) {
                 value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
             }

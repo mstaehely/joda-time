@@ -243,7 +243,7 @@ public final class LocalDate
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
-    @SuppressWarnings({"deprecation", "cast"}) // date.getMonth() is nonnegative
+    @SuppressWarnings({"deprecation", "index:cast"}) // date.getMonth() is nonnegative
     public static LocalDate fromDateFields(Date date) {
         if (date == null) {
             throw new IllegalArgumentException("The date must not be null");

@@ -437,13 +437,9 @@ public class FormatUtils {
         return ((value << 3) + (value << 1)) + text.charAt(position + 1) - '0';
     }
 
-    @SuppressWarnings({"index:return.type.incompatible", "index:assignment.type.incompatible"}) 
-        // No guarantees are made about substring return value in the 
-        // annotated String class. No guarantees are made about return valu 
-        // from concat so assignment is not valid.
-    static @NonNegative String createErrorMessage(final String text, final int errorPos) {
-        @NonNegative int sampleLen = errorPos + 32;
-        @NonNegative String sampleText;
+    static String createErrorMessage(final String text, final int errorPos) {
+        int sampleLen = errorPos + 32;
+        String sampleText;
         if (text.length() <= sampleLen + 3) {
             sampleText = text;
         } else {
