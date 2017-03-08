@@ -460,7 +460,8 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * @param millis from 1970-01-01T00:00:00Z
      */
-    // We are looking at an instant after the start of the year
+    // We are looking at an instant after the start of the year,
+    // so getMonthOfYear will return a positive month value
     @SuppressWarnings("index:return.type.incompatible")
     @Positive int getMonthOfYear(long millis) {
         return getMonthOfYear(millis, getYear(millis));
@@ -477,7 +478,9 @@ abstract class BasicChronology extends AssembledChronology {
      */
     int getDayOfMonth(long millis) {
         int year = getYear(millis);
-        @SuppressWarnings("index:assignment.type.incompatible") // current year
+        // We are passing the current year to getMonthOfYear, so
+        // we will get a positive month back.
+        @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int month = getMonthOfYear(millis, year);
         return getDayOfMonth(millis, year, month);
     }
@@ -486,7 +489,8 @@ abstract class BasicChronology extends AssembledChronology {
      * @param millis from 1970-01-01T00:00:00Z
      * @param year precalculated year of millis
      */
-    // can't expres millis in year
+    // We need millis to fall within year for month to be valid.
+    // However, we can't express this, so we suppress the warning.
     @SuppressWarnings("index:argument.type.incompatible")
     int getDayOfMonth(long millis, int year) {
         int month = getMonthOfYear(millis, year);
@@ -609,7 +613,9 @@ abstract class BasicChronology extends AssembledChronology {
      */
     int getDaysInMonthMax(long instant) {
         int thisYear = getYear(instant);
-        @SuppressWarnings("index:assignment.type.incompatible") // current year
+        // We are passing the current year to getMonthOfYear, so we will
+        // recieve a positive month value
+        @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int thisMonth = getMonthOfYear(instant, thisYear);
         return getDaysInYearMonth(thisYear, thisMonth);
     }
