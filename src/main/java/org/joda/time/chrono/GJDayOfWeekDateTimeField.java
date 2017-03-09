@@ -65,7 +65,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @return the day of the week, such as 'Monday'
      */
 
-    // Arithmetic guarantee
+    // Result of partial/period inheritance
     // General fieldValue can be negative
     @SuppressWarnings("index:argument.type.incompatible")
     public String getAsText(int fieldValue, Locale locale) {
@@ -80,7 +80,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @return the day of the week, such as 'Mon'
      */
 
-    // Arithmetic guarantee
+    // Result of partial/period inheritance
     // General fieldValue can be negative
     @SuppressWarnings("index:argument.type.incompatible")
     public String getAsShortText(int fieldValue, Locale locale) {
