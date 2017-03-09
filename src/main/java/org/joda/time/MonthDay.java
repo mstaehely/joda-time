@@ -492,7 +492,7 @@ public final class MonthDay
      * @return a copy of this instance with the field set, never null
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    // Unable to guarantee
+    // Result of partial/period inheritance
     @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public MonthDay withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
@@ -522,7 +522,7 @@ public final class MonthDay
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
-    // Unable to guarantee
+    // Result of partial/period inheritance
     @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public MonthDay withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
@@ -550,7 +550,7 @@ public final class MonthDay
      * @return a copy of this instance with the period added, never null
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
-    // Unable to guarantee
+    // Result of partial/period inheritance
     @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
     public MonthDay withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
@@ -751,7 +751,7 @@ public final class MonthDay
      * @return a copy of this object with the field set, never null
      * @throws IllegalArgumentException if the value is invalid
      */
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // Can't express that iValues is MinLen(2) in this subclass
     @SuppressWarnings("index:argument.type.incompatible")
     public MonthDay withDayOfMonth(int dayOfMonth) {
@@ -788,7 +788,7 @@ public final class MonthDay
      * 
      * @return the day of month property
      */
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // Can't express that iValues is MinLen(2) in this subclass
     @SuppressWarnings("index:argument.type.incompatible")
     public Property dayOfMonth() {
@@ -920,7 +920,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-	// Unable to guarantee
+	// Result of partial/period inheritance
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay addToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
@@ -946,7 +946,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-	// Unable to guarantee
+	// Result of partial/period inheritance
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
@@ -965,7 +965,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-	// Unable to guarantee
+	// Result of partial/period inheritance
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay setCopy(int value) {
             int[] newValues = iBase.getValues();
@@ -984,7 +984,7 @@ public final class MonthDay
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-	// Unable to guarantee
+	// Result of partial/period inheritance
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
         public MonthDay setCopy(String text, Locale locale) {
             int[] newValues = iBase.getValues();
