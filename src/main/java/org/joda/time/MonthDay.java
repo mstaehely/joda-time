@@ -705,7 +705,7 @@ public final class MonthDay
      *
      * @return the month of year
      */
-    // Unable to guarantee
+    // Result of partial/period inheritance
     @SuppressWarnings("index:return.type.incompatible") // months are positive
     public @Positive int getMonthOfYear() {
         return getValue(MONTH_OF_YEAR);
@@ -858,7 +858,7 @@ public final class MonthDay
          * @param fieldIndex  the index in the partial
          */
         // Can't deduce that iBase.iValues.length == parital.iValues.length
-        // Unable to guarantee
+        // Checker unable to follow reference
         @SuppressWarnings("index:assignment.type.incompatible")
         Property(MonthDay partial, @IndexFor("#1.iValues") int fieldIndex) {
             super();
