@@ -981,7 +981,7 @@ public final class Partial
          * @throws IllegalArgumentException if the value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible")
-	// Can't express guarantee
+	// Result of partial/period inheritance
         // iFieldIndex cannot be annotated as an index for newValues as
         // newValues does not exist at the time of initialization of
         // iFieldIndex. The Index Checker does not currently handle
