@@ -285,6 +285,7 @@ public abstract class BasePartial
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:argument.type.incompatible")
+    // Array length guarantees
     // Unable to annotate values as having the same length as iValues.i
     // DateTimeField does not guarantee the length of its arrays.
     protected void setValue(@IndexFor("iValues") int index, int value) {
@@ -303,6 +304,7 @@ public abstract class BasePartial
      * @param values  the array of values
      */
     @SuppressWarnings("index:argument.type.incompatible")
+    // Array length guarantees
     // No way to guarantee that values has the same length as iValues
     // SameLen does not satisfy the checker.
     protected void setValues(int[] values) {

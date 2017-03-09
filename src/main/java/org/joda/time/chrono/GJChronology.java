@@ -80,6 +80,8 @@ public final class GJChronology extends AssembledChronology {
     /**
      * Convert a datetime from one chronology to another.
      */
+
+    // Arithmetic guarantee
     // Can't show that from.monthOfYear().get(instant) is positive
     @SuppressWarnings("index:argument.type.incompatible")
     private static long convertByYear(long instant, Chronology from, Chronology to) {

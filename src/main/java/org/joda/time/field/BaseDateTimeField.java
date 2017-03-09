@@ -297,6 +297,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
     @SuppressWarnings("index:argument.type.incompatible") // depends on nextField
+    // Unable to guarantee
     public int[] add(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return values;
@@ -379,6 +380,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
     @SuppressWarnings("index:argument.type.incompatible") // depends on nextField
+    // Unable to guarantee
     public int[] addWrapPartial(ReadablePartial instant, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return values;

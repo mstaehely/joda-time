@@ -234,6 +234,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
+    // Unable to guarantee
     // date.getMonth() is NonNegative
     @SuppressWarnings({"deprecation", "index:argument.type.incompatible"})
     public static LocalDateTime fromDateFields(Date date) {

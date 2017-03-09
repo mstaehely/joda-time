@@ -129,6 +129,7 @@ class ConverterSet {
      * Copies all the converters in the set to the given array.
      */
     @SuppressWarnings("index:argument.type.incompatible")
+    // Array length guarantees
     // Annotating converters as having the same length as iConverters
     // does not get rid of the incompatible argument.
     void copyInto(Converter @Positive [] converters) {
@@ -148,6 +149,7 @@ class ConverterSet {
 
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
     // Potential null arrays
+    // Array length guarantees
     // High index waring is because checker can't validate removed[0], which
     // should be unreachable unless removed exists. Incompatible argument
     // is a result of being unable to annotate copy as having the same

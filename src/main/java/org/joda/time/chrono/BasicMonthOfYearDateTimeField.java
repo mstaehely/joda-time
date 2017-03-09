@@ -145,15 +145,17 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         // Quietly force DOM to nearest sane value.
         //
         int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
+	// Arithmetic guarantee
         // monthToUse is positive
         @SuppressWarnings("index:argument.type.incompatible")
         int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
         if (dayToUse > maxDay) {
             dayToUse = maxDay;
         }
-        //
+
         // get proper date part, and return result
-        //
+
+	// Arithmetic guarantee
         // monthToUse is positive
         @SuppressWarnings("index:argument.type.incompatible")
         long datePart =
@@ -258,6 +260,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @param months  the months to add (can be negative).
      * @return the updated time instant.
      */
+    // Arithmetic guarantee
     // getWrappedValue returns months >= MIN which is 1, so positive
     @SuppressWarnings("index:argument.type.incompatible")
     public long addWrapField(long instant, int months) {

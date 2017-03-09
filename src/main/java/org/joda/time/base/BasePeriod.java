@@ -641,6 +641,7 @@ public abstract class BasePeriod
      * @param values  the array of values
      */
     @SuppressWarnings("index:argument.type.incompatible")
+    // Array length guarantees 
     // Cannot demonstrate to checker that length of values is same as 
     // iValues
     protected void setValues(int[] values) {

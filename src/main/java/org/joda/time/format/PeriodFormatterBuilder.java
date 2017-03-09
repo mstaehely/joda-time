@@ -690,6 +690,7 @@ public class PeriodFormatterBuilder {
 
     @SuppressWarnings({"index:argument.type.incompatible", "index:array.access.unsafe.high"} ) 
         // Result of partial/period inheritance
+        // Unable to guarantee
         // iElementPairs is a list, and not useable with the Checker.
         // getFieldType() guaranteed to be non-negative and iFieldType
         // will be a known index into the array iFieldFormatters by
@@ -1345,6 +1346,7 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings("index:argument.type.incompatible") 
+	// Unable to guarantee
         // Scan may return a negative value. Will not reach method call 
         // as an argument if this is the case.
         public int scan(String periodStr, final @NonNegative int position) {
@@ -1546,6 +1548,7 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings({"index:assignment.type.incompatible", "index:argument.type.incompatible"}) 
+	    // Unable to guarantee
             // parse can return negative values when it fails, so cannot 
             // guarantee position will be NonNegative at that return. 
             // fractPos - position - 1 is guaranteed to be >= 0 when passed
