@@ -489,6 +489,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param millis from 1970-01-01T00:00:00Z
      * @param year precalculated year of millis
      */
+    // Unable to guarantee
     // We need millis to fall within year for month to be valid.
     // However, we can't express this, so we suppress the warning.
     @SuppressWarnings("index:argument.type.incompatible")
@@ -815,6 +816,7 @@ abstract class BasicChronology extends AssembledChronology {
             super(DateTimeFieldType.halfdayOfDay(), cHalfdaysField, cDaysField);
         }
 
+	// Result of partial/period inheritance
         // General fieldValue can be negative
         @SuppressWarnings("index:argument.type.incompatible")
         public String getAsText(int fieldValue, Locale locale) {

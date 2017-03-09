@@ -44,7 +44,7 @@ import org.checkerframework.checker.index.qual.*;
  * two character style, representing short, medium, long and full.
  * </ul>
  * <p>
- * For example, to use a patterm:
+ * For example, to use a pattern:
  * <pre>
  * DateTime dt = new DateTime();
  * DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM, yyyy");
@@ -185,7 +185,7 @@ public class DateTimeFormat {
      * The first character is the date style, and the second character is the
      * time style. Specify a character of 'S' for short style, 'M' for medium,
      * 'L' for long, and 'F' for full.
-     * A date or time may be ommitted by specifying a style character '-'.
+     * A date or time may be omitted by specifying a style character '-'.
      * <p>
      * The returned formatter will dynamically adjust to the locale that
      * the print/parse takes place in. Thus you just call
@@ -209,7 +209,7 @@ public class DateTimeFormat {
      * The first character is the date style, and the second character is the
      * time style. Specify a character of 'S' for short style, 'M' for medium,
      * 'L' for long, and 'F' for full.
-     * A date or time may be ommitted by specifying a style character '-'.
+     * A date or time may be omitted by specifying a style character '-'.
      *
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @param locale  locale to use, null means default
@@ -707,7 +707,7 @@ public class DateTimeFormat {
      * Select a format from a two character style pattern. The first character
      * is the date style, and the second character is the time style. Specify a
      * character of 'S' for short style, 'M' for medium, 'L' for long, and 'F'
-     * for full. A date or time may be ommitted by specifying a style character '-'.
+     * for full. A date or time may be omitted by specifying a style character '-'.
      *
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @throws IllegalArgumentException if the style is invalid

@@ -232,7 +232,7 @@ public abstract class BasePartial
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the value of the field at the specifed index.
+     * Gets the value of the field at the specified index.
      * 
      * @param index  the index
      * @return the value
@@ -285,6 +285,7 @@ public abstract class BasePartial
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:argument.type.incompatible")
+    // Variable array lengths
     // Unable to annotate values as having the same length as iValues.i
     // DateTimeField does not guarantee the length of its arrays.
     protected void setValue(@IndexFor("iValues") int index, int value) {
@@ -303,6 +304,7 @@ public abstract class BasePartial
      * @param values  the array of values
      */
     @SuppressWarnings("index:argument.type.incompatible")
+    // Variable array lengths
     // No way to guarantee that values has the same length as iValues
     // SameLen does not satisfy the checker.
     protected void setValues(int[] values) {

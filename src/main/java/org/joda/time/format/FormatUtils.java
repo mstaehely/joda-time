@@ -180,6 +180,7 @@ public class FormatUtils {
      */
 
     @SuppressWarnings("index:argument.type.incompatible") 
+    // Arithmetic guarantee
     // Handles negative values gracefully by the assignment value = -value,
     // then passing the now positive value to the Writer, which expects a 
     // non-negative value. Cannot cast without warning, so suppressing
@@ -363,6 +364,7 @@ public class FormatUtils {
      */
 
     @SuppressWarnings("index:argument.type.incompatible") 
+    // Arithmetic guarantee
     // Handles negative values gracefully by the assignment value = -value,
     // then passing the now positive value to the Writer, which expects a 
     // non-negative value. Cannot cast without warning, so suppressing
