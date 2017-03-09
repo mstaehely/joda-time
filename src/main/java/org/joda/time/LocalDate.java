@@ -1519,7 +1519,7 @@ public final class LocalDate
      *
      * @return the month of year
      */
-    // Unable to guarantee
+    // Result of partial/period inheritance
     @SuppressWarnings("index:return.type.incompatible") // months are positive
     public @Positive int getMonthOfYear() {
         return getChronology().monthOfYear().get(getLocalMillis());
