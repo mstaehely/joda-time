@@ -486,7 +486,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the value is null or invalid
      */
     @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-    // Unable to guarantee
+    // Result of partial/period inheritance
     public YearMonth withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
@@ -516,7 +516,7 @@ public final class YearMonth
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
     @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-    // Unable to guarantee
+    // Result of partial/period inheritance
     public YearMonth withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
@@ -544,7 +544,7 @@ public final class YearMonth
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
     @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-    // Unable to guarantee
+    // Result of partial/period inheritance
     public YearMonth withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
             return this;
@@ -767,7 +767,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the value is invalid
      */
     @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-    // Unable to guarantee
+    // Result of partial/period inheritance
     public YearMonth withMonthOfYear(int monthOfYear) {
         int[] newValues = getValues();
         newValues = getChronology().monthOfYear().set(this, MONTH_OF_YEAR, newValues, monthOfYear);
@@ -930,7 +930,7 @@ public final class YearMonth
          * @throws IllegalArgumentException if the value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-        // Unable to guarantee
+        // Result of partial/period inheritance
         public YearMonth addToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
             newValues = getField().add(iBase, iFieldIndex, newValues, valueToAdd);
@@ -956,7 +956,7 @@ public final class YearMonth
          * @throws IllegalArgumentException if the value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-    	// Unable to guarantee
+    	// Result of partial/period inheritance
         public YearMonth addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iBase.getValues();
             newValues = getField().addWrapField(iBase, iFieldIndex, newValues, valueToAdd);
@@ -975,7 +975,7 @@ public final class YearMonth
          * @throws IllegalArgumentException if the value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-    	// Unable to guarantee
+    	// Result of partial/period inheritance
         public YearMonth setCopy(int value) {
             int[] newValues = iBase.getValues();
             newValues = getField().set(iBase, iFieldIndex, newValues, value);
@@ -994,7 +994,7 @@ public final class YearMonth
          * @throws IllegalArgumentException if the text value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible") // Purity troubles
-    	// Unable to guarantee
+    	// Result of partial/period inheritance
         public YearMonth setCopy(String text, Locale locale) {
             int[] newValues = iBase.getValues();
             newValues = getField().set(iBase, iFieldIndex, newValues, text, locale);
