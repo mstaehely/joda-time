@@ -186,7 +186,7 @@ public final class ConverterManager {
      * already in the set, the given converter replaces it. If the converter is
      * exactly the same as one already in the set, no changes are made.
      * <p>
-     * The order in which converters are added is not relevent. The best
+     * The order in which converters are added is not relevant. The best
      * converter is selected by examining the object hierarchy.
      * 
      * @param converter  the converter to add, null ignored
@@ -273,7 +273,7 @@ public final class ConverterManager {
      * already in the set, the given converter replaces it. If the converter is
      * exactly the same as one already in the set, no changes are made.
      * <p>
-     * The order in which converters are added is not relevent. The best
+     * The order in which converters are added is not relevant. The best
      * converter is selected by examining the object hierarchy.
      * 
      * @param converter  the converter to add, null ignored
@@ -360,7 +360,7 @@ public final class ConverterManager {
      * already in the set, the given converter replaces it. If the converter is
      * exactly the same as one already in the set, no changes are made.
      * <p>
-     * The order in which converters are added is not relevent. The best
+     * The order in which converters are added is not relevant. The best
      * converter is selected by examining the object hierarchy.
      * 
      * @param converter  the converter to add, null ignored
@@ -447,7 +447,7 @@ public final class ConverterManager {
      * already in the set, the given converter replaces it. If the converter is
      * exactly the same as one already in the set, no changes are made.
      * <p>
-     * The order in which converters are added is not relevent. The best
+     * The order in which converters are added is not relevant. The best
      * converter is selected by examining the object hierarchy.
      * 
      * @param converter  the converter to add, null ignored
@@ -534,7 +534,7 @@ public final class ConverterManager {
      * already in the set, the given converter replaces it. If the converter is
      * exactly the same as one already in the set, no changes are made.
      * <p>
-     * The order in which converters are added is not relevent. The best
+     * The order in which converters are added is not relevant. The best
      * converter is selected by examining the object hierarchy.
      * 
      * @param converter  the converter to add, null ignored

@@ -232,7 +232,7 @@ public abstract class BasePartial
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the value of the field at the specifed index.
+     * Gets the value of the field at the specified index.
      * 
      * @param index  the index
      * @return the value

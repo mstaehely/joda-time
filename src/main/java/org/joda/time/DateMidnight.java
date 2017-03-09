@@ -44,7 +44,7 @@ import org.checkerframework.checker.index.qual.*;
  * This class uses a Chronology internally. The Chronology determines how the
  * millisecond instant value is converted into the date time fields.
  * The default Chronology is <code>ISOChronology</code> which is the agreed
- * international standard and compatable with the modern Gregorian calendar.
+ * international standard and compatible with the modern Gregorian calendar.
  *
  * <p>Each individual field can be queried in two ways:
  * <ul>
@@ -924,7 +924,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * century of era changed.
      *
-     * @param centuryOfEra  the centurey of era to set
+     * @param centuryOfEra  the century of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
