@@ -159,7 +159,7 @@ public class ZoneInfoCompiler {
      * @param zimap maps string ids to DateTimeZone objects.
      */
     @SuppressWarnings("index:argument.type.incompatible") // Incompatible 
-    // Result of size() call
+    // Calls to size()
     // argument being caused by Map requiring a NonNegative but .size() not
     // apparently guaranteeing a nonnegative return. However, the annotated
     // library does make this guarantee.
