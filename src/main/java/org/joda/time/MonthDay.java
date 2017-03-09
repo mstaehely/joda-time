@@ -857,6 +857,7 @@ public final class MonthDay
          * @param fieldIndex  the index in the partial
          */
         // Can't deduce that iBase.iValues.length == parital.iValues.length
+        // Unable to guarantee
         @SuppressWarnings("index:assignment.type.incompatible")
         Property(MonthDay partial, @IndexFor("#1.iValues") int fieldIndex) {
             super();
