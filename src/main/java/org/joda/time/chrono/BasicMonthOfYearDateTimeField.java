@@ -331,6 +331,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException  if month is invalid
      */
+    // Result of partial/period
     @SuppressWarnings("index:override.param.invalid")
     public long set(long instant, @Positive int month) {
         FieldUtils.verifyValueBounds(this, month, MIN, iMax);
