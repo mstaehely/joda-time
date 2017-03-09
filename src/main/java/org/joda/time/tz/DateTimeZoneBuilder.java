@@ -1378,6 +1378,7 @@ public class DateTimeZoneBuilder {
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low", "index:array.length.negative"})
         // Size initialized before array
+        // Unable to guarantee
         // readInt makes no guarantees about its return value, so cannot
         // annotate the arrays using it. If the arrays were to be
         // declared before size, it could be annotated as an index
