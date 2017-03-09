@@ -1379,6 +1379,7 @@ public class DateTimeZoneBuilder {
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low", "index:array.length.negative"})
         // Size initialized before array
         // Unable to guarantee
+        // Unable to guarantee
         // readInt makes no guarantees about its return value, so cannot
         // annotate the arrays using it. If the arrays were to be
         // declared before size, it could be annotated as an index
@@ -1715,8 +1716,8 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.length.negative"})
-
         // Size initialized before array
+        // Unable to guarantee
         // While size is a valid index for iTransitions, it cannot be
         // expressed as one for all of the arrays used here.
         public void writeTo(DataOutput out) throws IOException {
