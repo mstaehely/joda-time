@@ -466,7 +466,7 @@ public final class Partial
      */
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
     // Index arithmetic
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // Two warnings are suppressed here: array.access.unsafe.high and
     // argument.type.incompatible. The high array access is a result of
     // index arithmetic such as i + 1 or because the existence of the
@@ -540,7 +540,7 @@ public final class Partial
      * @return a copy of this instance with the field removed
      */
     @SuppressWarnings({"index:argument.type.incompatible", "index:array.length.negative"})
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // If the size of this Partial is 0, then the method will not work.
     // Otherwise, size varies but cannot be guaranteed to be non-zero,
     // and so cannot be annotated.
@@ -576,7 +576,7 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      */
     @SuppressWarnings("index:argument.type.incompatible")
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // Index cannot be annotated as an index for newValues as newValues
     // does not exist at the time of initialization for 'index'. Further,
     // indexOfSupported can make no guarantees about its upper bound
@@ -607,7 +607,7 @@ public final class Partial
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
     @SuppressWarnings("index:argument.type.incompatible")
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // Index cannot be annotated as an index for newValues as newValues
     // does not exist at the time of initialization for 'index'. Further,
     // indexOfSupported can make no guarantees about its upper bound
@@ -638,7 +638,7 @@ public final class Partial
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
     @SuppressWarnings("index:argument.type.incompatible")
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // Index cannot be annotated as an index for newValues as newValues
     // does not exist at the time of intialization for 'index'. Further,
     // indexOfSupported can make no guarantees about its upper bound
@@ -670,7 +670,7 @@ public final class Partial
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
     @SuppressWarnings("index:argument.type.incompatible")
-    // Unable to guarantee
+    // Result of partial/period inheritance
     // The value of index cannot be guaranteed to be a valid index for
     // the add method, as indexOf can return -1 if the request field
     // is not supported by this partial. However, the if statement
@@ -1011,7 +1011,7 @@ public final class Partial
          * @throws IllegalArgumentException if the value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible")
-	// Unable to guarantee
+	// Result of partial/period inheritance
         // iFieldIndex cannot be annotated as an index for newValues as
         // newValues does not exist at the time of initialization of
         // iFieldIndex. The Index Checker does not currently handle
@@ -1034,7 +1034,7 @@ public final class Partial
          * @throws IllegalArgumentException if the value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible")
-	// Unable to guarantee
+	// Result of partial/period inheritance
         // iFieldIndex cannot be annotated as an index for newValues as
         // newValues does not exist at the time of initialization of
         // iFieldIndex. The Index Checker does not currently handle
@@ -1057,7 +1057,7 @@ public final class Partial
          * @throws IllegalArgumentException if the text value isn't valid
          */
         @SuppressWarnings("index:argument.type.incompatible")
-	// Unable to guarantee
+	// Result of partial/period inheritance
         // iFieldIndex cannot be annotated as an index for newValues as
         // newValues does not exist at the time of initialization of
         // iFieldIndex. The Index Checker does not currently handle
