@@ -220,11 +220,13 @@ public abstract class BasePartial
     //-----------------------------------------------------------------------
     // indexOf() is <= size(), but we couldn't express that.
     // However, iValues.length == size(), so we can use that.
+    // Can't express guarantee
     @Pure @Override @SuppressWarnings("index:return.type.incompatible")
     public @IndexOrLow("iValues") int indexOf(DateTimeFieldType type) {
         return super.indexOf(type);
     }
 
+    // Can't express guarantee
     @Pure @Override @SuppressWarnings("index:return.type.incompatible")
     public @IndexFor("iValues") int indexOfSupported(DateTimeFieldType type) {
         return super.indexOfSupported(type);

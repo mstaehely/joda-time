@@ -1228,6 +1228,7 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings("index:return.type.incompatible") 
+        // Unable to guarantee
         // iPatterns.length should never be 0.
         private @NonNegative int selectSuffixIndex(int value) {
             String valueString = String.valueOf(value);

@@ -705,6 +705,7 @@ public final class MonthDay
      *
      * @return the month of year
      */
+    // Unable to guarantee
     @SuppressWarnings("index:return.type.incompatible") // months are positive
     public @Positive int getMonthOfYear() {
         return getValue(MONTH_OF_YEAR);

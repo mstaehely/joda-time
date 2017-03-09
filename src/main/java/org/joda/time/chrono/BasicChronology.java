@@ -462,6 +462,7 @@ abstract class BasicChronology extends AssembledChronology {
      */
     // We are looking at an instant after the start of the year,
     // so getMonthOfYear will return a positive month value
+    // Can't express guarantee
     @SuppressWarnings("index:return.type.incompatible")
     @Positive int getMonthOfYear(long millis) {
         return getMonthOfYear(millis, getYear(millis));
@@ -513,6 +514,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param instant millis from 1970-01-01T00:00:00Z
      */
     // we are looking at an instant after the beginning of the year
+    // Unable to guarantee
     @SuppressWarnings("index:return.type.incompatible")
     @Positive int getDayOfYear(long instant) {
         return getDayOfYear(instant, getYear(instant));
