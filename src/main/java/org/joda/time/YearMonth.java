@@ -421,6 +421,7 @@ public final class YearMonth
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
     // Several classes override this method and not all use FIELD_TYPES
     // as their array, so index cannot be effectively annotated as an
     // index for that array.

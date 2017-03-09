@@ -48,6 +48,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"})
+        // Size initialized before array
         // Cannot initialize index as a valid index for newEntries, as that
         // array does not exist yet. 
     Converter select(Class<?> type) throws IllegalStateException {
@@ -146,6 +147,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
+    // Potential null arrays
     // High index waring is because checker can't validate removed[0], which
     // should be unreachable unless removed exists. Incompatible argument
     // is a result of being unable to annotate copy as having the same
@@ -204,6 +206,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Potential null arrays
     // Won't reach removed unless the array exists.
     ConverterSet remove(Converter converter, Converter @Positive [] removed) {
         Converter @Positive [] converters = iConverters;
@@ -232,6 +235,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:array.access.unsafe.high"}) 
+    // Index arithmetic
     // Because this is removing a value from the array, j++ will always be 
     // valid if it is reached, thanks to i != index.. Also, should never be
     // able to reach removed[0] unless removed exists, and so has positive 
@@ -265,6 +269,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) 
+        // Index arithmetic
         // Length -1 should never be negative, as length of an array will 
         // need to be >= 1. Converters[i] is used after i is decremented, 
         // so it cannot be too high. Converters[j] is used after j is

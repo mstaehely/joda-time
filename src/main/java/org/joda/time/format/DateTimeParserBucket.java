@@ -323,7 +323,8 @@ public class DateTimeParserBucket {
     }
    
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
-    // Unable to annotate saved fields count as index for both savedFields 
+    // Size initialized before array
+    // Unable to annotate savedFieldsCount as index for both savedFields 
     // and newArray. This is also why the incompatible argument suppression
     // is present.
     private SavedField obtainSaveField() {
@@ -429,6 +430,7 @@ public class DateTimeParserBucket {
      */
 
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Can't express guarantee
     // savedFields[0] guaranteed to exist, as count is the number of fields
     // in that array. savedFields[i] guaranteed to exist for same reason.
     public long computeMillis(boolean resetFields, CharSequence text) {
@@ -505,6 +507,7 @@ public class DateTimeParserBucket {
      */
 
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
+    // Index arithmetic
     // Index j-1 guaranteed to be > 0 when used as an index. j guaranteed
     // to be less than high, as it is equal to i.
     // Incompatible argument for high as it cannot be validated by the

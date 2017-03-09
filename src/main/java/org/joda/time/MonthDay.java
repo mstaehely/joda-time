@@ -429,6 +429,7 @@ public final class MonthDay
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
     // Cannot annotate index as an IndexFor FIELD_TYPES as many methods
     // of the same name require different arrays to index into.
     public DateTimeFieldType getFieldType(@NonNegative int index) {

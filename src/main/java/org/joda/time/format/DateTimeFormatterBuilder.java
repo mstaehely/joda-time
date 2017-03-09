@@ -306,6 +306,7 @@ public class DateTimeFormatterBuilder {
      */
 
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Can't express guarantee
     // Can't guarantee length of parsers.
     // Can't guarantee length of copyOfParsers.
     public DateTimeFormatterBuilder append(DateTimePrinter printer, DateTimeParser @NonNegative [] parsers) {
@@ -1723,6 +1724,7 @@ public class DateTimeFormatterBuilder {
         }
 
         @SuppressWarnings({"unchecked", "index:array.access.unsafe.high"}) 
+        // Potential null arrays
         // Can't guarantee size of array. If it is null, does not attempt
         // to access the array.
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
@@ -2602,6 +2604,7 @@ public class DateTimeFormatterBuilder {
         }
 
         @SuppressWarnings("index:array.access.unsafe.high") 
+        // Index arithmetic
         // Annotation not able to be made and not required, as the 
         // if statement beginning on line 2633 verifies valid index.
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {

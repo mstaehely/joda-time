@@ -179,7 +179,9 @@ public abstract class BaseChronology
      * @param values  the values to validate, not null unless the partial is empty
      * @throws IllegalArgumentException if the instant is invalid
      */
+    
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Calls to size()
     // Size of a partial should be equal to the size of its array, but this
     // cannot be expressed using the Index Checker.
     public void validate(ReadablePartial partial, int[] values) {

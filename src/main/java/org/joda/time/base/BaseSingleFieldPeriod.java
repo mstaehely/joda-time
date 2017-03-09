@@ -90,6 +90,7 @@ public abstract class BaseSingleFieldPeriod
      */
 
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Potential null arrays
     // Values[0] will be safe so long as zeroInstance is not null and has
     // some values in it.
     protected static int between(ReadablePartial start, ReadablePartial end, ReadablePeriod zeroInstance) {

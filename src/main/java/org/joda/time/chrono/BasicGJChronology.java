@@ -126,7 +126,9 @@ import org.checkerframework.checker.index.qual.*;
      * @param month  the month
      * @return the number of days
      */
-    // Cant check month upper bound
+    // Usage of constants
+    // Cant check month upper bound, which is a value that is reasonably
+    // well known to be 12
     @SuppressWarnings("index:array.access.unsafe.high")
     int getDaysInYearMonth(int year, @Positive int month) {
         if (isLeapYear(year)) {
@@ -137,7 +139,10 @@ import org.checkerframework.checker.index.qual.*;
     }
 
     //-----------------------------------------------------------------------
-    // Cant check month upper bound
+
+    // Usage of constants
+    // Cant check month upper bound, which is a value that is reasonably
+    // well known to be 12
     @SuppressWarnings("index:array.access.unsafe.high")
     int getDaysInMonthMax(@Positive int month) {
         return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
@@ -149,7 +154,10 @@ import org.checkerframework.checker.index.qual.*;
     }
 
     //-----------------------------------------------------------------------
-    // Cant check month upper bound
+
+    // Usage of constants
+    // Cant check month upper bound, which is a value that is reasonably
+    // well known to be 12
     @SuppressWarnings("index:array.access.unsafe.high")
     long getTotalMillisByYearMonth(int year, @Positive int month) {
         if (isLeapYear(year)) {

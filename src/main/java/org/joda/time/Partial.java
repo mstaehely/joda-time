@@ -356,6 +356,7 @@ public final class Partial
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
     // Unable to annotate this as IndexFor("iTypes") due to the abstract
     // class "AbstractPartial" which seven classes extend. Not all of those
     // classes contain the array 'iTypes' so this cannot be annotated.
@@ -371,6 +372,7 @@ public final class Partial
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
     // Unable to annotate this as IndexFor("iTypes") due to the abstract
     // class "AbstractPartial" which seven classes extend. Not all of those
     // classes contain the array 'iTypes' so this cannot be annotated.
@@ -399,6 +401,7 @@ public final class Partial
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
     // Unable to annotate this as IndexFor("iValues") due to the interface
     // "ReadablePartial" which ten classes implement. Not all of those
     // classes contain the array 'iValues' so this cannot be annotated.
@@ -462,6 +465,7 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      */
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
+    // Index arithmetic
     // Two warnings are suppressed here: array.access.unsafe.high and
     // argument.type.incompatible. The high array access is a result of
     // index arithmetic such as i + 1 or because the existence of the

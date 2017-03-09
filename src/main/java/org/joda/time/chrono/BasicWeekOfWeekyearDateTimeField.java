@@ -97,6 +97,7 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
         return 53;
     }
 
+    // Calls to size()
     // Can't express values.length == partial.size()
     @SuppressWarnings("index:array.access.unsafe.high")
     public int getMaximumValue(ReadablePartial partial, int[] values) {

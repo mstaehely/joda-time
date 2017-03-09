@@ -110,6 +110,7 @@ public final class GregorianChronology extends BasicGJChronology {
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
      * @return a chronology in the specified time zone
      */
+    // Usage of constants
     // Can't express minDaysInFirstWeek <= 7
     @SuppressWarnings("index:array.access.unsafe.high")
     public static GregorianChronology getInstance(DateTimeZone zone, @Positive int minDaysInFirstWeek) {

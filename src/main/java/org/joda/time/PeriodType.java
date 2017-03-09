@@ -627,6 +627,7 @@ public class PeriodType implements Serializable {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Result of partial/period inheritance
     // This method overrides or is overridden by others who do not
     // have the array iTypes and as such, the index cannot be usefully
     // annotated for its upper bound.
@@ -678,6 +679,7 @@ public class PeriodType implements Serializable {
      * @return the value of the field, zero if unsupported
      */
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
     // Cannot annotate the many constant values that use this method
     // as valid indices into iIndices. They are global and declared before
     // iIndices is initialized.
@@ -695,8 +697,11 @@ public class PeriodType implements Serializable {
      * @param newValue  the value to set
      * @throws UnsupportedOperationException if not supported
      */
-    // Can't check iIndices[index] or values[realIndex]
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
+    // Cannot annotate the many constant values that use this method
+    // as valid indices into iIndices. They are global and declared before
+    // iIndices is initialized.
     boolean setIndexedField(ReadablePeriod period, @NonNegative int index, int[] values, int newValue) {
         int realIndex = iIndices[index];
         if (realIndex == -1) {
@@ -717,8 +722,11 @@ public class PeriodType implements Serializable {
      * @throws UnsupportedOperationException if not supported
      */
 
-    // Can't check iIndices[index] or values[realIndex]
     @SuppressWarnings("index:array.access.unsafe.high")
+    // Result of partial/period inheritance
+    // Cannot annotate the many constant values that use this method
+    // as valid indices into iIndices. They are global and declared before
+    // iIndices is initialized.
     boolean addIndexedField(ReadablePeriod period, @NonNegative int index, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return false;
@@ -812,6 +820,7 @@ public class PeriodType implements Serializable {
      * @return the new type
      */
 
+    // Index arithmetic
     // Suppressing for the first for loop. For loop shifts all elements
     // after the removed one to the left by one. If the value of the
     // field to be removed is -1, then this PeriodType does not

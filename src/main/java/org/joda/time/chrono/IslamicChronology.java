@@ -191,6 +191,7 @@ public final class IslamicChronology extends BasicChronology {
      * @param leapYears  the type defining the leap year pattern
      * @return a chronology in the specified time zone
      */
+    // Usage of constants
     // Can't express leapYears.index < 4
     @SuppressWarnings("index:array.access.unsafe.high")
     public static IslamicChronology getInstance(DateTimeZone zone, LeapYearPatternType leapYears) {

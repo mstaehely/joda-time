@@ -279,7 +279,12 @@ public class ZoneInfoProvider implements Provider {
      */
 
     @SuppressWarnings("index:array.access.unsafe.high")
-    // Size of array cannot be expressed by checker.
+    // Size initialized before array
+    // Return value of DataInputStream cannot be guaranteed. As this is
+    // a private helper method, the program structure provides the
+    // guarantee that it will not be out of bounds. If the array were to
+    // be declared before the size variable, it would be able to be
+    // annotated.
     private static void readZoneInfoMap(DataInputStream din, Map<String, Object> zimap) throws IOException {
         // Read the string pool.
         int size = din.readUnsignedShort();

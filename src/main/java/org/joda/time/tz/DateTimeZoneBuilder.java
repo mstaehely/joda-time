@@ -1377,8 +1377,11 @@ public class DateTimeZoneBuilder {
         private static final long serialVersionUID = 7811976468055766265L;
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low", "index:array.length.negative"})
+        // Size initialized before array
         // readInt makes no guarantees about its return value, so cannot
-        // annotate the arrays using it.
+        // annotate the arrays using it. If the arrays were to be
+        // declared before size, it could be annotated as an index
+        // for all of them.
         static PrecalculatedZone readFrom(DataInput in, String id) throws IOException {
             // Read string pool.
             int poolSize = in.readUnsignedShort();
@@ -1429,6 +1432,7 @@ public class DateTimeZoneBuilder {
          */
 
         @SuppressWarnings("index:array.access.unsafe.high")
+        // Size initialized before array
         // ArrayList makes no guarantees about what its size will be and,
         // furthermore, this variable is initialized before the arrays
         // are declared.
@@ -1555,6 +1559,7 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+        // Unary ~
         // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
         // after i = ~i. The arithmetic performed will ensure that i or 
         // i-1 will never be out of bounds.
@@ -1578,6 +1583,7 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+        // Unary ~
         // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
         // after i = ~i. The arithmetic performed will ensure that i or 
         // i-1 will never be out of bounds.
@@ -1601,7 +1607,8 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"})
-        // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
+        // Unary ~
+        // // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
         // after i = ~i. The arithmetic performed will ensure that i or 
         // i-1 will never be out of bounds.
         public int getStandardOffset(long instant) {
@@ -1627,7 +1634,11 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
-        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) // Arrays makes no guarantees about the return value of .binarySearch. i = (i >= 0) ? (i + 1) : ~1 guarantees i will be >= 1
+        @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+        // Unary ~
+        // Arrays makes no guarantees about the return value of 
+        // .binarySearch. i = (i >= 0) ? (i + 1) : ~1 guarantees i 
+        // will be >= 1
         public long nextTransition(long instant) {
             long[] transitions = iTransitions;
             int i = Arrays.binarySearch(transitions, instant);
@@ -1646,6 +1657,7 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+            // Unary ~
             // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
             // after i = ~i. The arithmetic performed will ensure that i or
             // i-1 will never be out of bounds.
@@ -1702,6 +1714,8 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.length.negative"})
+
+        // Size initialized before array
         // While size is a valid index for iTransitions, it cannot be
         // expressed as one for all of the arrays used here.
         public void writeTo(DataOutput out) throws IOException {

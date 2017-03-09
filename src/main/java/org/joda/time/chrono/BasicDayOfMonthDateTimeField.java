@@ -79,7 +79,10 @@ final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         return getMaximumValue();
     }
 
-    // Can't check values[i]
+    // Calls to size()
+    // The size variable is guaranteed to be the length of the array
+    // 'values', but this cannot be expressed to the Checker as it
+    // is derived from a call to size().
     @SuppressWarnings("index:array.access.unsafe.high")
     public int getMaximumValue(ReadablePartial partial, int[] values) {
         int size = partial.size();

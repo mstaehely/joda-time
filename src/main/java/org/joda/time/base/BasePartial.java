@@ -239,7 +239,9 @@ public abstract class BasePartial
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
-    // Can't guarantee size of iValues.
+    // Result of partial/period inheritance
+    // Size of iValues depends upon type of partial that is being used
+    // and as such, this cannot be guaranteed.
     public int getValue(@NonNegative int index) {
         return iValues[index];
     }

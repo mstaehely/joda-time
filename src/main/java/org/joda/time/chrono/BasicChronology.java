@@ -793,6 +793,8 @@ abstract class BasicChronology extends AssembledChronology {
     abstract long setYear(long instant, int year);
 
     //-----------------------------------------------------------------------
+
+    // Unary &
     // Although accessed by multiple threads, this method doesn't need to be synchronized.
     // iYearInfoCache.length == CACHE_MASK + 1, so the accesses are safe
     @SuppressWarnings("index:array.access.unsafe.high")

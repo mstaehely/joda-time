@@ -220,6 +220,8 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     }
 
     //-----------------------------------------------------------------------
+
+    // Calls to size()
     // Can't express that values.length == partial.size()
     @SuppressWarnings("index:array.access.unsafe.high")
     public int[] add(ReadablePartial partial, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {

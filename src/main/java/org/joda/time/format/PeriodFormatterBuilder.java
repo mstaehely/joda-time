@@ -588,6 +588,7 @@ public class PeriodFormatterBuilder {
     }
 
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Variable array lengths
     // Unable to check iFieldFormatters[type] because argument cannot be
     // annotated, since iFieldFormatters is not static.
     private void appendField(@NonNegative int type, int minPrinted) {
@@ -688,6 +689,7 @@ public class PeriodFormatterBuilder {
      */
 
     @SuppressWarnings({"index:argument.type.incompatible", "index:array.access.unsafe.high"} ) 
+        // Result of partial/period inheritance
         // iElementPairs is a list, and not useable with the Checker.
         // getFieldType() guaranteed to be non-negative and iFieldType
         // will be a known index into the array iFieldFormatters by
@@ -1237,12 +1239,14 @@ public class PeriodFormatterBuilder {
             return iPatterns.length - 1;
         }
         @SuppressWarnings("index:array.access.unsafe.high")
+        // Result of partial/period inheritance
         // There is no way to guarantee that seletSuffixIndex(value)
         // will provide a valid IndexFor("iSuffixes").
         public int calculatePrintedLength(int value) {
             return iSuffixes[selectSuffixIndex(value)].length();
         }
         @SuppressWarnings("index:array.access.unsafe.high")
+        // Result of partial/period inheritance
         // There is no way to guarantee that seletSuffixIndex(value)
         // will provide a valid IndexFor("iSuffixes").
         public void printTo(StringBuffer buf, int value) {
@@ -1250,6 +1254,7 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings("index:array.access.unsafe.high")
+        // Result of partial/period inheritance
         // There is no way to guarantee that seletSuffixIndex(value)
         // will provide a valid IndexFor("iSuffixes").
         public void printTo(Writer out, int value) throws IOException {
@@ -1747,6 +1752,7 @@ public class PeriodFormatterBuilder {
          */
 
         @SuppressWarnings("index:array.access.unsafe.high") 
+        // Result of partial/period inheritance
         // Unable to annotate iFieldFormatters[iFieldType], [i] because 
         // iFieldType not guaranteed to be LTOM("iFieldFormatters") but 
         // the loop should ensure this.

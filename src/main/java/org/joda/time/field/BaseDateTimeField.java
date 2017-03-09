@@ -585,6 +585,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the updated values
      * @throws IllegalArgumentException if the value is invalid
      */
+    // Calls to size()
     // Can't express values.length == partial.size()
     @SuppressWarnings("index:array.access.unsafe.high")
     public int @SameLen("#3") [] set(ReadablePartial partial, @IndexFor("#3") int fieldIndex, int[] values, int newValue) {

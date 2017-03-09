@@ -580,6 +580,7 @@ public class DateTimeFormat {
      * @return the parsed token
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Usage of constants
     // indexRef guaranteed to be length of at least 1.
     private static String parseToken(String pattern, @NonNegative int @NonNegative [] indexRef) {
         StringBuilder buf = new StringBuilder();

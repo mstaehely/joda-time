@@ -701,6 +701,7 @@ public final class GJChronology extends AssembledChronology {
             return iGregorianField.add(instant, value);
         }
 
+        // Calls to size()
         // can't express values.length = parital.size()
         @SuppressWarnings("index:array.access.unsafe.high")
         public int[] add(ReadablePartial partial, @IndexFor("#3") int fieldIndex, int[] values, int valueToAdd) {
@@ -871,6 +872,7 @@ public final class GJChronology extends AssembledChronology {
             return getMaximumValue(instant);
         }
 
+        // Calls to size()
         // Can't express values.length == partial.size()
         @SuppressWarnings("index:array.access.unsafe.high")
         public int getMaximumValue(ReadablePartial partial, int[] values) {

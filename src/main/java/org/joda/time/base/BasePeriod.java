@@ -329,6 +329,7 @@ public abstract class BasePeriod
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Result of partial/period inheritance
     // Many classes use or override this method, and as such it is unable
     // to be effectively annotated using IndexFor.
     public int getValue(@NonNegative int index) {
@@ -393,6 +394,7 @@ public abstract class BasePeriod
      * @param newValue  the new value to store if successful
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Result of partial/period inheritance
     // Cannot specify that index is a valid index into values, as indexOf
     // must be able to return a -1 on failure.
     private void checkAndUpdate(DurationFieldType type, int[] values, int newValue) {
@@ -492,6 +494,7 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if field is null or not supported.
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Result of partial/period inheritance
     // Cannot specify that index is a valid index into values, as indexOf
     // must be able to return a -1 on failure.
     protected void setFieldInto(int[] values, DurationFieldType field, int value) {
@@ -526,6 +529,7 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if field is is null or not supported.
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Result of partial/period inheritance
     // Cannot specify that index is a valid index into values, as indexOf
     // must be able to return a -1 on failure.
 
@@ -591,6 +595,7 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Result of partial/period inheritance
     // Cannot specify that index is a valid index into values, as indexOf
     // must be able to return a -1 on failure.
     protected int[] addPeriodInto(int[] values, ReadablePeriod period) {
@@ -619,6 +624,7 @@ public abstract class BasePeriod
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Result of partial/period inheritance
     // Many classes use or override this method, and as such it is unable
     // to be effectively annotated using IndexFor.
     protected void setValue(@NonNegative int index, int value) {

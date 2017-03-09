@@ -44,6 +44,7 @@ public class DefaultNameProvider implements NameProvider {
     // retained original code for name lookup, not used in normal code
     // this code could be refactored to avoid duplication, but leaving it as is ensures backward compatibility
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Potential null arrays
     // Won't access nameSet[0] unless it exists, and then will be guaranteed
     // to be sufficiently long.
     public String getShortName(Locale locale, String id, String nameKey) {
@@ -51,6 +52,7 @@ public class DefaultNameProvider implements NameProvider {
         return nameSet == null ? null : nameSet[0];
     }
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Potential null arrays
     // Won't access nameSet[1] unless it exists, and then will be guaranteed
     // to be sufficiently long.
     public String getName(Locale locale, String id, String nameKey) {
@@ -108,6 +110,7 @@ public class DefaultNameProvider implements NameProvider {
     // change lookup to operate on boolean standard/summer time flag
     // handles changes to the nameKey better
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Potential null arrays
     // Won't access nameSet[0] unless it exists, and then will be guaranteed
     // to be sufficientlly long.
    public String getShortName(Locale locale, String id, String nameKey, boolean standardTime) {
@@ -116,6 +119,7 @@ public class DefaultNameProvider implements NameProvider {
     }
     
     @SuppressWarnings("index:array.access.unsafe.high") 
+    // Potential null arrays
     // Won't access nameSet[1] unless it exists, and then will be guaranteed
     // to be sufficiently long.
     public String getName(Locale locale, String id, String nameKey, boolean standardTime) {

@@ -58,6 +58,8 @@ class GJLocaleSymbols {
         return symbols;
     }
 
+    // Index arithmetic
+    // Can't do math with upper bounds and MinLen
     @SuppressWarnings("index:array.access.unsafe.high")
     private static String @MinLen(13) [] realignMonths(String[] months) {
         String[] a = new String[13];
@@ -67,6 +69,7 @@ class GJLocaleSymbols {
         return a;
     }
 
+    // Index arithmetic
     // Can't do math with upper bounds and MinLen
     @SuppressWarnings("index:array.access.unsafe.high")
     private static String @MinLen(8) [] realignDaysOfWeek(String[] daysOfWeek) {
@@ -77,6 +80,7 @@ class GJLocaleSymbols {
         return a;
     }
 
+    // Can't express guarantee
     // Can't express symbols.length <= integers.length
     @SuppressWarnings("index:array.access.unsafe.high")
     private static void addSymbols(TreeMap<String, Integer> map, String[] symbols, Integer[] integers) {

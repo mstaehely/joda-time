@@ -383,8 +383,10 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the instant is invalid
      */
 
-    @SuppressWarnings("index") // getPartialValues is an array factory 
-    // which returns an array of length equal to the return value of the 
+    @SuppressWarnings("index") 
+    // Result of array factory
+    // getPartialValues is an array factory which returns an array of 
+    // length equal to the return value of the 
     // size() method provided by this class. In this case, size is 4 and 
     // the array has 4 indices, directly accessed.
     public LocalDateTime(Object instant, DateTimeZone zone) {
@@ -418,8 +420,10 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the instant is invalid
      */
 
-    @SuppressWarnings("index")// getPartialValues is an array factory 
-    // which returns an array of length equal to the return value of the 
+    @SuppressWarnings("index")
+    // Result of array factory
+    // getPartialValues is an array factory which returns an array of 
+    // length equal to the return value of the 
     // size() method provided by this class. In this case, size is 4 and 
     // the array has 4 indices, directly accessed.
     public LocalDateTime(Object instant, Chronology chronology) {
