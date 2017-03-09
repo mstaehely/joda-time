@@ -145,7 +145,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         // Quietly force DOM to nearest sane value.
         //
         int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
-	// Arithmetic guarantee
+	// Result of partial/period inheritance
         // monthToUse is positive
         @SuppressWarnings("index:argument.type.incompatible")
         int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
@@ -155,7 +155,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
 
         // get proper date part, and return result
 
-	// Arithmetic guarantee
+	// Result of partial/period inheritance
         // monthToUse is positive
         @SuppressWarnings("index:argument.type.incompatible")
         long datePart =
