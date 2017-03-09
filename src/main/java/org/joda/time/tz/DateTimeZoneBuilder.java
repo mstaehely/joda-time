@@ -319,7 +319,7 @@ public class DateTimeZoneBuilder {
     }
 
     @SuppressWarnings("index:argument.type.incompatible")
-    // Result of size() call
+    // Calls to size()
     // Only reaches return with iRuleSets size being > 0. Size guaranteed 
     // by ArrayList annotations is only NonNegative
     private RuleSet getLastRuleSet() {
