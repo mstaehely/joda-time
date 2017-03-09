@@ -481,7 +481,7 @@ abstract class BasicChronology extends AssembledChronology {
         int year = getYear(millis);
         // We are passing the current year to getMonthOfYear, so
         // we will get a positive month back.
-        // Unable to guarantee
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int month = getMonthOfYear(millis, year);
         return getDayOfMonth(millis, year, month);
@@ -514,7 +514,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @param instant millis from 1970-01-01T00:00:00Z
      */
     // we are looking at an instant after the beginning of the year
-    // Unable to guarantee
+    // Result of partial/period inheritance
     @SuppressWarnings("index:return.type.incompatible")
     @Positive int getDayOfYear(long instant) {
         return getDayOfYear(instant, getYear(instant));
@@ -618,7 +618,7 @@ abstract class BasicChronology extends AssembledChronology {
         int thisYear = getYear(instant);
         // We are passing the current year to getMonthOfYear, so we will
         // recieve a positive month value
-        // Unable to guarantee
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int thisMonth = getMonthOfYear(instant, thisYear);
         return getDaysInYearMonth(thisYear, thisMonth);
