@@ -821,8 +821,8 @@ public class PeriodType implements Serializable {
      */
 
     // Index arithmetic
-    // Unable to guarantee
-    // Unable to guarantee
+    // Result of partial/period inheritance
+    // Result of partial/period inheritance
     // Suppressing for the first for loop. For loop shifts all elements
     // after the removed one to the left by one. If the value of the
     // field to be removed is -1, then this PeriodType does not
