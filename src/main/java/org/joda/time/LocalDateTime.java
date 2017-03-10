@@ -234,6 +234,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
+    // Unable to guarantee
     // date.getMonth() is NonNegative
     @SuppressWarnings({"deprecation", "index:argument.type.incompatible"})
     public static LocalDateTime fromDateFields(Date date) {
@@ -584,7 +585,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets the value of the field at the specifed index.
+     * Gets the value of the field at the specified index.
      * <p>
      * This method is required to support the <code>ReadablePartial</code>
      * interface. The supported fields are Year, MonthOfDay, DayOfMonth and MillisOfDay.
@@ -1724,7 +1725,7 @@ public final class LocalDateTime
      * Instead, this method returns a new instance with the value of
      * century of era changed.
      *
-     * @param centuryOfEra  the centurey of era to set
+     * @param centuryOfEra  the century of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */

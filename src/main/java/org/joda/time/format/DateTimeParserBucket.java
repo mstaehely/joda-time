@@ -324,6 +324,7 @@ public class DateTimeParserBucket {
    
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
     // Size initialized before array
+    // Variable array lengths
     // Unable to annotate savedFieldsCount as index for both savedFields 
     // and newArray. This is also why the incompatible argument suppression
     // is present.
@@ -507,6 +508,7 @@ public class DateTimeParserBucket {
      */
 
     @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
+    // Index arithmetic
     // Index arithmetic
     // Index j-1 guaranteed to be > 0 when used as an index. j guaranteed
     // to be less than high, as it is equal to i.

@@ -319,6 +319,7 @@ public class DateTimeZoneBuilder {
     }
 
     @SuppressWarnings("index:argument.type.incompatible")
+    // Calls to size()
     // Only reaches return with iRuleSets size being > 0. Size guaranteed 
     // by ArrayList annotations is only NonNegative
     private RuleSet getLastRuleSet() {
@@ -404,6 +405,7 @@ public class DateTimeZoneBuilder {
     }
 
     @SuppressWarnings("index:argument.type.incompatible") 
+    // Arithmetic guarantee
     // offsetForLast = transitions.get(size - 2).getWallOffset() *must* be 
     // NonNegative by virtue of if statement
     private boolean addTransition(ArrayList<Transition> transitions, Transition tr) {

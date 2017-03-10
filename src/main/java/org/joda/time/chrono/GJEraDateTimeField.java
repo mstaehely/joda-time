@@ -65,6 +65,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
+    // Result of partial/period inheritance
     // General fieldValue can be negative
     @SuppressWarnings("index:argument.type.incompatible")
     public String getAsText(int fieldValue, Locale locale) {

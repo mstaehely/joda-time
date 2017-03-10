@@ -217,7 +217,7 @@ public class PeriodFormatterBuilder {
      * Appends a printer parser pair.
      * <p>
      * Either the printer or the parser may be null, in which case the builder will
-     * be unable to produce a parser or printer repectively.
+     * be unable to produce a parser or printer respectively.
      *
      * @param printer  appends a printer to the builder, null if printing is not supported
      * @param parser  appends a parser to the builder, null if parsing is not supported
@@ -310,7 +310,7 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Print zero values for the next and following appened fields only if the
+     * Print zero values for the next and following appended fields only if the
      * period supports it.
      *
      * @return this PeriodFormatterBuilder
@@ -689,6 +689,7 @@ public class PeriodFormatterBuilder {
      */
 
     @SuppressWarnings({"index:argument.type.incompatible", "index:array.access.unsafe.high"} ) 
+        // Result of partial/period inheritance
         // Result of partial/period inheritance
         // iElementPairs is a list, and not useable with the Checker.
         // getFieldType() guaranteed to be non-negative and iFieldType
@@ -1346,6 +1347,7 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings("index:argument.type.incompatible") 
+	// Can't express guarantee
         // Scan may return a negative value. Will not reach method call 
         // as an argument if this is the case.
         public int scan(String periodStr, final @NonNegative int position) {
@@ -1548,6 +1550,7 @@ public class PeriodFormatterBuilder {
 
         @SuppressWarnings({"index:assignment.type.incompatible", "index:argument.type.incompatible"}) 
             // Arithmetic guarantee
+            // Can't express guarantee
             // parse can return negative values when it fails, so cannot 
             // guarantee position will be NonNegative at that return. 
             // fractPos - position - 1 is guaranteed to be >= 0 when passed
