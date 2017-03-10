@@ -1564,6 +1564,7 @@ public class DateTimeZoneBuilder {
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
         // Unary ~
+        // Unary ~
         // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
         // after i = ~i. The arithmetic performed will ensure that i or 
         // i-1 will never be out of bounds.
@@ -1588,6 +1589,7 @@ public class DateTimeZoneBuilder {
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
         // Unary ~
+        // Unary ~
         // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
         // after i = ~i. The arithmetic performed will ensure that i or 
         // i-1 will never be out of bounds.
@@ -1611,6 +1613,7 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"})
+        // Unary ~
         // Unary ~
         // // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
         // after i = ~i. The arithmetic performed will ensure that i or 
@@ -1640,6 +1643,7 @@ public class DateTimeZoneBuilder {
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
         // Unary ~
+        // Unary ~
         // Arrays makes no guarantees about the return value of 
         // .binarySearch. i = (i >= 0) ? (i + 1) : ~1 guarantees i 
         // will be >= 1
@@ -1661,6 +1665,7 @@ public class DateTimeZoneBuilder {
         }
 
         @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) 
+            // Unary ~
             // Unary ~
             // If i is < 0, ~i will not be <= 0; i - 1 must be >= 0 
             // after i = ~i. The arithmetic performed will ensure that i or
