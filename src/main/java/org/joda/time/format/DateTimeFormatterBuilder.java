@@ -2521,7 +2521,7 @@ public class DateTimeFormatterBuilder {
         }
 
         @SuppressWarnings("index:assignment.type.incompatible") 
-        // Unable to guarantee
+        // Can't express guarantee
         // position must be a nonnegative value to reach the body of the for loop
         // by definition
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
