@@ -278,7 +278,7 @@ public class ZoneInfoProvider implements Provider {
      * @param zimap  gets filled with string id to string id mappings
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high")
+    @SuppressWarnings("index")
     // Size initialized before array
     // Return value of DataInputStream cannot be guaranteed. As this is
     // a private helper method, the program structure provides the
@@ -287,7 +287,7 @@ public class ZoneInfoProvider implements Provider {
     // annotated.
     private static void readZoneInfoMap(DataInputStream din, Map<String, Object> zimap) throws IOException {
         // Read the string pool.
-        int size = din.readUnsignedShort();
+        @NonNegative int size = din.readUnsignedShort();
         String[] pool = new String[size];
         for (int i=0; i<size; i++) {
             pool[i] = din.readUTF().intern();

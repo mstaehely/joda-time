@@ -89,10 +89,6 @@ public abstract class BaseSingleFieldPeriod
      * @throws IllegalArgumentException if the partials are null or invalid
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high")
-    // Potential null arrays
-    // Values[0] will be safe so long as zeroInstance is not null and has
-    // some values in it.
     protected static int between(ReadablePartial start, ReadablePartial end, ReadablePeriod zeroInstance) {
         if (start == null || end == null) {
             throw new IllegalArgumentException("ReadablePartial objects must not be null");
@@ -109,7 +105,9 @@ public abstract class BaseSingleFieldPeriod
             throw new IllegalArgumentException("ReadablePartial objects must be contiguous");
         }
         Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();
-        int[] values = chrono.get(zeroInstance, chrono.set(start, START_1972), chrono.set(end, START_1972));
+        // As long as zeroInstance is not empty, values will not be empty
+        @SuppressWarnings("index:assignment.type.incompatible") // Result of partial/period inheritance
+        int @MinLen(1) [] values = chrono.get(zeroInstance, chrono.set(start, START_1972), chrono.set(end, START_1972));
         return values[0];
     }
 

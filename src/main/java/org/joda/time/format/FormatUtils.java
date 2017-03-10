@@ -439,6 +439,7 @@ public class FormatUtils {
         return ((value << 3) + (value << 1)) + text.charAt(position + 1) - '0';
     }
 
+    @SuppressWarnings("index:argument.type.incompatible") // Not working with String
     static String createErrorMessage(final String text, final int errorPos) {
         int sampleLen = errorPos + 32;
         String sampleText;

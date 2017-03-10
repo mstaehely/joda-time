@@ -25,17 +25,17 @@ import org.checkerframework.checker.index.qual.*;
  * @since 1.0
  */
 class ConverterSet {
-    private final Converter @Positive [] iConverters;
+    private final Converter [] iConverters;
 
     // A simple immutable hashtable: closed hashing, linear probing, sized
     // power of 2, at least one null slot.
-    private Entry @Positive [] iSelectEntries;
+    private Entry @MinLen(1) [] iSelectEntries;
 
-    ConverterSet(Converter @Positive [] converters) {
+    ConverterSet(Converter [] converters) {
         // Since this is a package private constructor, we trust ourselves not
         // to alter the array outside this class.
         iConverters = converters;
-        iSelectEntries = new Entry @Positive [1 << 4]; // 16
+        iSelectEntries = new Entry[1 << 4]; // 16
     }
 
     /**
@@ -47,15 +47,13 @@ class ConverterSet {
      * equally well
      */
 
-    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"})
-        // Checker unable to follow reference
-        // Size initialized before array
-        // Cannot initialize index as a valid index for newEntries, as that
-        // array does not exist yet. 
     Converter select(Class<?> type) throws IllegalStateException {
         // Check the hashtable first.
-        Entry @Positive [] entries = iSelectEntries;
-        @IndexFor("entries") int length = entries.length;
+        Entry @MinLen(1) [] entries = iSelectEntries;
+        @IndexOrHigh("entries") int length = entries.length;
+        // & should preserve IndexFor, so since entries is MinLen(1) and length-1 is IndexFor("entries"),
+        // index is IndexFor("entries")
+        @SuppressWarnings("index:assignment.type.incompatible") // Unary &
         @IndexFor("entries") int index = type == null ? 0 : type.hashCode() & (length - 1);
 
         Entry e;
@@ -100,18 +98,24 @@ class ConverterSet {
 
         // Double capacity and re-hash.
 
-        int newLength = length << 1;
-        Entry @Positive [] newEntries = new Entry @Positive [newLength];
+        @Positive int newLength = length << 1;
+        // newLength is positive so newEntries will have length at least 1
+        @SuppressWarnings("index:assignment.type.incompatible") // Positive length MinLen(1)
+        Entry @MinLen(1) [] newEntries = new Entry[newLength];
         for (int i=0; i<length; i++) {
             e = entries[i];
             type = e.iType;
-            index = type == null ? 0 : type.hashCode() & (newLength - 1);
-            while (newEntries[index] != null) {
-                if (++index >= newLength) {
-                    index = 0;
+            // & should preserve IndexFor, so since newEntries is MinLen(1)
+            // and newLength-1 is IndexFor("newEntries"),
+            // newIndex is IndexFor("entries")
+            @SuppressWarnings("index:assignment.type.incompatible") // Unary &
+            @IndexFor("newEntries") int newIndex = type == null ? 0 : type.hashCode() & (newLength - 1);
+            while (newEntries[newIndex] != null) {
+                if (++newIndex >= newLength) {
+                    newIndex = 0;
                 }
             }
-            newEntries[index] = e;
+            newEntries[newIndex] = e;
         }
 
         // Swap in new hashtable.
@@ -129,11 +133,7 @@ class ConverterSet {
     /**
      * Copies all the converters in the set to the given array.
      */
-    @SuppressWarnings("index:argument.type.incompatible")
-    // Variable array lengths
-    // Annotating converters as having the same length as iConverters
-    // does not get rid of the incompatible argument.
-    void copyInto(Converter @Positive [] converters) {
+    void copyInto(Converter [] converters) {
         System.arraycopy(iConverters, 0, converters, 0, iConverters.length);
     }
 
@@ -148,15 +148,10 @@ class ConverterSet {
      * @throws NullPointerException if converter is null
      */
 
-    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"})
-    // Potential null arrays
-    // Variable array lengths
-    // High index waring is because checker can't validate removed[0], which
-    // should be unreachable unless removed exists. Incompatible argument
-    // is a result of being unable to annotate copy as having the same
-    // length as iConverters, because it may end up one longer.
-    ConverterSet add(Converter converter, Converter @Positive [] removed) {
-        Converter @Positive [] converters = iConverters;
+    // copy has length length + 1, so length is now a valid index for copy
+    @SuppressWarnings("index:array.access.unsafe.high") // Index arithmetic
+    ConverterSet add(Converter converter, Converter @MinLen(1) [] removed) {
+        Converter [] converters = iConverters;
         int length = converters.length;
 
         for (int i=0; i<length; i++) {
@@ -171,7 +166,7 @@ class ConverterSet {
             
             if (converter.getSupportedType() == existing.getSupportedType()) {
                 // Replace the converter.
-                Converter @Positive [] copy = new Converter @Positive [length];
+                Converter [] copy = new Converter[length];
                     
                 for (int j=0; j<length; j++) {
                     if (j != i) {
@@ -189,9 +184,9 @@ class ConverterSet {
         }
 
         // Not found, so add it.
-        Converter @Positive [] copy = new Converter @Positive [length + 1];
+        Converter [] copy = new Converter[length + 1];
         System.arraycopy(converters, 0, copy, 0, length);
-        copy[length] = converter;
+        copy[length] = converter; // Warning here that length is not a valid index for copy
         
         if (removed != null) {
             removed[0] = null;
@@ -208,11 +203,8 @@ class ConverterSet {
      * @throws NullPointerException if converter is null
      */
 
-    @SuppressWarnings("index:array.access.unsafe.high") 
-    // Potential null arrays
-    // Won't reach removed unless the array exists.
-    ConverterSet remove(Converter converter, Converter @Positive [] removed) {
-        Converter @Positive [] converters = iConverters;
+    ConverterSet remove(Converter converter, Converter @MinLen(1) [] removed) {
+        Converter [] converters = iConverters;
         int length = converters.length;
 
         for (int i=0; i<length; i++) {
@@ -240,11 +232,9 @@ class ConverterSet {
     @SuppressWarnings({"index:array.access.unsafe.high"}) 
     // Index arithmetic
     // Because this is removing a value from the array, j++ will always be 
-    // valid if it is reached, thanks to i != index.. Also, should never be
-    // able to reach removed[0] unless removed exists, and so has positive 
-    // length
-    ConverterSet remove(final @NonNegative int index, Converter @Positive [] removed) {
-        Converter @Positive [] converters = iConverters;
+    // valid if it is reached, thanks to i != index.
+    ConverterSet remove(final @NonNegative int index, Converter @MinLen(1) [] removed) {
+        Converter [] converters = iConverters;
         int length = converters.length;
         if (index >= length) {
             throw new IndexOutOfBoundsException();
@@ -254,12 +244,12 @@ class ConverterSet {
             removed[0] = converters[index];
         }
 
-        Converter @Positive [] copy = new Converter @Positive [length - 1];
+        Converter [] copy = new Converter[length - 1];
                 
         int j = 0;
         for (int i=0; i<length; i++) {
             if (i != index) {
-                copy[j++] = converters[i];
+                copy[j++] = converters[i]; // Warning here that j++ is not a valid index for copy
             }
         }
         
@@ -271,16 +261,13 @@ class ConverterSet {
      * efficiently.
      */
 
-    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) 
-        // Result of partial/period inheritance
-        // Index arithmetic
-        // Length -1 should never be negative, as length of an array will 
-        // need to be >= 1. Converters[i] is used after i is decremented, 
-        // so it cannot be too high. Converters[j] is used after j is
-        // decremented, so it cannot be too high.
+    // In the eliminate supertypes loop, we never remove all of the
+    // availiable converters, so length - 1 is NonNegative
+    @SuppressWarnings("index:assignment.type.incompatible") 
+    // Index arithmetic
     private static Converter selectSlow(ConverterSet set, Class<?> type) {
-        Converter @Positive [] converters = set.iConverters;
-        int length = converters.length;
+        Converter [] converters = set.iConverters;
+        @IndexOrHigh("converters") int length = converters.length;
         Converter converter;
 
         for (@NonNegative int i=length; --i>=0; ) {
@@ -306,11 +293,11 @@ class ConverterSet {
             return null;
         }
         if (length == 1) {
+            // Since length is converters.length, this holds
+            assert converters.length >= 1 : "@AssumeAssertion(index)"; // Size initialized before array
             // Found the one best match.
             return converters[0];
         }
-
-        // At this point, there exist multiple potential converters.
 
         // Eliminate supertypes.
         for (@NonNegative int i=length; --i>=0; ) {
@@ -322,7 +309,7 @@ class ConverterSet {
                     set = set.remove(j, null);
                     converters = set.iConverters;
                     length = converters.length;
-                    i = length - 1;
+                    i = length - 1; // Warning here
                 }
             }
         }        
@@ -330,6 +317,8 @@ class ConverterSet {
         // Check what remains in the set.
 
         if (length == 1) {
+            // Since length is converters.length, this holds
+            assert converters.length >= 1 : "@AssumeAssertion(index)"; // Size initialized before array
             // Found the one best match.
             return converters[0];
         }

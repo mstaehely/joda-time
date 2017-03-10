@@ -22,6 +22,8 @@ import java.util.Map;
 
 import org.joda.time.DateTimeUtils;
 
+import org.checkerframework.checker.index.qual.*;
+
 /**
  * The default name provider acquires localized names from
  * {@link DateFormatSymbols java.text.DateFormatSymbols}.
@@ -43,24 +45,17 @@ public class DefaultNameProvider implements NameProvider {
     //-----------------------------------------------------------------------
     // retained original code for name lookup, not used in normal code
     // this code could be refactored to avoid duplication, but leaving it as is ensures backward compatibility
-    @SuppressWarnings("index:array.access.unsafe.high") 
-    // Potential null arrays
-    // Won't access nameSet[0] unless it exists, and then will be guaranteed
-    // to be sufficiently long.
     public String getShortName(Locale locale, String id, String nameKey) {
-        String[] nameSet = getNameSet(locale, id, nameKey);
+        String @MinLen(1) [] nameSet = getNameSet(locale, id, nameKey);
         return nameSet == null ? null : nameSet[0];
     }
-    @SuppressWarnings("index:array.access.unsafe.high") 
-    // Potential null arrays
-    // Won't access nameSet[1] unless it exists, and then will be guaranteed
-    // to be sufficiently long.
     public String getName(Locale locale, String id, String nameKey) {
-        String[] nameSet = getNameSet(locale, id, nameKey);
+        String @MinLen(2) [] nameSet = getNameSet(locale, id, nameKey);
         return nameSet == null ? null : nameSet[1];
     }
 
-    private synchronized String[] getNameSet(Locale locale, String id, String nameKey) {
+    @SuppressWarnings("cast.unsafe")
+    private synchronized String @MinLen(2) [] getNameSet(Locale locale, String id, String nameKey) {
         if (locale == null || id == null || nameKey == null) {
             return null;
         }
@@ -103,31 +98,24 @@ public class DefaultNameProvider implements NameProvider {
                 }
             }
         }
-        return (String[]) byNameKeyCache.get(nameKey);
+        return (String @MinLen(2) []) byNameKeyCache.get(nameKey);
     }
 
     //-----------------------------------------------------------------------
     // change lookup to operate on boolean standard/summer time flag
     // handles changes to the nameKey better
-    @SuppressWarnings("index:array.access.unsafe.high") 
-    // Potential null arrays
-    // Won't access nameSet[0] unless it exists, and then will be guaranteed
-    // to be sufficientlly long.
    public String getShortName(Locale locale, String id, String nameKey, boolean standardTime) {
-        String[] nameSet = getNameSet(locale, id, nameKey, standardTime);
+        String @MinLen(2) [] nameSet = getNameSet(locale, id, nameKey, standardTime);
         return nameSet == null ? null : nameSet[0];
     }
     
-    @SuppressWarnings("index:array.access.unsafe.high") 
-    // Potential null arrays
-    // Won't access nameSet[1] unless it exists, and then will be guaranteed
-    // to be sufficiently long.
     public String getName(Locale locale, String id, String nameKey, boolean standardTime) {
-        String[] nameSet = getNameSet(locale, id, nameKey, standardTime);
+        String @MinLen(2) [] nameSet = getNameSet(locale, id, nameKey, standardTime);
         return nameSet == null ? null : nameSet[1];
     }
 
-    private synchronized String[] getNameSet(Locale locale, String id, String nameKey, boolean standardTime) {
+    @SuppressWarnings("cast.unsafe")
+    private synchronized String @MinLen(2) [] getNameSet(Locale locale, String id, String nameKey, boolean standardTime) {
         if (locale == null || id == null || nameKey == null) {
             return null;
         }
@@ -166,7 +154,7 @@ public class DefaultNameProvider implements NameProvider {
                 byNameKeyCache.put(Boolean.FALSE, new String[] {setLoc[4], setLoc[3]});
             }
         }
-        return (String[]) byNameKeyCache.get(Boolean.valueOf(standardTime));
+        return (String @MinLen(2) []) byNameKeyCache.get(Boolean.valueOf(standardTime));
     }
 
     //-----------------------------------------------------------------------

@@ -1664,8 +1664,8 @@ public class DateTimeFormatterBuilder {
     static class TextField
             implements InternalPrinter, InternalParser {
 
-        private static Map<Locale, Map<DateTimeFieldType, Object @NonNegative []>> cParseCache =
-                    new ConcurrentHashMap<Locale, Map<DateTimeFieldType, Object @NonNegative []>>();
+        private static Map<Locale, Map<DateTimeFieldType, Object @MinLen(2) []>> cParseCache =
+                    new ConcurrentHashMap<Locale, Map<DateTimeFieldType, Object @MinLen(2) []>>();
         private final DateTimeFieldType iFieldType;
         private final boolean iShort;
 
@@ -1723,19 +1723,16 @@ public class DateTimeFormatterBuilder {
             return estimatePrintedLength();
         }
 
-        @SuppressWarnings({"unchecked", "index:array.access.unsafe.high"}) 
-        // Potential null arrays
-        // Can't guarantee size of array. If it is null, does not attempt
-        // to access the array.
+        @SuppressWarnings("unchecked") 
         public int parseInto(DateTimeParserBucket bucket, CharSequence text, @NonNegative int position) {
             Locale locale = bucket.getLocale();
             // handle languages which might have non ASCII A-Z or punctuation
             // bug 1788282
             Map<String, Boolean> validValues = null;
             int maxLength = 0;
-            Map<DateTimeFieldType, Object @NonNegative []> innerMap = cParseCache.get(locale);
+            Map<DateTimeFieldType, Object @MinLen(2)[]> innerMap = cParseCache.get(locale);
             if (innerMap == null) {
-                innerMap = new ConcurrentHashMap<DateTimeFieldType, Object @NonNegative []>();
+                innerMap = new ConcurrentHashMap<DateTimeFieldType, Object @MinLen(2) []>();
                 cParseCache.put(locale, innerMap);
             }
             Object[] array = innerMap.get(iFieldType);
@@ -1766,7 +1763,7 @@ public class DateTimeFormatterBuilder {
                     validValues.put("ce", Boolean.TRUE);
                     maxLength = 3;
                 }
-                array = new Object @NonNegative [] {validValues, Integer.valueOf(maxLength)};
+                array = new Object[] {validValues, Integer.valueOf(maxLength)};
                 innerMap.put(iFieldType, array);
             } else {
                 validValues = (Map<String, Boolean>) array[0];
