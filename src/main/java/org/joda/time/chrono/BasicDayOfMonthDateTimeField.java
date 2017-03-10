@@ -68,6 +68,7 @@ final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
 
     public int getMaximumValue(ReadablePartial partial) {
         if (partial.isSupported(DateTimeFieldType.monthOfYear())) {
+            // Result of partial/period inheritance
             @SuppressWarnings("index:assignment.type.incompatible") // month is positive
             @Positive int month = partial.get(DateTimeFieldType.monthOfYear());
             if (partial.isSupported(DateTimeFieldType.year())) {
@@ -88,6 +89,7 @@ final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         int size = partial.size();
         for (int i = 0; i < size; i++) {
             if (partial.getFieldType(i) == DateTimeFieldType.monthOfYear()) {
+                // Result of partial/period inheritance
                 @SuppressWarnings("index:assignment.type.incompatible") // months are positive
                 @Positive int month = values[i];
                 for (int j = 0; j < size; j++) {

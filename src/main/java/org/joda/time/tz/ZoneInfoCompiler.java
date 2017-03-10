@@ -83,6 +83,8 @@ public class ZoneInfoCompiler {
     @SuppressWarnings({"index:array.access.unsafe.high", "array.access.unsafe.low", "index:array.length.negative"}) 
     
         // Usage of array by main method
+        // Usage of array by main method
+        // Usage of array by main method
         // Cannot reach array access if args.length < 1. Possible to go
         // beyond bounds of array, but this is a result of the user not
         // interacting with the program properly, and cannot be easily

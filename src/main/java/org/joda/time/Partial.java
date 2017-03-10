@@ -540,6 +540,7 @@ public final class Partial
      * @return a copy of this instance with the field removed
      */
     @SuppressWarnings({"index:argument.type.incompatible", "index:array.length.negative"})
+    // Index arithmetic
     // Result of partial/period inheritance
     // If the size of this Partial is 0, then the method will not work.
     // Otherwise, size varies but cannot be guaranteed to be non-zero,

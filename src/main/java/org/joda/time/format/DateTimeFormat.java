@@ -831,6 +831,7 @@ public class DateTimeFormat {
         }
 
 
+        // Unsupported JDK
         @SuppressWarnings("index:return.type.incompatible") // DateFormat not supported by index checker
         private DateTimeFormatter getFormatter(Locale locale) {
             locale = (locale == null ? Locale.getDefault() : locale);
@@ -846,6 +847,7 @@ public class DateTimeFormat {
             return f;
         }
 
+        // Unsupported JDK
         @SuppressWarnings("index:return.type.incompatible") // DateFormat not supported by index checker
         String getPattern(Locale locale) {
             DateFormat f = null;

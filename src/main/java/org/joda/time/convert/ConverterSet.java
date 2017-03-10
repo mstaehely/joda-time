@@ -48,6 +48,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"})
+        // Checker unable to follow reference
         // Size initialized before array
         // Cannot initialize index as a valid index for newEntries, as that
         // array does not exist yet. 
@@ -271,6 +272,7 @@ class ConverterSet {
      */
 
     @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high"}) 
+        // Result of partial/period inheritance
         // Index arithmetic
         // Length -1 should never be negative, as length of an array will 
         // need to be >= 1. Converters[i] is used after i is decremented, 

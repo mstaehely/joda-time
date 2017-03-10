@@ -244,6 +244,7 @@ public final class LocalDate
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
+    // Unsupported JDK
     @SuppressWarnings({"deprecation", "index:cast"}) // date.getMonth() is nonnegative
     public static LocalDate fromDateFields(Date date) {
         if (date == null) {
@@ -1518,6 +1519,7 @@ public final class LocalDate
      *
      * @return the month of year
      */
+    // Result of partial/period inheritance
     @SuppressWarnings("index:return.type.incompatible") // months are positive
     public @Positive int getMonthOfYear() {
         return getChronology().monthOfYear().get(getLocalMillis());

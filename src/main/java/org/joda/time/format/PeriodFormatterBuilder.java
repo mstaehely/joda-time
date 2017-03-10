@@ -1229,6 +1229,7 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings("index:return.type.incompatible") 
+        // Result of partial/period inheritance
         // iPatterns.length should never be 0.
         private @NonNegative int selectSuffixIndex(int value) {
             String valueString = String.valueOf(value);
@@ -1548,7 +1549,8 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings({"index:assignment.type.incompatible", "index:argument.type.incompatible"}) 
-	    // Can't express guarantee
+            // Arithmetic guarantee
+            // Can't express guarantee
             // parse can return negative values when it fails, so cannot 
             // guarantee position will be NonNegative at that return. 
             // fractPos - position - 1 is guaranteed to be >= 0 when passed
@@ -2204,6 +2206,7 @@ public class PeriodFormatterBuilder {
         }
 
         @SuppressWarnings("index:assignment.type.incompatible") 
+        // Can't express guarantee
         // Position is guaranteed to be >= 0 and len is guaranteed to 
         // be >= 0
         public int parseInto(

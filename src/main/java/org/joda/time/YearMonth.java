@@ -732,6 +732,7 @@ public final class YearMonth
      *
      * @return the month of year
      */
+    // Result of partial/period inheritance
     @SuppressWarnings("index:return.type.incompatible") // months are positive
     public @Positive int getMonthOfYear() {
         return getValue(MONTH_OF_YEAR);

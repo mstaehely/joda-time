@@ -106,6 +106,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         int thisYear = iChronology.getYear(instant);
         // We pass the year corresponding to instant, so we recieve a positive
         // month value.
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
         // ----------------------------------------------------------
@@ -177,6 +178,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         int thisYear = iChronology.getYear(instant);
         // We pass the year corresponding to instant, so we recieve a positive
         // month value.
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
 
@@ -207,6 +209,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
 
         int i_yearToUse = (int)yearToUse;
         // monthToUse is positive
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int i_monthToUse = (int)monthToUse;
 
@@ -276,11 +279,13 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         int minuendYear = iChronology.getYear(minuendInstant);
         // We pass the year corresponding to minuendInstant, so we recieve a positive
         // month value.
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
         int subtrahendYear = iChronology.getYear(subtrahendInstant);
         // We pass the year corresponding to subtrahendInstant, so we recieve a positive
         // month value.
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
 
@@ -329,6 +334,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException  if month is invalid
      */
+    // Override parameter invalid
     @SuppressWarnings("index:override.param.invalid")
     public long set(long instant, @Positive int month) {
         FieldUtils.verifyValueBounds(this, month, MIN, iMax);
@@ -385,6 +391,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         int year = iChronology.getYear(instant);
         // We pass the year corresponding to instant, so we recieve a positive
         // month value.
+        // Result of partial/period inheritance
         @SuppressWarnings("index:assignment.type.incompatible")
         @Positive int month = iChronology.getMonthOfYear(instant, year);
         return iChronology.getYearMonthMillis(year, month);
