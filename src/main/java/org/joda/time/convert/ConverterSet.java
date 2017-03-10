@@ -133,6 +133,10 @@ class ConverterSet {
     /**
      * Copies all the converters in the set to the given array.
      */
+    @SuppressWarnings("index:argument.type.incompatible")
+    // Variable array lengths
+    // Converters is initialized by the caller, using the size() method.
+    // As a result, it is guaranteed to be the same size as iConverters.
     void copyInto(Converter [] converters) {
         System.arraycopy(iConverters, 0, converters, 0, iConverters.length);
     }
@@ -148,8 +152,13 @@ class ConverterSet {
      * @throws NullPointerException if converter is null
      */
 
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"}) 
+    // Index arithmetic
+    // Size initialized before array
+    //
     // copy has length length + 1, so length is now a valid index for copy
-    @SuppressWarnings("index:array.access.unsafe.high") // Index arithmetic
+    // As converters and copy both have the same length, this is a
+    // compatible argument and safe to pass to the arraycopy method.
     ConverterSet add(Converter converter, Converter @MinLen(1) [] removed) {
         Converter [] converters = iConverters;
         int length = converters.length;
