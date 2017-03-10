@@ -31,7 +31,7 @@ import org.checkerframework.checker.index.qual.*;
  */
 
 @SuppressWarnings("index:assignment.type.incompatible") 
-// Unable to guarantee
+// Arithmetic guarantee
 // cacheSize will always be positive by the end of the if/else block; 
 // cacheSize -1 will always be NonNegative, 
 // not GTENegativeOne as any positive -1 will be >= 0
