@@ -334,10 +334,10 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @return the updated time instant.
      * @throws IllegalArgumentException  if month is invalid
      */
-    // Override parameter invalid
-    @SuppressWarnings("index:override.param.invalid")
-    public long set(long instant, @Positive int month) {
+    public long set(long instant, int month) {
         FieldUtils.verifyValueBounds(this, month, MIN, iMax);
+        // verifyValueBounds throws an IllegalArgument exception if month is nom-positive
+        assert month >= 1 : "@AssumeAssertion(index)";
         //
         int thisYear = iChronology.getYear(instant);
         //
